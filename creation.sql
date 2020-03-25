@@ -72,10 +72,10 @@ CREATE TABLE TRUCK(
     FOREIGN KEY (planning) REFERENCES OPENDAYS(idOpen)
 );
 CREATE TABLE HOST(
-    idHost INTEGER PRIMARY KEY AUTO_INCREMENT,
-    event INTEGER,
-    FOREIGN KEY (event) REFERENCES EVENTS(idEvent),
+    event INTEGER NOT NULL,
     truck INTEGER NOT NULL,
+    PRIMARY KEY(event, truck),
+    FOREIGN KEY (event) REFERENCES EVENTS(idEvent),
     FOREIGN KEY (truck) REFERENCES TRUCK(idTruck)
 );
 CREATE TABLE MAINTENANCE(
@@ -112,10 +112,10 @@ CREATE TABLE INGREDIENTS(
     ingredientPrice INTEGER
 );
 CREATE TABLE STORE(
-    idStore INTEGER PRIMARY KEY AUTO_INCREMENT,
     warehouse INTEGER NOT NULL,
-    FOREIGN KEY (warehouse) REFERENCES WAREHOUSES(idWarehouse),
     ingredient INTEGER NOT NULL,
+    PRIMARY KEY(warehouse, ingredient),
+    FOREIGN KEY (warehouse) REFERENCES WAREHOUSES(idWarehouse),
     FOREIGN KEY (ingredient) REFERENCES INGREDIENTS(idIngredient)
 );
 CREATE TABLE PRODUCTS(
@@ -128,30 +128,30 @@ CREATE TABLE PRODUCTS(
     FOREIGN KEY (truck) REFERENCES TRUCK(idTruck)
 );
 CREATE TABLE REQUIRED(
-    idRequired INTEGER PRIMARY KEY AUTO_INCREMENT,
-    menu INTEGER,
+    menu INTEGER NOT NULL,
+    product INTEGER NOT NULL,
+    PRIMARY KEY(menu, product),
     FOREIGN KEY (menu) REFERENCES MENUS(idMenu),
-    product INTEGER,
     FOREIGN KEY (product) REFERENCES PRODUCTS(idProduct)
 );
 CREATE TABLE USED(
-    idUsed INTEGER PRIMARY KEY AUTO_INCREMENT,
-    ingredient INTEGER,
+    ingredient INTEGER NOT NULL,
+    product INTEGER NOT NULL,
+    PRIMARY KEY(ingredient, product),
     FOREIGN KEY (ingredient) REFERENCES INGREDIENTS(idIngredient),
-    product INTEGER,
     FOREIGN KEY (product) REFERENCES PRODUCTS(idProduct)
 );
 CREATE TABLE ORDERMENU(
-    idOrderMenu INTEGER PRIMARY KEY AUTO_INCREMENT,
-    orderNumber INTEGER,
-    FOREIGN KEY (orderNumber) REFERENCES ORDERS(idOrder),
+    orderNumber INTEGER NOT NULL,
     menu INTEGER NOT NULL,
+    PRIMARY KEY(orderNumber, menu),
+    FOREIGN KEY (orderNumber) REFERENCES ORDERS(idOrder),
     FOREIGN KEY (menu) REFERENCES MENUS(idMenu)
 );
 CREATE TABLE ORDERPRODUCT(
-    idOrderProduct INTEGER PRIMARY KEY AUTO_INCREMENT,
-    orderNumber INTEGER,
+    orderNumber INTEGER NOT NULL,
+    product INTEGER NOT NULL,
+    PRIMARY KEY(orderNumber, product),
     FOREIGN KEY (orderNumber) REFERENCES ORDERS(idOrder),
-    product INTEGER,
     FOREIGN KEY (product) REFERENCES PRODUCTS(idProduct)
 );
