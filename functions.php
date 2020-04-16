@@ -11,3 +11,21 @@ function connectDB(){
     }
     return $pdo;
 }
+
+function getIngredient(){
+
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory FROM INGREDIENTS");
+    $queryPrepared->execute();
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+   
+}
+
+function getQuantity(){
+
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT quantity FROM CARTINGREDIENT");
+    $queryPrepared->execute();
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+}
+    
