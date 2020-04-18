@@ -6,7 +6,7 @@ include 'header.php';
 
 	
     $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, cart, idUser, ingredient, idIngredient, quantity FROM INGREDIENTS, CARTINGREDIENT, USER WHERE cart = idUser AND ingredient = idIngredient");
+    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory FROM INGREDIENTS");
     $queryPrepared->execute();
     $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
@@ -35,14 +35,8 @@ include 'header.php';
               <p class="card-text"><?php echo $value["ingredientName"]; ?></p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-success"><svg class="bi bi-plus" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-  						<path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
-						  <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
-						</svg></button>
-                  <button type="button" class="btn btn-sm btn-outline-warning" name="quantity"><?php echo $value["quantity"];?></button>
-                  <button type="button" class="btn btn-sm btn-outline-danger"><svg class="bi bi-dash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-					  <path fill-rule="evenodd" d="M3.5 8a.5.5 0 01.5-.5h8a.5.5 0 010 1H4a.5.5 0 01-.5-.5z" clip-rule="evenodd"/>
-					</svg></button>
+                  <button type="button" class="btn btn-sm btn-outline-success">Ajouter</button>
+                  <button type="button" class="btn btn-sm btn-outline-danger">Supprimer</button>
                 </div>
                 <small class="text-muted"><?php echo $value["ingredientCategory"];?></small>
               </div>
