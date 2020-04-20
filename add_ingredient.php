@@ -4,26 +4,69 @@ session_start();
 require 'conf.inc.php';
 require 'functions.php';
 include 'header.php';
+
+$pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient FROM INGREDIENTS");
+    $queryPrepared->execute();
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
-<h1>Mes ingrédients</h1>
+<h1>Ajou</h1>
 
 
-<table class="table w-75 ml-5 mt-5">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Ingrédient</th>
-      <th scope="col">Famille</th>
-      <th scope="col">Quantité</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mymodal" data-whatever="@mdo">Open modal for @mdo</button>
+
+<div class="modal fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="mymodal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter un ingrédient</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Nom de l'aliment:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="form-group">
+		    <label for="exampleFormControlSelect1">Catégorie de l'ingrédient</label>
+		    <select class="form-control" id="exampleFormControlSelect1">
+		      <option>Fruit</option>
+		      <option>Légume</option>
+		      <option>Boisson</option>
+		      <option>Féculent</option>
+		      <option>Céréales</option>
+		      <option>Produit laitier</option>
+		      <option>Viande, poisson, oeufs</option>
+		      <option>Corps gras</option>
+		      <option>Sucre</option>
+		    </select>
+		  </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" type="number" id="message-text"></textarea>
+          </div>
+          <div class="custom-file">
+		    <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+		    <label class="custom-file-label" for="validatedCustomFile">Choisir une image...</label>
+		    <div class="invalid-feedback">Example invalid custom file feedback</div>
+		  </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-dark">Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<?php include "footer.php"; ?>
+
