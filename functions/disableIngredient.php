@@ -19,7 +19,6 @@ if(isset($_POST) && $_POST["ingredient"]){
 		$pdo = connectDB();
 	    $queryPrepared = $pdo->prepare("UPDATE STORE SET available = FALSE WHERE ingredient = :ingredient");
 	    $queryPrepared->execute([":ingredient" => $ingredient]);
-	    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 	}
 }
 
