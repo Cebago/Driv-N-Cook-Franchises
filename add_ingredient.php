@@ -47,10 +47,6 @@ $pdo = connectDB();
 		      <option>Sucre</option>
 		    </select>
 		  </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Message:</label>
-            <textarea class="form-control" type="number" id="message-text"></textarea>
-          </div>
           <div class="custom-file">
 		    <input type="file" class="custom-file-input" id="validatedCustomFile" required>
 		    <label class="custom-file-label" for="validatedCustomFile">Choisir une image...</label>
@@ -60,7 +56,7 @@ $pdo = connectDB();
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-        <button type="button" class="btn btn-dark">Ajouter</button>
+        <button type="button" class="btn btn-success">Ajouter</button>
       </div>
     </div>
   </div>
