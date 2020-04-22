@@ -6,7 +6,7 @@ include 'header.php';
 
 	
     $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, quantity, idIngredient FROM INGREDIENTS, CARTINGREDIENT, CART WHERE ingredient = idIngredient AND cart = idCart AND user = 1");
+    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, quantity, idIngredient FROM INGREDIENTS, CARTINGREDIENT, CART, USER WHERE CARTINGREDIENT.ingredient = idIngredient AND CARTINGREDIENT.cart = idCart AND CART.user = idUser AND  user = 1");
     $queryPrepared->execute();
     $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
@@ -22,22 +22,19 @@ include 'header.php';
 
 function addQuantity(count){
     let input = document.getElementsByName("quantity");
-    value = parseInt(input[count-1].value,10)+1;
-    input[count-1].value = value;
+    input[count-1].value = parseInt(input[count-1].value,10)+1;
     
 }
 
 function deleteQuantity(count){
     let input = document.getElementsByName("quantity");
     if(parseInt(input[count-1].value,10) > 0){
-        value = parseInt(input[count-1].value,10)-1;
-        input[count-1].value = value;
+        input[count-1].value = parseInt(input[count-1].value,10)-1;
     }
     
 }
 
 </script>
-
 
 <div class="album py-5 bg-light">
     <div class="container">
@@ -71,7 +68,7 @@ function deleteQuantity(count){
 	</div>
 
 	
-
+<!--
 <script>
 	function refreshTable() {
         const content = document.getElementById("tablebody");
@@ -95,6 +92,7 @@ function deleteQuantity(count){
             quantity[i].value = quantity;
         }
     }
+
     function deleteQuantity(quantity) {
         const request = new XMLHttpRequest();
         request.onreadystatechange = function() {
@@ -111,6 +109,7 @@ function deleteQuantity(count){
         );
         refreshTable();
     }
+
     function addQuantity() {
         const truck = document.getElementById("assign").value;
         const user = document.getElementById("select").value;
@@ -183,8 +182,7 @@ function deleteQuantity(count){
     setInterval(refreshTable, 60000);
     window.onload = refreshTable;
 </script>
-
-
+-->
 
 
 
