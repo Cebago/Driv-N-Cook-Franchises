@@ -8,11 +8,11 @@ if (count($_POST) == 3
     && isset($_POST['user'])
     && isset($_POST['email']) ) {
 
-    $server = htmlspecialchars(strtoupper(trim($_POST['server'])));
+    $server = htmlspecialchars(trim($_POST['server']));
     $user = $_POST['user'];
     $email = strtolower(trim($_POST['email']));
 
-    if (filter_var($email, FILTER_VALIDATE_EMAIL) && $server == "coucou") {
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) && $server == "dc4b1b8d545be57b90e18bce49010af7") {
         $pdo = connectDB();
         $queryPrepared = $pdo->prepare("SELECT idUser, lastname, firstname FROM USER WHERE emailAddress = :email");
         $queryPrepared->execute([":email" => $email]);
