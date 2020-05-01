@@ -19,7 +19,7 @@ if (count($_POST) == 3
         $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
         $idUser = $result[0]['idUser'];
         $lastName = $result[0]['lastname'];
-        $firstName = $result[0]['firstName'];
+        $firstName = $result[0]['firstname'];
 
         if ($result[0]["idUser"] == $user) {
             $cle = createToken($email);
@@ -30,21 +30,17 @@ if (count($_POST) == 3
             ]);
             $destination = $email;
             $subject = "Activation de votre compte Driv'N Cook";
-            $header = "FROM: franchises@drivncook.fr";
+            $header = "From: franchises@drivncook.fr\n";
+            $header .= "X-Sender: <franchises@drivncook.fr>\n";
+            $header .= "X-Mailer: PHP\n";
+            $header .= "Return-Path: <franchises@drivncook.fr>\n";
+            $header .= "Content-Type: text/html; charset=iso-8859-1\n";
             $link = "https://franchises.drivncook.fr/isActivated?cle=" . urlencode($cle) . "&id=" . urlencode($idUser) ;
-            $message = '
-		Bonjour ' . $lastName . ' ' . $firstName . '
-		Bienvenue sur Driv\'N Cook,
- 
-		Pour activer votre compte, veuillez cliquer sur le lien ci-dessous ou le copier/coller dans votre navigateur internet.
- 		'.$link.'
- 		---------------
- 		
- 		Ceci est un mail automatique,
- 		Merci de ne pas y répondre.';
 
-            $message = wordwrap($message, 70, "\r\n");
-            mail($destination, $subject, $message, $header);
+            $html = file_get_contents('mail.html');
+            $html =  str_replace("{{firstname}}",$firstName."!" ,$html);
+            $html =  str_replace("{{link}}",$link,$html);
+            mail($destination, $subject, $html, $header);
             header("HTTP/1.1 200 OK");
             exit;
         }
