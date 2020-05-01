@@ -29,16 +29,18 @@ if (count($_POST) == 3
                 ":user" => $idUser
             ]);
             $destination = $email;
+            $admin = ($_SERVER["SERVER_ADMIN"]);
+            $domaineAddresse  = substr($admin, strpos($admin,'@')+1, strlen($admin));
             $subject = "Activation de votre compte Driv'N Cook";
-            $header = "From: franchises@drivncook.fr\n";
-            $header .= "X-Sender: <franchises@drivncook.fr>\n";
+            $header = "From: noreply@".$domaineAddresse."\n";
+            $header .= "X-Sender: <noreply@drivncook.fr>\n";
             $header .= "X-Mailer: PHP\n";
-            $header .= "Return-Path: <franchises@drivncook.fr>\n";
+            $header .= "Return-Path: <noreply@drivncook.fr>\n";
             $header .= "Content-Type: text/html; charset=iso-8859-1\n";
             $link = "https://franchises.drivncook.fr/isActivated?cle=" . urlencode($cle) . "&id=" . urlencode($idUser) ;
 
             $html = file_get_contents('mail.html');
-            $html =  str_replace("{{firstname}}",$firstName."!" ,$html);
+            $html =  str_replace("{{firstname}}",$firstName." !" ,$html);
             $html =  str_replace("{{link}}",$link,$html);
             mail($destination, $subject, $html, $header);
             header("HTTP/1.1 200 OK");
