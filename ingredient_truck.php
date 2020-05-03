@@ -11,7 +11,14 @@ $pdo = connectDB();
 
 ?>
 
-<h1>Mes ingrédients</h1>
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Mes ingrédients</h1>
+    <p class="lead">Vous pouvez ajouter, supprimer et modifier vos ingrédients !</p>
+
+  </div>
+</div>
+
 
 <table class="table w-75 ml-5 mt-5">
   <thead class="thead-dark">
@@ -24,8 +31,8 @@ $pdo = connectDB();
   <tbody id="ingredients"></tbody>
 </table>
 
-<div class="modal fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="mymodal" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="mymodal" role="document" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Ajouter un ingrédient</h5>
@@ -37,7 +44,7 @@ $pdo = connectDB();
         <form>
         <div class="form-group">
 		    <label for="selectCategory">Catégorie</label>
-		    <select class="form-control" onchange="showCategory()" id="selectCategory">
+		    <select class="form-control selectCategory" onchange="showCategory()" id="selectCategory">
 		      <option selected>Choisir une catégorie..</option>
 		      <?php foreach ($result as $value) {
 		      	echo "<option value='".$value["ingredientCategory"]."'>".$value["ingredientCategory"]."</option>";
@@ -45,26 +52,30 @@ $pdo = connectDB();
 		      
 		    </select>
 		  </div>
-          <div class="form-group">
-		    <label for="selectIngredientName" id="selectName">Nom</label>
-		    <select class="form-control" id="selectIngredientName">
+          <div class="form-group" id="selectDiv">
+		    <label for="selectIngredientName" class="selectName" id="selectName">Nom</label>
+		    <select class="form-control selectIngredientName" id="selectIngredientName">
 		    </select>
 		  </div>
-		  <?php $count = 0; ?>
-		  <div class="custom-control custom-checkbox">
-			  <input type="checkbox" class="custom-control-input" id="customCheck1">
-			  <label class="custom-control-label" for="customCheck1" onclick="availableIngredient()">Mon ingredient n'existe pas</label>
-		  </div>
-		  <div class="form-group" id="deleteMe">
-			  <div id="availableIngredient">
+		  <div id="existingIngredient">
 
-			  </div>
+		  </div>
+          <div class="form-check">
+              <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="checkbox" name="checkbox">
+                  <label class="custom-control-label" for="checkbox" onclick="addIngredient()">Mon ingredient n'existe pas</label>
+              </div>
+          </div>
+		  <div class="form-group" id="deleteMe">
+
 		  </div>			  
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
         <button type="button" class="btn btn-success">Ajouter</button>
+        <button type="button" class="btn btn-success" onclick="addExistingIngredient()">Rajout d'un ingrédient</button>
+        <button type="button" class="btn btn-success" onclick="addNewIngredient()">Ajouter un nouvel ingrédient</button>
       </div>
     </div>
   </div>
@@ -95,7 +106,7 @@ $pdo = connectDB();
 
 				}
 			}
-		}
+		};
 
 		request.open('POST','functions/disableIngredient.php');
 		request.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
@@ -103,31 +114,96 @@ $pdo = connectDB();
 		getIngredientTruck();
 	}
 
-var count =0;
+	function addIngredient() {
 
-	function availableIngredient(){
-		
-		console.log(count);
+        let checkbox = document.getElementsByName("checkbox");
+        const deleteMe = document.getElementById("deleteMe");
+        const selectDiv = document.getElementById("selectDiv");
 
-		//let count = document.getElementByName(count);
-		const available = document.getElementById("availableIngredient");
-		const deleteMe = document.getElementById("deleteMe");
-		if(count % 2){
+        console.log(checkbox[0].checked);
+        if (!checkbox[0].checked) {
 
-				deleteMe.removeChild(available);
-		
-		}else{
-			available.innerHTML = '<label for="disabledTextInput" id="todelete"></label><input type="text" id="disabledTextInput" class="form-control" placeholder="Nom"></div><div class="custom-file"><input type="file" class="custom-file-input" id="validatedCustomFile" required><label class="custom-file-label" for="validatedCustomFile">Choisir une image...</label><div class="invalid-feedback">Example invalid custom file feedback</div>';
-		}
-		count += 1;
-		console.log(count);
-	}
+            const child = document.createElement('div');
 
-	function showCategory(){
+            const input1 = document.createElement('input');
+            input1.type = "text";
+            input1.id = "disabledTextInput";
+            input1.className = "form-control mt-3";
+            input1.placeholder = "Nom de l'ingrédient";
+            child.appendChild(input1);
+
+            const div1 = document.createElement('div');
+            div1.className = "custom-file mt-3";
+
+            const input2 = document.createElement('input');
+            input2.type = "file";
+            input2.className = "custom-file-input";
+            input2.id = "validatedCustomFile";
+            input2.setAttribute("required", "required");
+            div1.appendChild(input2);
+
+            const label2 = document.createElement('label');
+            label2.className = "custom-file-label";
+            label2.setAttribute("for", "validatedCustomFile");
+            label2.innerText = "Choisir une image...";
+            div1.appendChild(label2);
+
+            child.appendChild(div1);
+
+            deleteMe.appendChild(child);
+
+            while (selectDiv.firstChild) {
+                selectDiv.removeChild(selectDiv.firstChild);
+            }
+
+
+        } else {
+            while (deleteMe.firstChild) {
+                deleteMe.removeChild(deleteMe.firstChild);
+            }
+
+            if(!selectDiv.firstChild) {
+                /* <div class="form-group" id="selectDiv">
+                         <label for="selectIngredientName" class="selectName" id="selectName">Nom</label>
+                         <select class="form-control selectIngredientName" id="selectIngredientName">
+                         </select>
+                         </div>*/
+
+                const label1 = document.createElement('label');
+                label1.setAttribute("for", "selectIngredientName");
+                label1.id = "selectName";
+                label1.innerText = "Nom";
+                selectDiv.appendChild(label1);
+
+                const select1 = document.createElement("select");
+                select1.className = "form-control";
+                select1.id = "selectIngredientName";
+                selectDiv.appendChild(select1);
+
+                showCategory();
+            }
+        }
+    }
+
+    /*******************
+     * if(checkbox = true)
+     * supression enfant de selectDiv
+     * rajout enfin de deleteMe
+     * sinon
+     *si selectDiv n'a pas d'enfant
+     * recréation de ses enfants
+     *
+     *
+     *
+     *
+     *
+     */
+
+    function showCategory(){
 		//afficher les catégories
 		const select = document.getElementById("selectCategory");
 		const name = document.getElementById("selectName");
-		if(select.value !== "Choisir une catégorie.."){
+		if(select.value !== "Choisir une catégorie.." && name !== null){
 			name.innerText = select.value;
 			if(select[0].value === "Choisir une catégorie.."){
 				select.removeChild(select[0]);
@@ -153,7 +229,7 @@ var count =0;
 					
 				}
 			}
-		}
+		};
 
 		request.open('POST','functions/selectIngredient.php');
 		request.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
