@@ -12,20 +12,20 @@ function connectDB(){
     return $pdo;
 }
 
-function createToken($email){
-    $token = md5($email."€monTokenDrivNCook£".time().uniqid());
-    $token = substr($token, 0, rand(15, 20));
-    return $token;
+function getIngredient(){
+
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory FROM INGREDIENTS");
+    $queryPrepared->execute();
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+   
 }
 
-function login($email){
-    //Création d'un token
-    $token = createToken($email);
-    //Insertion en BDD pour l'user qui a pour email $email
+function getQuantity(){
+
     $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("UPDATE USER SET token = :token WHERE emailAddress = :email ");
-    $queryPrepared->execute([":token"=>$token, ":email"=>$email]);
-    //Insertion en session du token et de l'email
-    $_SESSION["token"] = $token;
-    $_SESSION["email"] = $email;
+    $queryPrepared = $pdo->prepare("SELECT quantity FROM CARTINGREDIENT");
+    $queryPrepared->execute();
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 }
+    
