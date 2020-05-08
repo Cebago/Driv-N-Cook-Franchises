@@ -73,7 +73,7 @@ $pdo = connectDB();
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-        <button type="button" class="btn btn-success">Ajouter</button>
+        <button type="button" class="btn btn-success" onclick="addInBdd()">Ajouter</button>
         <button type="button" class="btn btn-success" onclick="addExistingIngredient()">Rajout d'un ingrédient</button>
         <button type="button" class="btn btn-success" onclick="addNewIngredient()">Ajouter un nouvel ingrédient</button>
       </div>
@@ -198,6 +198,28 @@ $pdo = connectDB();
      *
      *
      */
+
+
+    function addInBdd(){
+
+        const request = new XMLHttpRequest();
+        request.onreadystatechange = function(){
+            if (request.readyState === 4 && request.status === 200) {
+                if(request.responseText !== ""){
+                    alert(request.responseText);
+
+                }
+            }
+        };
+
+        request.open('POST','functions/addInBdd.php');
+        request.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        request.send('ingredient='+ingredient+'catégory='+category);
+
+        getIngredientTruck();
+
+
+    }
 
     function showCategory(){
 		//afficher les catégories
