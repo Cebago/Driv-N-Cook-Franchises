@@ -26,45 +26,57 @@ require "functions.php";
     }
 
     //prix
-    if($price < 0 || $price > 200){
+    if($price < 0 || $price > 1000){
         $error = true;
-        $listOfErrors[] = "Merci de bien vouloir rentrer un prix entre 0 et 200";
+        $listOfErrors[] = "Merci de bien vouloir rentrer un prix entre 0 et 1000";
     }
 
-
     //date : vérification que la date est bonne
-    explode('/',$date);
-    if(checkdate(($date[0],$date[1],$date[2]) && ($date("Y") > $date[2] < date("Y")))) {
+    explode('/', $date);
+    if(checkdate($date[0],$date[1],$date[2]) && (date("Y") == $date[2])) {
     $error = true;
     $listOfErrors[] = "La date n'est pas bonne, merci de mettre une date valide";
     }
 
     //fichier
+        $target_dir = "./invoice";
+        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-      if( isset($_POST['invoice']) ) // si formulaire soumis
-      {
-          $content_dir = '/var/www/html/invoices'; // dossier où sera déplacé le fichier
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["invoice"])) {
+            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 
-          $tmp_file = $_FILES['fichier']['invoice_test'];
-          // on vérifie maintenant l'extension
-          $type_file = $_FILES['fichier']['type'];
+             if($check == false || $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "pdf" ){
+                $error = true;
+                $listOfErrors[] = "Merci de rentrer une image valide de type .jpg / .png / .jpeg / .pdf";
+            }
+        }
 
-          if( !is_uploaded_file($tmp_file) || ( !strstr($type_file, 'jpg') && !strstr($type_file, 'jpeg') && !strstr($type_file, 'bmp') && !strstr($type_file, 'pdf')))
-          {
-              $error = true;
-              $listOfErrors("Le fichier est introuvable et/où n'a pas le bon format(.jpg,.jpef,.bmp,.pdf");
-          }
 
+
+    /*if( isset($_POST['invoice']) ) // si formulaire soumis
+    {
+        $content_dir = './invoices'; // dossier où sera déplacé le fichier
+
+        $tmp_file = $_FILES['fichier']['invoice_test'];
+        // on vérifie maintenant l'extension
+        $type_file = $_FILES['fichier']['type'];
+
+        if (!is_uploaded_file($tmp_file) || (!strstr($type_file, 'jpg') || !strstr($type_file, 'jpeg') || !strstr($type_file, 'png') || !strstr($type_file, 'pdf'))) {
+            $error = true;
+            $listOfErrors("Le fichier est introuvable et/où n'a pas le bon format(.jpg,.jpef,.png,.pdf");
+        }
+    }*/
 
     if($error){
-    $_SESSION["errors"] = $listOfErrors;
-    $_SESSION["inputErrors"] = $_POST;
+        $_SESSION["errors"] = $listOfErrors;
+        $_SESSION["inputErrors"] = $_POST;
 
-    //Rediriger sur orderVerify.php
-    header("Location: orderInvoice.php");
-
+        //Rediriger sur orderInvoice.php
+        header("Location: orderInvoice.php");
     } else {
-        $pdo = connectDB();
+       /* $pdo = connectDB();
         $query = "INSERT INTO ORDER (orderPrice, orderDate, orderInvoice) VALUES
     ( :price, :dated, :invoice)";
 
@@ -72,12 +84,14 @@ require "functions.php";
         $queryPrepared->execute([
             ":price" => $price,
             ":dated" => $date,
-            ":invoice" => $invoice
-        ]);
-
+            ":invoice" => __DIR__."/invoices"
+        ]);*/
+       echo "OK";
+    }
+} else {
+        echo "KO";
+        print_r($_POST);
     }
 
-    }
-   }
 
 
