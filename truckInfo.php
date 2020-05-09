@@ -1,1 +1,2 @@
-Coucou
+<?php include "header.php"; ?>
+
