@@ -1,5 +1,5 @@
-<footer class="text-muted">
-    <div class="container">
+<footer class="text-muted mt-5">
+    <div class="container mt-5">
         <p class="float-right">
             <a href="#">Back to top</a>
         </p>
