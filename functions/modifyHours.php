@@ -25,19 +25,59 @@ for ($i = 0; $i < count($day); $i++) {
     if (isset($_POST["check" . $day[$i]]) && isset($_POST[$day[$i]]) ) {
         $thisday = $_POST[$day[$i]];
         $number = mb_substr_count($thisday, "/");
-        echo "<br>" . mb_substr_count($thisday, "/") . "</br>";
-        echo $thisday;
-        echo "<br>" . $match[$number] . "</br>";
-        if (preg_match("#^" . $match[$number] . "$#", $thisday)) {
-            echo $thisday;
-        } else {
+        if ( !preg_match("#^" . $match[$number] . "$#", $thisday)) {
             $error = true;
             $listOfErrors = "Merci de saisir le bon format horaire pour " . $day[$i];
         }
     }
 }
+$newDay = [];
+for ($i = 0; $i < count($day); $i++) {
+    $thisday = $_POST[$day[$i]];
+    $thisday = preg_replace("# - #", " / ", $thisday);
+    $newDay = array_merge($newDay, [$day[$i] => preg_split("# / #", $thisday)]);
+    for ($pos = 0; $pos < count($newDay[$day[$i]]) - 1; $pos++) {
+        if ($newDay[$day[$i]][$pos] > $newDay[$day[$i]][$pos + 1]) {
+            $error = true;
+            $listOfErrors = "Il n'est pas possible que vous ouvriez une deuxième fois avant d'avoir fermé.";
+        }
+    }
+
+}
+
 if ($error) {
     echo "Erreurs !!!";
+    echo "<pre>";
+    print_r($listOfErrors);
+    echo "</pre>";
 } else {
-    echo "DATABASE";
+    /*
+    $pdo = connectDB();
+    $user = 2;
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idTruck FROM TRUCK WHERE user = :user ");
+    $queryPrepared->execute([
+        ":user" => $user
+    ]);
+    $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    $truck = $result["idTruck"];
+    $queryPrepared = $pdo->prepare("DELETE FROM OPENDAYS WHERE truck=:truck");
+    $queryPrepared->execute([
+        ":truck" => $truck
+    ]);
+    //$user = $_SESSION["user"];
+    $queryPrepared = $pdo->prepare("INSERT INTO OPENDAYS (openDay, startHour, endHour, truck) VALUES (:day, :start, :end, :truck)");
+    for ($i = 0; $i < count($day); $i++) {
+        for ($pos = 0; $pos < count($newDay[$day[$i]]); $pos += 2) {
+            echo "<br>" . $day[$i] . count($newDay[$day[$i]]);
+            $queryPrepared->execute([
+                ":day" => $day[$i],
+                ":start" => $newDay[$day[$i]][$pos],
+                ":end" => $newDay[$day[$i]][$pos + 1],
+                ":truck" => $truck
+            ]);
+        }
+    }
+*/
+    echo "ok";
 }

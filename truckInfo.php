@@ -205,7 +205,13 @@ include "navbar.php";
                         tr.appendChild(td1);
                         tr.appendChild(td2);
                     } else {
-                        search.setAttribute("rowspan", "2");
+                        let rowspan = search.getAttribute("rowspan");
+                        if (rowspan === null) {
+                            rowspan = 1;
+                        }
+                        rowspan = Number(rowspan);
+                        rowspan += 1;
+                        search.setAttribute("rowspan", "" + rowspan);
                         search.className = "align-middle text-center";
                         const td1 = document.createElement("td");
                         td1.innerText = myJson["opendays"][inside[i]]["startHour"];
