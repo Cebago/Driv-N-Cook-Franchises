@@ -4,7 +4,6 @@ require_once "conf.inc.php";
 function connectDB(){
     try{
         $pdo = new PDO(DBDRIVER.":host=".DBHOST.";dbname=".DBNAME ,DBUSER,DBPWD);
-        //Permet d'afficher les erreurs SQL
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }catch(Exception $e){
         die("Erreur SQL : ".$e->getMessage());
@@ -21,11 +20,12 @@ function getIngredient(){
    
 }
 
-function getQuantity(){
-
+function login($email){
+    $token = createToken($email);
     $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("SELECT quantity FROM CARTINGREDIENT");
-    $queryPrepared->execute();
-    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    $queryPrepared = $pdo->prepare("UPDATE USER SET token = :token WHERE emailAddress = :email ");
+    $queryPrepared->execute([":token"=>$token, ":email"=>$email]);
+    $_SESSION["token"] = $token;
+    $_SESSION["email"] = $email;
 }
     
