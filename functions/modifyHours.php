@@ -1,6 +1,7 @@
 <?php
 require "../conf.inc.php";
 require "../functions.php";
+session_start();
 
 $day = array(
     "Lundi",
@@ -16,7 +17,7 @@ $error = false;
 $match = array(
     0 => "((?:2[0-3]|[01][0-9]):[0-5][0-9] - (?:2[0-3]|[01][0-9]):[0-5][0-9])"
 );
-$listOfErrors = "";
+$listOfErrors = [];
 for ($j = 1; $j < 10; $j++) {
     $match = array_merge($match, [$j => $match[$j-1] . " \/ " . $match[0]]);
 }
@@ -27,7 +28,7 @@ for ($i = 0; $i < count($day); $i++) {
         $number = mb_substr_count($thisday, "/");
         if ( !preg_match("#^" . $match[$number] . "$#", $thisday)) {
             $error = true;
-            $listOfErrors = "Merci de saisir le bon format horaire pour " . $day[$i];
+            $listOfErrors[] = "Merci de saisir le bon format horaire pour " . $day[$i];
         }
     }
 }
@@ -39,17 +40,16 @@ for ($i = 0; $i < count($day); $i++) {
     for ($pos = 0; $pos < count($newDay[$day[$i]]) - 1; $pos++) {
         if ($newDay[$day[$i]][$pos] > $newDay[$day[$i]][$pos + 1]) {
             $error = true;
-            $listOfErrors = "Il n'est pas possible que vous ouvriez une deuxième fois avant d'avoir fermé.";
+            $listOfErrors[] = "Il n'est pas possible que vous ouvriez une deuxième fois avant d'avoir fermé.";
         }
     }
 
 }
 
 if ($error) {
-    echo "Erreurs !!!";
-    echo "<pre>";
-    print_r($listOfErrors);
-    echo "</pre>";
+    unset($_POST);
+    $_SESSION["errors"] = $listOfErrors;
+    header("Location: ../truckInfo.php");
 } else {
     $pdo = connectDB();
     $user = 2;

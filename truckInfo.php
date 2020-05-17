@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "header.php";
 include "navbar.php";
 ?>
@@ -41,6 +42,20 @@ include "navbar.php";
             <input type="number" id="km" class="form-control truck" name="km" placeholder="Kilomètres parcourus"
                    aria-label="truckId" aria-describedby="addon-wrapping" readonly>
         </div>
+        <?php
+        if (isset($_SESSION["errors"])) {
+        ?>
+            <div class="alert alert-danger">
+                <?php
+                foreach ($_SESSION["errors"] as $error) {
+                    echo "<li>" . $error . "</li>";
+                }
+                ?>
+            </div>
+        <?php
+            unset($_SESSION["errors"]);
+        }
+        ?>
         <div class="w-75">
             <div class="col-md-6 mx-auto" id="schedule"></div>
             <div class="mx-auto col-md-6">
