@@ -51,7 +51,6 @@ if ($error) {
     print_r($listOfErrors);
     echo "</pre>";
 } else {
-    /*
     $pdo = connectDB();
     $user = 2;
     $pdo = connectDB();
@@ -69,15 +68,15 @@ if ($error) {
     $queryPrepared = $pdo->prepare("INSERT INTO OPENDAYS (openDay, startHour, endHour, truck) VALUES (:day, :start, :end, :truck)");
     for ($i = 0; $i < count($day); $i++) {
         for ($pos = 0; $pos < count($newDay[$day[$i]]); $pos += 2) {
-            echo "<br>" . $day[$i] . count($newDay[$day[$i]]);
-            $queryPrepared->execute([
-                ":day" => $day[$i],
-                ":start" => $newDay[$day[$i]][$pos],
-                ":end" => $newDay[$day[$i]][$pos + 1],
-                ":truck" => $truck
-            ]);
+            if (count($newDay[$day[$i]]) > 1) {
+                $queryPrepared->execute([
+                    ":day" => $day[$i],
+                    ":start" => $newDay[$day[$i]][$pos],
+                    ":end" => $newDay[$day[$i]][$pos + 1],
+                    ":truck" => $truck
+                ]);
+            }
         }
     }
-*/
-    echo "ok";
+    header("Location: ../truckInfo.php");
 }
