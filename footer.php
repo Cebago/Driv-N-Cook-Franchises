@@ -1,4 +1,4 @@
-<footer class="text-muted mt-5">
+<footer class="text-muted mt-5 sticky-bottom">
     <div class="container mt-5">
         <p class="float-right">
             <a href="#">Back to top</a>
