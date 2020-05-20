@@ -6,7 +6,9 @@ include 'header.php';
 
 
 $pdo = connectDB();
-$queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, quantity, idIngredient FROM INGREDIENTS, CARTINGREDIENT, CART, USER WHERE CARTINGREDIENT.ingredient = idIngredient AND CARTINGREDIENT.cart = idCart AND CART.user = idUser AND  user = 1");
+$queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, quantity, idIngredient
+FROM INGREDIENTS, CARTINGREDIENT, CART, USER 
+WHERE CARTINGREDIENT.ingredient = idIngredient AND CARTINGREDIENT.cart = idCart AND CART.user = idUser AND  user = 1");
 $queryPrepared->execute();
 $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
@@ -17,25 +19,20 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
 
 
 ?>
-
-    <script type="text/javascript">
-
-        function addQuantity(id) {
-            const ingredientID = document.getElementById("ingredient" + id);
-            console.log(ingredientID.value);
-        }
-
-        function deleteQuantity(id) {
-
-        }
-
-    </script>
-
     <div class="album py-5 bg-light">
-        <div class="container">
+        <div class="container" id="cart">
             <div class="row">
                 <?php
-                foreach ($result as $value) { ?>
+                foreach ($result as $value) {
+                    $queryPrepared = $pdo->prepare("SELECT price FROM INGREDIENTS, STORE WHERE ingredient = idIngredient AND idIngredient = :ingredient");
+                    $ingredient = $value["idIngredient"];
+                    $queryPrepared->execute([
+                        ":ingredient" => $ingredient
+                    ]);
+                    $price = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+                    $price = $price["price"];
+                    $finalPrice = $price * $value["quantity"];
+                    ?>
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
                             <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
@@ -47,15 +44,15 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                                       dy=".3em"><?php echo $value["ingredientImage"]; ?></text>
                             </svg>
                             <div class="card-body">
-                                <p class="card-text"><?php echo $value["ingredientName"]; ?></p>
+                                <p class="card-text"><?php echo $value["ingredientName"] . " - " . number_format($finalPrice, 2) . "€" ?></p>
                                 <div class="d-flex justify-content-between align-items-center">
-
                                     <button type="button" class="btn btn-sm btn-danger ml-1" name="deleteQuantity"
                                             onclick="deleteQuantity(<?php echo $value["idIngredient"]; ?>)">
                                         <i class="fas fa-minus"></i></button>
                                     <input class="border ml-1 p-2 w-25" name="addQuantity"
                                            id="ingredient<?php echo $value["idIngredient"]?>"
                                            value="<?php echo $value["quantity"]; ?>" readonly>
+
                                     <button type="button"
                                             onclick="addQuantity(<?php echo $value["idIngredient"]; ?>)"
                                             class="btn btn-sm btn-success ml-1"><i class="fas fa-plus"></i></button>
