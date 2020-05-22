@@ -61,7 +61,7 @@ include "header.php";
                             Kilométrage du camion : <?php echo $maintenance[$i]["km"] ?>
                         </p>
                         <p>
-                            Kilométrage du camion : <?php echo $maintenance[$i]["maintenancePrice"] ?> €
+                            Prix : <?php echo $maintenance[$i]["maintenancePrice"] ?> €
                         </p>
                     </div>
                 </div>
