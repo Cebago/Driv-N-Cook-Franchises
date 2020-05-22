@@ -9,6 +9,19 @@ include "header.php";
 <?php include "navbar.php" ?>
 <h3 class=" mt-5 mb-5 mx-auto col-md-2">Maintenances du camion</h3>
 <div class="col-md-11 mx-auto">
+    <div class="col-md-4">
+        <p class="text-success">
+            <i class="fas fa-check"></i>&nbsp;Camion opérationnel
+        </p>
+        <p class="text-danger">
+            <i class="fas fa-times"></i>&nbsp;Camion Indisponible
+        </p>
+        <button class="btn btn-dark mb-5 mr-5 ml-5">Rendre le camion disponible</button>
+    </div>
+    <div class="col-md-5">
+        <button class="btn btn-danger mb-5 mr-5 ml-5" data-toggle="modal" data-target="#incident">Enregistrer un incident</button>
+        <button class="btn btn-warning mb-5 mr-5 ml-5">Enregistrer une maintenance</button>
+    </div>
     <div class="accordion" id="maintenanceCollapse">
         <?php
         $pdo = connectDB();
