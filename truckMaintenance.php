@@ -59,6 +59,54 @@ include "header.php";
             echo "<h4>Vous n'avez aucun incident enregistré avec votre camion</h4>";
         }
         ?>
+    </div>
+    <div class="modal fade" id="incident" tabindex="-1" role="dialog" aria-labelledby="incidentModal" aria-hidden="true">
+        <form method="POST" action="./functions/addIncident.php">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addIncident">Modification d'un entrepôt</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group flex-nowrap mt-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="incidentTitle">Titre</span>
+                            </div>
+                            <input type="text" class="form-control" id="incidentName" name="incidentName" placeholder="Nom de la maintenance" required>
+                        </div>
+                        <div class="input-group flex-nowrap mt-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="Date">Date</span>
+                            </div>
+                            <input type="date" class="form-control" id="incidentDate" name="incidentDate" placeholder="Date de l'incident" required>
+                        </div>
+                        <div class="input-group flex-nowrap mt-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="km">Kilométrage</span>
+                            </div>
+                            <input type="number" class="form-control" id="incidentKM" name="incidentKM" placeholder="Kilométrage du camion" required>
+                        </div>
+                        <div class="input-group flex-nowrap mt-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="price">Prix</span>
+                            </div>
+                            <input type="number" id="incidentPrice" class="form-control" name="incidentPrice" placeholder="Prix payé" required>
+                        </div>
+                        <div class="custom-control custom-switch mt-1">
+                            <input type="checkbox" class="custom-control-input" id="petrificusTotalus" name="petrificusTotalus">
+                            <label class="custom-control-label" for="petrificusTotalus">Camion toujours immobilisé ?</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-danger">Enregistrer l'incident</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
     <?php include "footer.php" ?>
-</div>
 </body>
