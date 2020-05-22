@@ -31,7 +31,7 @@ include "header.php";
         ]);
         $truck = $queryPrepared->fetch(PDO::FETCH_ASSOC);
         $truck = $truck["idTruck"];
-        $queryPrepared = $pdo->prepare("SELECT idMaintenance, maintenanceName, DATE_FORMAT(maintenanceDate, '%d/%m/%Y') as maintenanceDate, maintenancePrice, km FROM MAINTENANCE WHERE truck = :truck");
+        $queryPrepared = $pdo->prepare("SELECT idMaintenance, maintenanceName, DATE_FORMAT(maintenanceDate, '%d/%m/%Y') as maintenanceDate, maintenancePrice, km FROM MAINTENANCE WHERE truck = :truck ORDER BY maintenanceDate DESC");
         $queryPrepared->execute([
             ":truck" => 1
         ]);
