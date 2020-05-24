@@ -9,14 +9,46 @@ include "header.php";
 <?php include "navbar.php" ?>
 <h3 class=" mt-5 mb-5 mx-auto col-md-2">Maintenances du camion</h3>
 <div class="col-md-11 mx-auto">
+<?php
+$pdo = connectDB();
+$queryPrepared = $pdo->prepare("SELECT idTruck FROM USER, TRUCK WHERE emailAddress = :email AND idUser = user");
+$queryPrepared->execute([
+    ":email" => $_SESSION["email"]
+]);
+$truck = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+
+if (!empty($truck)) {
+    $truck = $truck["idTruck"];
+    $queryPrepared = $pdo->prepare("SELECT idMaintenance, maintenanceName, DATE_FORMAT(maintenanceDate, '%d/%m/%Y') as maintenanceDate, maintenancePrice, km FROM MAINTENANCE WHERE truck = :truck ORDER BY DATE(maintenanceDate) DESC");
+    $queryPrepared->execute([
+        ":truck" => $truck
+    ]);
+    $maintenance = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+}
+$queryPrepared = $pdo->prepare("SELECT idMaintenance, maintenanceName, DATE_FORMAT(maintenanceDate, '%d/%m/%Y') as maintenanceDate, maintenancePrice, km FROM MAINTENANCE WHERE truck = :truck ORDER BY DATE(maintenanceDate) DESC");
+$queryPrepared->execute([
+    ":truck" => 1
+]);
+$maintenance = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+if (count($maintenance) > 0) {
+?>
+
     <div class="col-md-4">
-        <p class="text-success">
-            <i class="fas fa-check"></i>&nbsp;Camion opérationnel
-        </p>
-        <p class="text-danger">
-            <i class="fas fa-times"></i>&nbsp;Camion Indisponible
-        </p>
-        <button class="btn btn-dark mb-5 mr-5 ml-5">Rendre le camion disponible</button>
+        <?php
+        $queryPrepared = $pdo->prepare("SELECT status FROM pa2a2drivncook.TRUCKSTATUS WHERE truck = :truck AND status NOT IN (14)");
+        $queryPrepared->execute([
+                ":truck" => 1
+        ]);
+        $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        if (empty($result)) {
+            echo "<p class='text-success'><i class='fas fa-check'></i>&nbsp;Camion opérationnel</p>";
+        } else {
+            echo "<p class='text-danger'><i class='fas fa-times'></i>&nbsp;Camion Indisponible</p>";
+            if ($result["status"] == 10) {
+                echo "<button class='btn btn-dark mb-5 mr-5 ml-5'>Rendre le camion disponible</button>";
+            }
+        }
+        ?>
     </div>
     <div class="col-md-5">
         <button class="btn btn-danger mb-5 mr-5 ml-5" data-toggle="modal" data-target="#incident">Enregistrer un incident</button>
@@ -24,25 +56,12 @@ include "header.php";
     </div>
     <div class="accordion" id="maintenanceCollapse">
         <?php
-        $pdo = connectDB();
-        $queryPrepared = $pdo->prepare("SELECT idTruck FROM USER, TRUCK WHERE emailAddress = :email AND idUser = user");
-        $queryPrepared->execute([
-            ":email" => $_SESSION["email"]
-        ]);
-        $truck = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-        $truck = $truck["idTruck"];
-        $queryPrepared = $pdo->prepare("SELECT idMaintenance, maintenanceName, DATE_FORMAT(maintenanceDate, '%d/%m/%Y') as maintenanceDate, maintenancePrice, km FROM MAINTENANCE WHERE truck = :truck ORDER BY maintenanceDate DESC");
-        $queryPrepared->execute([
-            ":truck" => 1
-        ]);
-        $maintenance = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-        if (count($maintenance) > 0) {
             for ($i = 0; $i < count($maintenance); $i++) { ?>
             <div class="card">
                 <div class="card-header" id="<?php echo 'header' . $i ?>">
                     <h2 class="mb-0">
                         <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#<?php echo 'collapse' . ($i + 1) ?>" aria-expanded="true" aria-controls="<?php echo 'collapse' . $i ?>">
-                            <?php echo $i + 1  . " - " . $maintenance[$i]["maintenanceName"]?>
+                            <?php echo $i + 1  . " - " . $maintenance[$i]["maintenanceName"] . " - " . $maintenance[$i]["maintenanceDate"] ?>
                         </button>
                     </h2>
                 </div>
