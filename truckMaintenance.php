@@ -25,9 +25,10 @@ if (!empty($truck)) {
     ]);
     $maintenance = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 }
+$truck = 1;
 $queryPrepared = $pdo->prepare("SELECT idMaintenance, maintenanceName, DATE_FORMAT(maintenanceDate, '%d/%m/%Y') as maintenanceDate, maintenancePrice, km FROM MAINTENANCE WHERE truck = :truck ORDER BY DATE(maintenanceDate) DESC");
 $queryPrepared->execute([
-    ":truck" => 1
+    ":truck" => $truck
 ]);
 $maintenance = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 if (count($maintenance) > 0) {
@@ -154,7 +155,7 @@ if (count($maintenance) > 0) {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
-                    <button type="button" class="btn btn-primary">Oui</button>
+                    <a role="button" href="./functions/makeTruckAvailable.php?truck=<?php echo $truck?>" class="btn btn-primary">Oui</a>
                 </div>
             </div>
         </div>

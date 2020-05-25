@@ -60,7 +60,7 @@ if (isset($_POST)
             ":truck" => $truck
         ]);
         if ($switch) {
-            $queryPrepared = $pdo->prepare("UPDATE TRUCKSTATUS SET STATUS = :status, updateDate = CURRENT_TIMESTAMP() WHERE truck = :truck");
+            $queryPrepared = $pdo->prepare("INSERT INTO TRUCKSTATUS (truck, status, updateDate) VALUES (:truck, :status, CURRENT_TIMESTAMP()) ON DUPLICATE KEY UPDATE updateDate = CURRENT_TIMESTAMP()");
             $queryPrepared->execute([
                 ":truck" => $truck,
                 ":status" => 10
