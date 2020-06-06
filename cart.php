@@ -12,6 +12,11 @@ WHERE CARTINGREDIENT.ingredient = idIngredient AND CARTINGREDIENT.cart = idCart 
 $queryPrepared->execute();
 $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
+$queryPrepared = $pdo->prepare("SELECT idCart FROM CART WHERE user = 1 ORDER BY idCart DESC;");
+$queryPrepared->execute();
+$idCart = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+$idCart = $idCart["idCart"];
+
 
 /*$queryPrepared2 = $pdo->prepare("SELECT ingredient, idIngredient, quantity FROM INGREDIENTS, CARTINGREDIENT  WHERE ingredient = idIngredient ");
 $queryPrepared2->execute();
@@ -22,168 +27,116 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
     <div class="album py-5 bg-light">
         <div class="container" id="cart">
             <div class="row">
-                <?php
-                foreach ($result as $value) {
-                    $queryPrepared = $pdo->prepare("SELECT price FROM INGREDIENTS, STORE WHERE ingredient = idIngredient AND idIngredient = :ingredient");
-                    $ingredient = $value["idIngredient"];
-                    $queryPrepared->execute([
-                        ":ingredient" => $ingredient
-                    ]);
-                    $price = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-                    $price = $price["price"];
-                    $finalPrice = $price * $value["quantity"];
-                    ?>
-                    <div class="col-md-4">
-                        <div class="card mb-4 shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                 xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
-                                 focusable="false" role="img" aria-label="Placeholder: Thumbnail">
-                                <title><?php echo $value["ingredientName"] ?></title>
-                                <rect width="100%" height="100%" fill="#55595c"/>
-                                <text x="50%" y="50%" fill="#eceeef"
-                                      dy=".3em"><?php echo $value["ingredientImage"]; ?></text>
-                            </svg>
-                            <div class="card-body">
-                                <p class="card-text"><?php echo $value["ingredientName"] . " - " . number_format($finalPrice, 2) . "€" ?></p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <button type="button" class="btn btn-sm btn-danger ml-1" name="deleteQuantity"
-                                            onclick="deleteQuantity(<?php echo $value["idIngredient"]; ?>)">
-                                        <i class="fas fa-minus"></i></button>
-                                    <input class="border ml-1 p-2 w-25" name="addQuantity"
-                                           id="ingredient<?php echo $value["idIngredient"]?>"
-                                           value="<?php echo $value["quantity"]; ?>" readonly>
+                <div class="card mx-auto">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="Nom de la catégorie">#</th>
+                            <th scope="col">Nom de l'ingrédient</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Prix unitaire</th>
+                            <th scope="col">Prix</th>
+                            <th scope="col">Ajouter/Supprimer</th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
+                        <?php
+                        foreach ($result
+                        as $value) {
+                        $queryPrepared = $pdo->prepare("SELECT price FROM INGREDIENTS, STORE WHERE ingredient = idIngredient AND idIngredient = :ingredient");
+                        $ingredient = $value["idIngredient"];
+                        $queryPrepared->execute([
+                            ":ingredient" => $ingredient
+                        ]);
+                        $price = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+                        $price = $price["price"];
+                        $finalPrice = $price * $value["quantity"];
+                        ?>
+                            <tr>
+                                <td><?php echo $value["ingredientCategory"] ?></td>
+                                <td><?php echo $value["ingredientName"]; ?></td>
+                                <td name="quantityId"><?php echo $value["quantity"] ?></td>
+                                <td name="priceUnitary"><?php echo number_format($price, 2) . "€" ?></td>
+                                <td name="priceId"><?php echo number_format($finalPrice, 2) . "€" ?></td>
+                                <td>
                                     <button type="button"
-                                            onclick="addQuantity(<?php echo $value["idIngredient"]; ?>)"
+                                            onclick="addQuantity(<?php echo $idCart.", ".$value["idIngredient"];?>)"
                                             class="btn btn-sm btn-success ml-1"><i class="fas fa-plus"></i></button>
-                                    <small class="text-muted"
-                                           type="ml-5"><?php echo $value["ingredientCategory"]; ?></small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                <?php } ?>
+                                    <button type="button"
+                                            onclick="deleteQuantity(<?php echo $idCart.", ".$value["idIngredient"].", ".$value["quantity"];?>)"
+                                            class="btn btn-sm btn-danger ml-1" id="deleteButton" ><i class="fas fa-minus"></i></button>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
 
-    <!--
     <script>
-        function refreshTable() {
-            const content = document.getElementById("tablebody");
 
-            const request = new XMLHttpRequest();
-            request.onreadystatechange = function() {
-                if(request.readyState === 4) {
-                    if(request.status === 200) {
-                        //console.log(request.responseText);
-                        content.innerHTML = request.responseText;
+        function deleteQuantity(cart,ingredient,price) {
+            let input = document.getElementsByName('quantityId');
+            let inputPrice = document.getElementsByName('priceId');
+            let inputPriceUnitary = document.getElementsByName('priceUnitary');
+
+            if (input >= 0){
+                input[0].innerText = parseInt(input[0].innerText, 10) - 1;
+
+                inputPrice[0].innerText = (parseFloat(inputPrice[0].innerText, 10) - parseFloat(inputPriceUnitary[0].innerText, 10)).toFixed(2)+'€';
+
+                const request = new XMLHttpRequest();
+                request.onreadystatechange = function() {
+                    if(request.readyState === 4) {
+                        if(request.status === 200) {
+                            if (request.responseText !== "") {
+                                alert(request.responseText);
+                            }
+                        }
                     }
-                }
-            };
-            request.open('GET', './functions/getTruckList.php', true);
-            request.send();
-        }
+                };
+                request.open('GET', 'functions/deleteIngredient.php?cart='+cart+'&ingredient='+ingredient);
+                request.send();
+            }else{
+                document.getElementById('deleteButton').setAttribute("disabled","true");
 
-        function displayQuantity(quantity) {
-            const quantity = document.getElementsByClassName("quantity");
-            for (let i = 0; i < quantity.length; i++) {
-                quantity[i].value = quantity;
             }
+
         }
 
-        function deleteQuantity(quantity) {
-            const request = new XMLHttpRequest();
-            request.onreadystatechange = function() {
-                if(request.readyState === 4) {
-                    if(request.status === 200) {
-                        //console.log(request.responseText);
-                    }
-                }
-            };
-            request.open('POST', 'functions/unassignDriver.php');
-            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            request.send(
-                'truck=' + idtruck
-            );
-            refreshTable();
-        }
+        function addQuantity(cart,ingredient) {
 
-        function addQuantity() {
-            const truck = document.getElementById("assign").value;
-            const user = document.getElementById("select").value;
+            let input = document.getElementById('quantityId');
+            let inputPrice = document.getElementById('priceId');
+            let inputPriceUnitary = document.getElementById('priceUnitary');
+
+            input.innerText = parseInt(input.innerText, 10) + 1;
+
+            inputPrice.innerText = (parseFloat(inputPrice.innerText, 10) + parseFloat(inputPriceUnitary.innerText, 10)).toFixed(2)+'€';
+
+            document.getElementById('deleteButton').setAttribute("disabled", "false");
 
             const request = new XMLHttpRequest();
-            request.onreadystatechange = function() {
-                if(request.readyState === 4) {
-                    if(request.status === 200) {
+            request.onreadystatechange = function () {
+                if (request.readyState === 4) {
+                    if (request.status === 200) {
                         if (request.responseText !== "") {
                             alert(request.responseText);
                         }
                     }
                 }
             };
-            request.open('POST', 'functions/assignDriver.php');
-            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            request.send(
-                'user=' + user +
-                "&truck=" + truck
-            );
-            refreshTable();
-        }
-
-        function getInfo(idtruck) {
-            const request = new XMLHttpRequest();
-            request.onreadystatechange = function() {
-                if(request.readyState === 4) {
-                    if(request.status === 200) {
-                        let truckJson = JSON.parse(request.responseText);
-                        const truck = document.getElementsByClassName("truck");
-                        for (let i = 0; i < truck.length; i++) {
-                            const input = document.getElementsByName(truck[i].name);
-                            input[0].value = truckJson[0][truck[i].name];
-                        }
-                    }
-                }
-            };
-            request.open('GET', './functions/getTruckInfo.php?id='+idtruck, true);
+            request.open('GET', 'functions/addIngredient.php?cart=' + cart + '&ingredient=' + ingredient);
             request.send();
+
+
         }
 
-        function updateTruck() {
-            const id = document.getElementById("update")
-            const manufacturers = document.getElementById("updateManufacturers");
-            const model = document.getElementById("updateModel");
-            const license = document.getElementById("updateLicense");
-            const km = document.getElementById("updateKM");
-
-            const request = new XMLHttpRequest();
-            request.onreadystatechange = function() {
-                if(request.readyState === 4) {
-                    if(request.status === 200) {
-                        if (request.responseText !== "") {
-                            alert(request.responseText);
-                        }
-                    }
-                }
-            };
-            request.open('POST', './functions/updateTruck.php', true);
-            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            request.send(
-                'id=' + id.value +
-                '&manufacturers=' + manufacturers.value +
-                '&model=' + model.value +
-                '&license=' + license.value +
-                '&km=' + km.value
-            );
-            refreshTable();
-        }
-        setInterval(refreshTable, 60000);
-        window.onload = refreshTable;
     </script>
-    -->
 
 
 <?php

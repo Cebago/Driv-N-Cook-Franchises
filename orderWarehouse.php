@@ -39,6 +39,13 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
 
     </script>
 
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Entrepot</h1>
+            <p class="lead">Achat entrepot</p>
+        </div>
+    </div>
+
     <form method="POST" action="test.php">
         <div class="album py-5 bg-light">
             <div class="container">

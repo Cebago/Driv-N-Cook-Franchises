@@ -68,7 +68,7 @@
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
     <button class="dropdown-item" type="button">Historique</button>
-    <button class="dropdown-item" type="button">Commandes</button>
+    <button class="dropdown-item" onclick=window.location.href='order_warehouse.php'; type="button">Commandes</button>
   </div>
 </div>
 <div class="dropdown col-md-3">

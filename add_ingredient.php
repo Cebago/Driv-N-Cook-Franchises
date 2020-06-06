@@ -16,7 +16,7 @@ $pdo = connectDB();
 
 
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mymodal" data-whatever="@mdo">Open modal for @mdo</button>
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#mymodal" data-whatever="@mdo">Open modal for @mdo</button>
 
 <div class="modal fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="mymodal" aria-hidden="true">
   <div class="modal-dialog" role="document">
