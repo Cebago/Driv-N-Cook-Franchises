@@ -52,6 +52,7 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                         $price = $queryPrepared->fetch(PDO::FETCH_ASSOC);
                         $price = $price["price"];
                         $finalPrice = $price * $value["quantity"];
+
                         ?>
                             <tr>
                                 <td><?php echo $value["ingredientCategory"] ?></td>
@@ -64,8 +65,8 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                                             onclick="addQuantity(<?php echo $idCart.", ".$value["idIngredient"];?>)"
                                             class="btn btn-sm btn-success ml-1"><i class="fas fa-plus"></i></button>
                                     <button type="button"
-                                            onclick="deleteQuantity(<?php echo $idCart.", ".$value["idIngredient"].", ".$value["quantity"];?>)"
-                                            class="btn btn-sm btn-danger ml-1" id="deleteButton" ><i class="fas fa-minus"></i></button>
+                                            onclick="deleteQuantity(<?php echo $idCart.", ".$value["idIngredient"];?>)"
+                                            class="btn btn-sm btn-danger ml-1"><i class="fas fa-minus"></i></button>
                                 </td>
                             </tr>
                             <?php } ?>
@@ -79,15 +80,18 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
 
     <script>
 
-        function deleteQuantity(cart,ingredient,price) {
-            let input = document.getElementsByName('quantityId');
+        function deleteQuantity(cart,ingredient) {
+            let input = document.getElementsByName(ingredient);
             let inputPrice = document.getElementsByName('priceId');
             let inputPriceUnitary = document.getElementsByName('priceUnitary');
 
-            if (input >= 0){
+
+            if (input[0] >= 0){
                 input[0].innerText = parseInt(input[0].innerText, 10) - 1;
 
                 inputPrice[0].innerText = (parseFloat(inputPrice[0].innerText, 10) - parseFloat(inputPriceUnitary[0].innerText, 10)).toFixed(2)+'€';
+
+                document.getElementsByName(ingredient).removeAttribute("disabled");
 
                 const request = new XMLHttpRequest();
                 request.onreadystatechange = function() {
@@ -102,7 +106,8 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                 request.open('GET', 'functions/deleteIngredient.php?cart='+cart+'&ingredient='+ingredient);
                 request.send();
             }else{
-                document.getElementById('deleteButton').setAttribute("disabled","true");
+                document.getElementsByName(ingredient).setAttribute("disabled","true");
+                console.dir(input[0]);
 
             }
 
@@ -110,28 +115,27 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
 
         function addQuantity(cart,ingredient) {
 
-            let input = document.getElementById('quantityId');
-            let inputPrice = document.getElementById('priceId');
-            let inputPriceUnitary = document.getElementById('priceUnitary');
+            let input = document.getElementsByName(ingredient);
+            let inputPrice = document.getElementsByName('priceId');
+            let inputPriceUnitary = document.getElementsByName('priceUnitary');
 
-            input.innerText = parseInt(input.innerText, 10) + 1;
+                input[0].innerText = parseInt(input[0].innerText, 10) + 1;
 
-            inputPrice.innerText = (parseFloat(inputPrice.innerText, 10) + parseFloat(inputPriceUnitary.innerText, 10)).toFixed(2)+'€';
+                inputPrice[0].innerText = (parseFloat(inputPrice[0].innerText, 10) + parseFloat(inputPriceUnitary[0].innerText, 10)).toFixed(2) + '€';
 
-            document.getElementById('deleteButton').setAttribute("disabled", "false");
-
-            const request = new XMLHttpRequest();
-            request.onreadystatechange = function () {
-                if (request.readyState === 4) {
-                    if (request.status === 200) {
-                        if (request.responseText !== "") {
-                            alert(request.responseText);
+                const request = new XMLHttpRequest();
+                request.onreadystatechange = function () {
+                    if (request.readyState === 4) {
+                        if (request.status === 200) {
+                            if (request.responseText !== "") {
+                                alert(request.responseText);
+                            }
                         }
                     }
-                }
-            };
-            request.open('GET', 'functions/addIngredient.php?cart=' + cart + '&ingredient=' + ingredient);
-            request.send();
+                };
+                request.open('GET', 'functions/addIngredient.php?cart=' + cart + '&ingredient=' + ingredient);
+                request.send();
+
 
 
         }

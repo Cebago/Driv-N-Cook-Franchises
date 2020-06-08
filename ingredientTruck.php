@@ -5,19 +5,18 @@ require 'functions.php';
 include 'header.php';
 
 $pdo = connectDB();
-$queryPrepared = $pdo->prepare("SELECT ingredientCategory FROM INGREDIENTS GROUP BY ingredientCategory");
+$queryPrepared = $pdo->prepare("SELECT ingredientCategory, ingredientName FROM INGREDIENTS GROUP BY ingredientCategory");
 $queryPrepared->execute();
 $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
     <div class="jumbotron">
-        <h1 class="display-4">Hello, world!</h1>
-        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+        <h1 class="display-4">Mes ingrédients</h1>
+        <p class="lead">Ajoutez vos ingrédients extérieurs ou rendez les indisponibles.</p>
         <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
         <p class="lead">
-            <a class="btn btn-success btn-lg" href="#" role="button">Ajouter un ingrédient</a>
+            <button type="button" class="btn btn-success btn-sm data" data-toggle="modal" data-target="#mymodal" onclick="">Ajouter un ingrédient</button>
         </p>
     </div>
 
@@ -78,12 +77,6 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                     <button type="button" class="btn btn-success" onclick="addInBdd()">Ajouter</button>
-                    <button type="button" class="btn btn-success" onclick="addExistingIngredient()">Rajout d'un
-                        ingrédient
-                    </button>
-                    <button type="button" class="btn btn-success" onclick="addNewIngredient()">Ajouter un nouvel
-                        ingrédient
-                    </button>
                 </div>
             </div>
         </div>
@@ -99,7 +92,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
                     //console.log(request.responseText);
                     table.innerHTML = request.responseText;
                 }
-            }
+            };
 
             request.open('GET', 'functions/getIngredientTruck.php');
             request.send();
@@ -193,20 +186,6 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             }
         }
 
-        /*******************
-         * if(checkbox = true)
-         * supression enfant de selectDiv
-         * rajout enfin de deleteMe
-         * sinon
-         *si selectDiv n'a pas d'enfant
-         * recréation de ses enfants
-         *
-         *
-         *
-         *
-         *
-         */
-
 
         function addInBdd() {
 
@@ -222,7 +201,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
             request.open('POST', 'functions/addInBdd.php');
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            request.send('ingredient=' + ingredient + 'catégory=' + category);
+            request.send('ingredient=' + ingredient + 'category=' + category);
 
             getIngredientTruck();
 

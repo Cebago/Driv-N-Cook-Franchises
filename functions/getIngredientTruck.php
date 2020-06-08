@@ -26,8 +26,6 @@ $pdo = connectDB();
      	$string .= "<td>".$value['ingredientCategory']."</td>";
      	$string .= "<td>";
      	$string .= '<button type="button" class="btn btn-danger btn-sm" onclick="disableIngredient('.$value["idIngredient"].')">Rendre indisponible</button>';
-     	$string .= " ";
-     	$string .= '<button type="button" class="btn btn-success btn-sm data" data-toggle="modal" data-target="#mymodal" onclick="">Ajouter un ingrédient</button>';
      	$string .= "</td>";
      } 
 

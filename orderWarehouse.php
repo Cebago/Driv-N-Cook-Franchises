@@ -20,14 +20,14 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
 
     <script type="text/javascript">
 
-        function addQuantity(count, name) {
+        function addQuantity(name) {
             let input = document.getElementsByName(name);
             value = parseInt(input[0].value, 10) + 1;
             input[0].value = value;
 
         }
 
-        function deleteQuantity(count, name) {
+        function deleteQuantity(name) {
             let input = document.getElementsByName(name);
             if (parseInt(input[0].value, 10) > 0) {
                 value = parseInt(input[0].value, 10) - 1;
@@ -51,9 +51,9 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
             <div class="container">
                 <div class="row">
                     <?php
-                    $count = 0;
+
                     foreach ($result as $value) {
-                        $count++;
+
                         ?>
                         <div class="col-md-4">
                             <div class="card mb-4 shadow-sm">
@@ -69,12 +69,12 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                                     <p class="card-text"><?php echo $value["ingredientName"]; ?></p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <button type="button" class="btn btn-sm btn-danger ml-1"
-                                                onclick="deleteQuantity(<?php echo $count . "," . $value["idIngredient"]; ?>)">
+                                                onclick="deleteQuantity(<?php echo $value["idIngredient"]; ?>)">
                                             <i class="fas fa-minus"></i></button>
                                         <input class="border ml-1 p-2 w-25 form-control"
                                                name="<?php echo $value["idIngredient"]; ?>" value="0" readonly>
                                         <button type="button"
-                                                onclick="addQuantity(<?php echo $count . "," . $value["idIngredient"]; ?>)"
+                                                onclick="addQuantity(<?php echo $value["idIngredient"]; ?>)"
                                                 class="btn btn-sm btn-success ml-1"><i class="fas fa-plus"></i></button>
 
                                         <small class="text-muted"
