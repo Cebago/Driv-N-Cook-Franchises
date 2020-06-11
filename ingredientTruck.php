@@ -76,7 +76,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-success" onclick="addInBdd()">Ajouter</button>
+                    <button type="button" class="btn btn-success" id="submitButton" onclick="addInBdd(<?php /*echo $value['ingredientCategory']. ", ". $value['ingredientName'] ;*/?> )">Ajouter</button>
                 </div>
             </div>
         </div>
@@ -188,7 +188,8 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
 
         function addInBdd() {
-
+            const ingredient = document.getElementById('selectIngredientName');
+            const category = document.getElementById('selectCategory');
             const request = new XMLHttpRequest();
             request.onreadystatechange = function () {
                 if (request.readyState === 4 && request.status === 200) {
@@ -201,7 +202,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
             request.open('POST', 'functions/addInBdd.php');
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            request.send('ingredient=' + ingredient + 'category=' + category);
+            request.send('ingredient=' + ingredient + '&category=' + category);
 
             getIngredientTruck();
 
