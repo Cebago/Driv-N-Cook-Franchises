@@ -39,19 +39,19 @@ require "functions.php";
     }
 
     //fichier
-        $target_dir = "./invoice";
-        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+    $target_dir = "./invoice";
+    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-        // Check if image file is a actual image or fake image
-        if(isset($_POST["invoice"])) {
-            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+    // Check if image file is a actual image or fake image
+    if(isset($_POST["invoice"])) {
+        $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 
-             if($check == false || $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "pdf" ){
-                $error = true;
-                $listOfErrors[] = "Merci de rentrer une image valide de type .jpg / .png / .jpeg / .pdf";
-            }
+         if($check == false || $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "pdf" ){
+            $error = true;
+            $listOfErrors[] = "Merci de rentrer une image valide de type .jpg / .png / .jpeg / .pdf";
         }
+    }
 
 
 

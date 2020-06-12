@@ -16,9 +16,21 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
         <p class="lead">Ajoutez vos ingrédients extérieurs ou rendez les indisponibles.</p>
         <hr class="my-4">
         <p class="lead">
-            <button type="button" class="btn btn-success btn-sm data" data-toggle="modal" data-target="#mymodal" onclick="">Ajouter un ingrédient</button>
+            <button type="button" class="btn btn-success btn-sm data" data-toggle="modal" data-target="#mymodal"
+                    onclick="">Ajouter un ingrédient
+            </button>
         </p>
     </div>
+<?php
+if (isset($_SESSION["errors"])) {
+    echo "<div class='alert alert-danger'>";
+    foreach ($_SESSION["errors"] as $error) {
+        echo "<li>" . $error;
+    }
+    echo "</div>";
+}
+unset($_SESSION["errors"]);
+?>
 
     <div class="card w-75 mx-auto">
         <table class="table">
@@ -32,54 +44,55 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             <tbody id="ingredients"></tbody>
         </table>
     </div>
-
     <div class="modal fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="mymodal" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ajouter un ingrédient</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="selectCategory">Catégorie</label>
-                            <select class="form-control selectCategory" onchange="showCategory()" id="selectCategory">
-                                <option selected>Choisir une catégorie..</option>
-                                <?php foreach ($result as $value) {
-                                    echo "<option value='" . $value["ingredientCategory"] . "'>" . $value["ingredientCategory"] . "</option>";
-                                } ?>
-
-                            </select>
-                        </div>
-                        <div class="form-group" id="selectDiv">
-                            <label for="selectIngredientName" class="selectName" id="selectName">Nom</label>
-                            <select class="form-control selectIngredientName" id="selectIngredientName">
-                            </select>
-                        </div>
-                        <div id="existingIngredient">
-
-                        </div>
-                        <div class="form-check">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="checkbox" name="checkbox">
-                                <label class="custom-control-label" for="checkbox" onclick="addIngredient()">Mon
-                                    ingredient n'existe pas</label>
+        <form method="POST" action="./functions/addInBdd.php" enctype="multipart/form-data">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ajouter un ingrédient</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="selectCategory">Catégorie</label>
+                                <select class="form-control selectCategory" onchange="showCategory()"
+                                        id="selectCategory" name="category">
+                                    <option selected>Choisir une catégorie..</option>
+                                    <?php foreach ($result as $value) {
+                                        echo "<option value='" . $value["ingredientCategory"] . "'>" . $value["ingredientCategory"] . "</option>";
+                                    } ?>
+                                </select>
                             </div>
-                        </div>
-                        <div class="form-group" id="deleteMe">
-
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-success" id="submitButton" onclick="addInBdd(<?php /*echo $value['ingredientCategory']. ", ". $value['ingredientName'] ;*/?> )">Ajouter</button>
+                            <div class="form-group" id="selectDiv">
+                                <label for="selectIngredientName" class="selectName" id="selectName">Nom</label>
+                                <select class="form-control selectIngredientName" id="selectIngredientName"
+                                        name="ingredient">
+                                </select>
+                            </div>
+                            <div id="existingIngredient"></div>
+                            <div class="form-check">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkbox" name="checkbox">
+                                    <label class="custom-control-label" for="checkbox" onclick="addIngredient()">Mon
+                                        ingredient n'existe pas</label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="deleteMe">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-success" id="submitButton">
+                            Ajouter
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <script type="text/javascript">
@@ -129,6 +142,8 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
                 const input1 = document.createElement('input');
                 input1.type = "text";
                 input1.id = "disabledTextInput";
+                input1.name = "newIngredient";
+                input1.setAttribute("required", "required");
                 input1.className = "form-control mt-3";
                 input1.placeholder = "Nom de l'ingrédient";
                 child.appendChild(input1);
@@ -140,6 +155,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
                 input2.type = "file";
                 input2.className = "custom-file-input";
                 input2.id = "validatedCustomFile";
+                input2.name = "ingredientImg";
                 input2.setAttribute("required", "required");
                 div1.appendChild(input2);
 
