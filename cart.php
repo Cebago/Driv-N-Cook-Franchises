@@ -57,9 +57,9 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                             <tr>
                                 <td><?php echo $value["ingredientCategory"] ?></td>
                                 <td><?php echo $value["ingredientName"]; ?></td>
-                                <td name="quantityId"><?php echo $value["quantity"] ?></td>
-                                <td name="priceUnitary"><?php echo number_format($price, 2) . "€" ?></td>
-                                <td name="priceId"><?php echo number_format($finalPrice, 2) . "€" ?></td>
+                                <td id="<?php echo $value['idIngredient']; ?>"><?php echo $value["quantity"] ?></td>
+                                <td id="<?php echo 'priceUnitary'.$value['idIngredient']; ?>"><?php echo number_format($price, 2) . "€" ?></td>
+                                <td id="<?php echo 'priceId'.$value['idIngredient']; ?>"><?php echo number_format($finalPrice, 2) . "€" ?></td>
                                 <td>
                                     <button type="button"
                                             onclick="addQuantity(<?php echo $idCart.", ".$value["idIngredient"];?>)"
@@ -81,17 +81,16 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
     <script>
 
         function deleteQuantity(cart,ingredient) {
-            let input = document.getElementsByName(ingredient);
-            let inputPrice = document.getElementsByName('priceId');
-            let inputPriceUnitary = document.getElementsByName('priceUnitary');
+            let input = document.getElementById(ingredient);
+            let inputPrice = document.getElementById('priceId'+ingredient);
+            let inputPriceUnitary = document.getElementById('priceUnitary'+ingredient);
+            
+            if (Number(input.innerText) > 0){
+                input.innerText = Number(input.innerText) - 1;
 
+                inputPrice.innerText = (parseFloat(inputPrice.innerText) - parseFloat(inputPriceUnitary.innerText)).toFixed(2)+'€';
 
-            if (input[0] >= 0){
-                input[0].innerText = parseInt(input[0].innerText, 10) - 1;
-
-                inputPrice[0].innerText = (parseFloat(inputPrice[0].innerText, 10) - parseFloat(inputPriceUnitary[0].innerText, 10)).toFixed(2)+'€';
-
-                document.getElementsByName(ingredient).removeAttribute("disabled");
+                document.getElementById(ingredient).removeAttribute("disabled");
 
                 const request = new XMLHttpRequest();
                 request.onreadystatechange = function() {
@@ -105,9 +104,8 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                 };
                 request.open('GET', 'functions/deleteIngredient.php?cart='+cart+'&ingredient='+ingredient);
                 request.send();
-            }else{
-                document.getElementsByName(ingredient).setAttribute("disabled","true");
-                console.dir(input[0]);
+            }else {
+                document.getElementById(ingredient).setAttribute("disabled","true");
 
             }
 
@@ -115,13 +113,13 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
 
         function addQuantity(cart,ingredient) {
 
-            let input = document.getElementsByName(ingredient);
-            let inputPrice = document.getElementsByName('priceId');
-            let inputPriceUnitary = document.getElementsByName('priceUnitary');
+            let input = document.getElementById(ingredient);
+            let inputPrice = document.getElementById('priceId'+ingredient);
+            let inputPriceUnitary = document.getElementById('priceUnitary'+ingredient);
 
-                input[0].innerText = parseInt(input[0].innerText, 10) + 1;
+                input.innerText = Number(input.innerText) + 1;
 
-                inputPrice[0].innerText = (parseFloat(inputPrice[0].innerText, 10) + parseFloat(inputPriceUnitary[0].innerText, 10)).toFixed(2) + '€';
+                inputPrice.innerText = (parseFloat(inputPrice.innerText) +  parseFloat(inputPriceUnitary.innerText)).toFixed(2) + '€';
 
                 const request = new XMLHttpRequest();
                 request.onreadystatechange = function () {
