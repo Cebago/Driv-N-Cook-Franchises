@@ -40,14 +40,16 @@ function getIngredient(){
 /**
  * @param $email
  */
-function login($email){
+function login($email)
+{
     $token = createToken($email);
     $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("UPDATE USER SET token = :token WHERE emailAddress = :email ");
-    $queryPrepared->execute([":token"=>$token, ":email"=>$email]);
+    $queryPrepared = $pdo->prepare("UPDATE USERTOKEN, USER SET USERTOKEN.token = :token WHERE user = idUser AND emailAddress = :email AND tokenType = 'Site' ;");
+    $queryPrepared->execute([":token" => $token, ":email" => $email]);
     $_SESSION["token"] = $token;
     $_SESSION["email"] = $email;
 }
+
 
 /**
  * @return bool

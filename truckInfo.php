@@ -1,5 +1,10 @@
 <?php
 session_start();
+require "conf.inc.php";
+require "functions.php";
+
+if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
+
 include "header.php";
 include "navbar.php";
 ?>
@@ -251,4 +256,9 @@ include "navbar.php";
         getTruckInfo(2);
     }
 </script>
-<?php include "footer.php"; ?>
+<?php
+include "footer.php";
+} else {
+    header("Location: login.php");
+}
+?>
