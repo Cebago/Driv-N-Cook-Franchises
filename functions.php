@@ -134,8 +134,7 @@ function isAdmin()
  * @return bool
  */
 
-function isFranchisee()
-{
+function isFranchisee() {
     if (!empty($_SESSION["email"]) && !empty($_SESSION["token"])) {
         $email = $_SESSION["email"];
         $token = $_SESSION["token"];
