@@ -13,15 +13,13 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
     <script type="text/javascript">
         function addQuantity(name) {
             let input = document.getElementsByName(name);
-            let value = parseInt(input[0].value, 10) + 1;
-            input[0].value = value;
+            input[0].value = parseInt(input[0].value, 10) + 1;
 
         }
         function deleteQuantity(name) {
             let input = document.getElementsByName(name);
             if (parseInt(input[0].value, 10) > 0) {
-                let value = parseInt(input[0].value, 10) - 1;
-                input[0].value = value;
+                input[0].value = parseInt(input[0].value, 10) - 1;
             }
         }
     </script>

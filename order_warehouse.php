@@ -4,39 +4,26 @@ require 'conf.inc.php';
 require 'functions.php';
 include 'header.php';
 
-
-$pdo = connectDB();
-$queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient FROM INGREDIENTS");
-$queryPrepared->execute();
-$result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-
-
-/*$queryPrepared2 = $pdo->prepare("SELECT ingredient, idIngredient, quantity FROM INGREDIENTS, CARTINGREDIENT  WHERE ingredient = idIngredient ");
-$queryPrepared2->execute();
-$result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
-
-
+if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient FROM INGREDIENTS");
+    $queryPrepared->execute();
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
     <script type="text/javascript">
-
         function addQuantity(count, name) {
             let input = document.getElementsByName(name);
-            value = parseInt(input[0].value, 10) + 1;
+            let value = parseInt(input[0].value, 10) + 1;
             input[0].value = value;
-
         }
-
         function deleteQuantity(count, name) {
             let input = document.getElementsByName(name);
             if (parseInt(input[0].value, 10) > 0) {
-                value = parseInt(input[0].value, 10) - 1;
+                let value = parseInt(input[0].value, 10) - 1;
                 input[0].value = value;
             }
-
         }
-
-
     </script>
 
     <form method="POST" action="test.php">
@@ -91,14 +78,8 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
 
 
 <?php
-
-/* foreach ($result as $value) {
-     echo "<pre>";
-  print_r($value);
-  echo "</pre>";
-  }
-*/
-
-
-include "footer.php";
+    include "footer.php";
+} else {
+    header("Location: login.php");
+}
 ?>

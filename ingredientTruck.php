@@ -4,6 +4,7 @@ require 'conf.inc.php';
 require 'functions.php';
 include 'header.php';
 
+if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
 $pdo = connectDB();
 $queryPrepared = $pdo->prepare("SELECT ingredientCategory, ingredientName FROM INGREDIENTS GROUP BY ingredientCategory");
 $queryPrepared->execute();
@@ -180,12 +181,6 @@ unset($_SESSION["errors"]);
                 }
 
                 if (!selectDiv.firstChild) {
-                    /* <div class="form-group" id="selectDiv">
-                             <label for="selectIngredientName" class="selectName" id="selectName">Nom</label>
-                             <select class="form-control selectIngredientName" id="selectIngredientName">
-                             </select>
-                             </div>*/
-
                     const label1 = document.createElement('label');
                     label1.setAttribute("for", "selectIngredientName");
                     label1.id = "selectName";
@@ -268,4 +263,9 @@ unset($_SESSION["errors"]);
 
     </script>
 
-<?php include "footer.php"; ?>
+<?php
+    include "footer.php";
+} else {
+    header("Location: login.php");
+}
+?>
