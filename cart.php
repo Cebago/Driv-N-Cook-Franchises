@@ -4,25 +4,16 @@ require 'conf.inc.php';
 require 'functions.php';
 include 'header.php';
 
-
 $pdo = connectDB();
 $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, quantity, idIngredient
 FROM INGREDIENTS, CARTINGREDIENT, CART, USER 
 WHERE CARTINGREDIENT.ingredient = idIngredient AND CARTINGREDIENT.cart = idCart AND CART.user = idUser AND  user = 1");
 $queryPrepared->execute();
 $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-
 $queryPrepared = $pdo->prepare("SELECT idCart FROM CART WHERE user = 1 ORDER BY idCart DESC;");
 $queryPrepared->execute();
 $idCart = $queryPrepared->fetch(PDO::FETCH_ASSOC);
 $idCart = $idCart["idCart"];
-
-
-/*$queryPrepared2 = $pdo->prepare("SELECT ingredient, idIngredient, quantity FROM INGREDIENTS, CARTINGREDIENT  WHERE ingredient = idIngredient ");
-$queryPrepared2->execute();
-$result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
-
-
 ?>
     <div class="album py-5 bg-light">
         <div class="container" id="cart">
@@ -31,7 +22,7 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
-                            <th scope="Nom de la catégorie">#</th>
+                            <th scope="col">#</th>
                             <th scope="col">Nom de l'ingrédient</th>
                             <th scope="col">Quantité</th>
                             <th scope="col">Prix unitaire</th>
@@ -40,7 +31,6 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                         </tr>
                         </thead>
                         <tbody>
-
                         <?php
                         foreach ($result
                         as $value) {
@@ -52,7 +42,6 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                         $price = $queryPrepared->fetch(PDO::FETCH_ASSOC);
                         $price = $price["price"];
                         $finalPrice = $price * $value["quantity"];
-
                         ?>
                             <tr>
                                 <td><?php echo $value["ingredientCategory"] ?></td>
@@ -76,22 +65,15 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
             </div>
         </div>
     </div>
-
-
     <script>
-
         function deleteQuantity(cart,ingredient) {
             let input = document.getElementById(ingredient);
             let inputPrice = document.getElementById('priceId'+ingredient);
             let inputPriceUnitary = document.getElementById('priceUnitary'+ingredient);
-            
             if (Number(input.innerText) > 0){
                 input.innerText = Number(input.innerText) - 1;
-
                 inputPrice.innerText = (parseFloat(inputPrice.innerText) - parseFloat(inputPriceUnitary.innerText)).toFixed(2)+'€';
-
                 document.getElementById(ingredient).removeAttribute("disabled");
-
                 const request = new XMLHttpRequest();
                 request.onreadystatechange = function() {
                     if(request.readyState === 4) {
@@ -106,50 +88,28 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                 request.send();
             }else {
                 document.getElementById(ingredient).setAttribute("disabled","true");
-
             }
-
         }
-
         function addQuantity(cart,ingredient) {
-
             let input = document.getElementById(ingredient);
             let inputPrice = document.getElementById('priceId'+ingredient);
             let inputPriceUnitary = document.getElementById('priceUnitary'+ingredient);
-
-                input.innerText = Number(input.innerText) + 1;
-
-                inputPrice.innerText = (parseFloat(inputPrice.innerText) +  parseFloat(inputPriceUnitary.innerText)).toFixed(2) + '€';
-
-                const request = new XMLHttpRequest();
-                request.onreadystatechange = function () {
-                    if (request.readyState === 4) {
-                        if (request.status === 200) {
-                            if (request.responseText !== "") {
-                                alert(request.responseText);
-                            }
+            input.innerText = Number(input.innerText) + 1;
+            inputPrice.innerText = (parseFloat(inputPrice.innerText) +  parseFloat(inputPriceUnitary.innerText)).toFixed(2) + '€';
+            const request = new XMLHttpRequest();
+            request.onreadystatechange = function () {
+                if (request.readyState === 4) {
+                    if (request.status === 200) {
+                        if (request.responseText !== "") {
+                            alert(request.responseText);
                         }
                     }
-                };
-                request.open('GET', 'functions/addIngredient.php?cart=' + cart + '&ingredient=' + ingredient);
-                request.send();
-
-
-
+                }
+            };
+            request.open('GET', 'functions/addIngredient.php?cart=' + cart + '&ingredient=' + ingredient);
+            request.send();
         }
-
     </script>
-
-
 <?php
-
-/* foreach ($result as $value) {
-     echo "<pre>";
-  print_r($value);
-  echo "</pre>";
-  }
-*/
-
-
 include "footer.php";
 ?>
