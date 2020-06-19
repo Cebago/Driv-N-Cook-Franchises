@@ -4,56 +4,39 @@ require 'conf.inc.php';
 require 'functions.php';
 include 'header.php';
 
-
-$pdo = connectDB();
-$queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient FROM INGREDIENTS");
-$queryPrepared->execute();
-$result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-
-
-/*$queryPrepared2 = $pdo->prepare("SELECT ingredient, idIngredient, quantity FROM INGREDIENTS, CARTINGREDIENT  WHERE ingredient = idIngredient ");
-$queryPrepared2->execute();
-$result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
-
-
-?>
-
+if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient FROM INGREDIENTS");
+    $queryPrepared->execute();
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    ?>
     <script type="text/javascript">
-
         function addQuantity(name) {
             let input = document.getElementsByName(name);
-            value = parseInt(input[0].value, 10) + 1;
+            let value = parseInt(input[0].value, 10) + 1;
             input[0].value = value;
 
         }
-
         function deleteQuantity(name) {
             let input = document.getElementsByName(name);
             if (parseInt(input[0].value, 10) > 0) {
-                value = parseInt(input[0].value, 10) - 1;
+                let value = parseInt(input[0].value, 10) - 1;
                 input[0].value = value;
             }
-
         }
-
-
     </script>
-
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">Entrepot</h1>
             <p class="lead">Achat entrepot</p>
         </div>
     </div>
-
     <form method="POST" action="test.php">
         <div class="album py-5 bg-light">
             <div class="container">
                 <div class="row">
                     <?php
-
                     foreach ($result as $value) {
-
                         ?>
                         <div class="col-md-4">
                             <div class="card mb-4 shadow-sm">
@@ -89,23 +72,13 @@ $result2 = $queryPrepared2->fetchAll(PDO::FETCH_ASSOC);*/
                 </div>
             </div>
         </div>
-
         <div class="fixed-bottom text-right">
             <button type="submit" class="btn btn-lg btn-secondary mr-5  mb-2"> Ajouter</button>
         </div>
-
     </form>
-
-
 <?php
-
-/* foreach ($result as $value) {
-     echo "<pre>";
-  print_r($value);
-  echo "</pre>";
-  }
-*/
-
-
-include "footer.php";
+    include "footer.php";
+} else {
+    header("Location: login.php");
+}
 ?>
