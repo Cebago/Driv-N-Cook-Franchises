@@ -30,7 +30,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             <p class="lead">Achat entrepot</p>
         </div>
     </div>
-    <form method="POST" action="test.php">
+    <form method="POST" action="addQuantity.php">
         <div class="album py-5 bg-light">
             <div class="container">
                 <div class="row">
