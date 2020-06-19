@@ -3,7 +3,7 @@ session_start();
 require '../conf.inc.php';
 require '../functions.php';
 
-if(isset($_POST) && $_POST["ingredient"]) {
+if (isset($_POST) && $_POST["ingredient"]) {
     $ingredient = $_POST["ingredient"];
     $error = FALSE;
     $listOfErrors = "";
@@ -12,7 +12,7 @@ if(isset($_POST) && $_POST["ingredient"]) {
         $error = TRUE;
         $listOfErrors = "Merci de ne pas modifier la page";
     }
-    if($ingredient == $_POST["ingredient"]){
+    if ($ingredient == $_POST["ingredient"]) {
         $listOfErrors = "Merci de ne pas ajouter 2 fois le même ingrédient";
     }
 

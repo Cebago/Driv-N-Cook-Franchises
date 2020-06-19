@@ -1,10 +1,10 @@
 <?php
-session_start(); 
+session_start();
 require '../conf.inc.php';
 require '../functions.php';
 
 $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientCategory, idIngredient 
+$queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientCategory, idIngredient 
                                                 FROM INGREDIENTS, STORE, WAREHOUSES, TRUCKWAREHOUSE, TRUCK, USER 
                                                 WHERE idIngredient = STORE.ingredient 
                                                   AND STORE.warehouse = idWarehouse 
@@ -14,21 +14,21 @@ $pdo = connectDB();
                                                   AND TRUCK.user = idUser
                                                   AND warehouseType = 'Camion'
                                                   AND user = :user");
-    $queryPrepared->execute([":user" => 2]);
-    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+$queryPrepared->execute([":user" => 2]);
+$result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
-    $string = "";
-    
+$string = "";
 
-    foreach ($result as $value) {
-     	$string .= "<tr>";
-     	$string .= "<td>".$value['ingredientName']."</td>";
-     	$string .= "<td>".$value['ingredientCategory']."</td>";
-     	$string .= "<td>";
-     	$string .= '<button type="button" class="btn btn-danger btn-sm" onclick="disableIngredient('.$value["idIngredient"].')">Rendre indisponible</button>';
-     	$string .= "</td>";
-     } 
 
-     echo($string);
+foreach ($result as $value) {
+    $string .= "<tr>";
+    $string .= "<td>" . $value['ingredientName'] . "</td>";
+    $string .= "<td>" . $value['ingredientCategory'] . "</td>";
+    $string .= "<td>";
+    $string .= '<button type="button" class="btn btn-danger btn-sm" onclick="disableIngredient(' . $value["idIngredient"] . ')">Rendre indisponible</button>';
+    $string .= "</td>";
+}
+
+echo($string);
 
 

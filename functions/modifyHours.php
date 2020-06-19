@@ -20,14 +20,14 @@ $match = array(
 );
 $listOfErrors = [];
 for ($j = 1; $j < 10; $j++) {
-    $match = array_merge($match, [$j => $match[$j-1] . " \/ " . $match[0]]);
+    $match = array_merge($match, [$j => $match[$j - 1] . " \/ " . $match[0]]);
 }
 
 for ($i = 0; $i < count($day); $i++) {
-    if (isset($_POST["check" . $day[$i]]) && isset($_POST[$day[$i]]) ) {
+    if (isset($_POST["check" . $day[$i]]) && isset($_POST[$day[$i]])) {
         $thisday = $_POST[$day[$i]];
         $number = mb_substr_count($thisday, "/");
-        if ( !preg_match("#^" . $match[$number] . "$#", $thisday)) {
+        if (!preg_match("#^" . $match[$number] . "$#", $thisday)) {
             $error = true;
             $listOfErrors[] = "Merci de saisir le bon format horaire pour " . $day[$i];
         } else {

@@ -4,7 +4,7 @@ require "../conf.inc.php";
 require "../functions.php";
 session_start();
 
-if (isset($_GET["cart"], $_GET["ingredient"])){
+if (isset($_GET["cart"], $_GET["ingredient"])) {
 
     $cart = $_GET["cart"];
     $ingredient = $_GET["ingredient"];
@@ -16,6 +16,6 @@ if (isset($_GET["cart"], $_GET["ingredient"])){
         ":ingredient" => $ingredient
     ]);
 
-}else{
+} else {
     echo "Erreur lors de la modification. Merci de réessayer";
 }

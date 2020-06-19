@@ -16,7 +16,7 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
         $listOfErrors[] = "Le nom d'ingrédient n'est pas valide";
     }
 
-    if (strlen($ingredient) <= 3 && strlen($ingredient) > 15 ) {
+    if (strlen($ingredient) <= 3 && strlen($ingredient) > 15) {
         $error = true;
         $listOfErrors[] = "Le nom de d'ingrédient doit être compris entre 3 et 15 caractères";
     }
@@ -83,7 +83,7 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
         } elseif ($error) {
             $_SESSION["errors"] = $listOfErrors;
             header("Location: ../ingredientTruck.php");
-        }else {
+        } else {
             if (move_uploaded_file($_FILES["ingredientImg"]["tmp_name"], "../" . $uploadDir)) {
                 $pdo = connectDB();
                 $queryPrepared = $pdo->prepare("INSERT INTO INGREDIENTS (ingredientName, ingredientCategory, ingredientImage) VALUES (:name, :category, :image)");
@@ -113,7 +113,7 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
     }
 
 
-} else if(isset($_POST, $_POST["category"], $_POST["ingredient"])) {
+} else if (isset($_POST, $_POST["category"], $_POST["ingredient"])) {
     //ajout au cart
     $ingredient = htmlspecialchars(ucwords(trim($_POST["ingredient"])));
     $category = htmlspecialchars(ucwords(trim($_POST["category"])));

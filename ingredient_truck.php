@@ -5,14 +5,14 @@ require 'functions.php';
 
 if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
 
-include 'header.php';
+    include 'header.php';
 
-$pdo = connectDB();
-$queryPrepared = $pdo->prepare("SELECT ingredientCategory FROM INGREDIENTS GROUP BY ingredientCategory");
-$queryPrepared->execute();
-$result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT ingredientCategory FROM INGREDIENTS GROUP BY ingredientCategory");
+    $queryPrepared->execute();
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
-?>
+    ?>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">Mes ingrédients</h1>
@@ -94,6 +94,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             request.open('GET', 'functions/getIngredientTruck.php');
             request.send();
         }
+
         function disableIngredient(ingredient) {
             const request = new XMLHttpRequest();
             request.onreadystatechange = function () {
@@ -108,6 +109,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             request.send('ingredient=' + ingredient);
             getIngredientTruck();
         }
+
         function addIngredient() {
             let checkbox = document.getElementsByName("checkbox");
             const deleteMe = document.getElementById("deleteMe");
@@ -192,6 +194,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             request.send('ingredient=' + ingredient + 'catégory=' + category);
             getIngredientTruck();
         }
+
         function showCategory() {
             const select = document.getElementById("selectCategory");
             const name = document.getElementById("selectName");
@@ -224,9 +227,10 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             request.send('ingredient=' + select.value);
         }
+
         window.onload = getIngredientTruck;
     </script>
-<?php
+    <?php
     include "footer.php";
 } else {
     header("Location: login.php");

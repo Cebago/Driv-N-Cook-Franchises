@@ -5,12 +5,13 @@ require_once "conf.inc.php";
 /**
  * @return PDO
  */
-function connectDB(){
-    try{
-        $pdo = new PDO(DBDRIVER.":host=".DBHOST.";dbname=".DBNAME ,DBUSER,DBPWD);
+function connectDB()
+{
+    try {
+        $pdo = new PDO(DBDRIVER . ":host=" . DBHOST . ";dbname=" . DBNAME, DBUSER, DBPWD);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }catch(Exception $e){
-        die("Erreur SQL : ".$e->getMessage());
+    } catch (Exception $e) {
+        die("Erreur SQL : " . $e->getMessage());
     }
     return $pdo;
 }
@@ -19,7 +20,8 @@ function connectDB(){
  * @param $email
  * @return false|string
  */
-function createToken($email) {
+function createToken($email)
+{
     $token = md5($email . "€monTokenDrivNCook£" . time() . uniqid());
     $token = substr($token, 0, rand(15, 20));
     return $token;
@@ -28,13 +30,14 @@ function createToken($email) {
 /**
  *
  */
-function getIngredient(){
+function getIngredient()
+{
 
     $pdo = connectDB();
     $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory FROM INGREDIENTS");
     $queryPrepared->execute();
     $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-   
+
 }
 
 /**
@@ -55,7 +58,8 @@ function login($email)
  * @return bool
  */
 
-function isActivated() {
+function isActivated()
+{
     if (!empty($_SESSION["email"]) && !empty($_SESSION["token"])) {
         $email = $_SESSION["email"];
         $token = $_SESSION["token"];
@@ -81,7 +85,8 @@ function isActivated() {
 /**
  * @return bool
  */
-function isConnected() {
+function isConnected()
+{
     if (!empty($_SESSION["email"])
         && !empty($_SESSION["token"])) {
         $email = $_SESSION["email"];
@@ -136,7 +141,8 @@ function isAdmin()
  * @return bool
  */
 
-function isFranchisee() {
+function isFranchisee()
+{
     if (!empty($_SESSION["email"]) && !empty($_SESSION["token"])) {
         $email = $_SESSION["email"];
         $token = $_SESSION["token"];
@@ -163,20 +169,25 @@ function isFranchisee() {
  * @param $email
  */
 
-function logout($email) {
+function logout($email)
+{
     $pdo = connectDB();
     $queryPrepared = $pdo->prepare("UPDATE USER, USERTOKEN SET USERTOKEN.token = null WHERE emailAddress = :email 
                                                     AND idUser = user 
                                                     AND tokenType = 'Site'");
     $queryPrepared->execute([":email" => $email]);
 }
-function getIngredient(){
+
+function getIngredient()
+{
     $pdo = connectDB();
     $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory FROM INGREDIENTS");
     $queryPrepared->execute();
     $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 }
-function getQuantity(){
+
+function getQuantity()
+{
     $pdo = connectDB();
     $queryPrepared = $pdo->prepare("SELECT quantity FROM CARTINGREDIENT");
     $queryPrepared->execute();
