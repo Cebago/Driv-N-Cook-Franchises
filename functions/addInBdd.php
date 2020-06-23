@@ -3,6 +3,7 @@ session_start();
 require '../conf.inc.php';
 require '../functions.php';
 
+
 if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"])) {
     //ajout dans ingredients et dans cart + img
 
@@ -165,7 +166,8 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
         header("Location: orderInvoice.php");
     }
 } else {
-    //echo "ko";
+    if (isset($_POST["lastOne"]) && $_POST["lastOne"] == true) {
+        header("Location: ../orderInvoice.php");
+    }
     header("Location: ../ingredientTruck.php");
 }
-
