@@ -59,7 +59,7 @@ unset($_SESSION["errors"]);
                             <div class="form-group">
                                 <label for="selectCategory">Catégorie</label>
                                 <select class="form-control selectCategory" onchange="showCategory()"
-                                        id="selectCategory" name="category">
+                                        id="selectCategory" name="category" required>
                                     <option selected>Choisir une catégorie..</option>
                                     <?php foreach ($result as $value) {
                                         echo "<option value='" . $value["ingredientCategory"] . "'>" . $value["ingredientCategory"] . "</option>";
@@ -69,7 +69,7 @@ unset($_SESSION["errors"]);
                             <div class="form-group" id="selectDiv">
                                 <label for="selectIngredientName" class="selectName" id="selectName">Nom</label>
                                 <select class="form-control selectIngredientName" id="selectIngredientName"
-                                        name="ingredient">
+                                        name="ingredient" required>
                                 </select>
                             </div>
                             <div id="existingIngredient"></div>
@@ -80,7 +80,10 @@ unset($_SESSION["errors"]);
                                         ingredient n'existe pas</label>
                                 </div>
                             </div>
-                            <div class="form-group" id="deleteMe">
+                            <div class="form-group" id="deleteMe"></div>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="switch" name="lastOne">
+                                <label class="custom-control-label" for="switch">Dernier ingrédient</label>
                             </div>
                         </form>
                     </div>
@@ -129,16 +132,12 @@ unset($_SESSION["errors"]);
         }
 
         function addIngredient() {
-
             let checkbox = document.getElementsByName("checkbox");
             const deleteMe = document.getElementById("deleteMe");
             const selectDiv = document.getElementById("selectDiv");
-
             console.log(checkbox[0].checked);
             if (!checkbox[0].checked) {
-
                 const child = document.createElement('div');
-
                 const input1 = document.createElement('input');
                 input1.type = "text";
                 input1.id = "disabledTextInput";
@@ -147,10 +146,8 @@ unset($_SESSION["errors"]);
                 input1.className = "form-control mt-3";
                 input1.placeholder = "Nom de l'ingrédient";
                 child.appendChild(input1);
-
                 const div1 = document.createElement('div');
                 div1.className = "custom-file mt-3";
-
                 const input2 = document.createElement('input');
                 input2.type = "file";
                 input2.className = "custom-file-input";
@@ -158,51 +155,34 @@ unset($_SESSION["errors"]);
                 input2.name = "ingredientImg";
                 input2.setAttribute("required", "required");
                 div1.appendChild(input2);
-
                 const label2 = document.createElement('label');
                 label2.className = "custom-file-label";
                 label2.setAttribute("for", "validatedCustomFile");
                 label2.innerText = "Choisir une image...";
                 div1.appendChild(label2);
-
                 child.appendChild(div1);
-
                 deleteMe.appendChild(child);
-
                 while (selectDiv.firstChild) {
                     selectDiv.removeChild(selectDiv.firstChild);
                 }
-
-
             } else {
                 while (deleteMe.firstChild) {
                     deleteMe.removeChild(deleteMe.firstChild);
                 }
-
                 if (!selectDiv.firstChild) {
-                    /* <div class="form-group" id="selectDiv">
-                             <label for="selectIngredientName" class="selectName" id="selectName">Nom</label>
-                             <select class="form-control selectIngredientName" id="selectIngredientName">
-                             </select>
-                             </div>*/
-
                     const label1 = document.createElement('label');
                     label1.setAttribute("for", "selectIngredientName");
                     label1.id = "selectName";
                     label1.innerText = "Nom";
                     selectDiv.appendChild(label1);
-
                     const select1 = document.createElement("select");
                     select1.className = "form-control";
                     select1.id = "selectIngredientName";
                     selectDiv.appendChild(select1);
-
                     showCategory();
                 }
             }
         }
-
-
         function addInBdd() {
             const ingredient = document.getElementById('selectIngredientName');
             const category = document.getElementById('selectCategory');
@@ -215,18 +195,12 @@ unset($_SESSION["errors"]);
                     }
                 }
             };
-
             request.open('POST', 'functions/addInBdd.php');
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             request.send('ingredient=' + ingredient + '&category=' + category);
-
             getIngredientTruck();
-
-
         }
-
         function showCategory() {
-            //afficher les catégories
             const select = document.getElementById("selectCategory");
             const name = document.getElementById("selectName");
             if (select.value !== "Choisir une catégorie.." && name !== null) {
@@ -236,7 +210,6 @@ unset($_SESSION["errors"]);
                 }
 
             }
-
             const request = new XMLHttpRequest();
             request.onreadystatechange = function () {
                 if (request.readyState === 4 && request.status === 200) {
@@ -256,16 +229,10 @@ unset($_SESSION["errors"]);
                     }
                 }
             };
-
             request.open('POST', 'functions/selectIngredient.php');
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             request.send('ingredient=' + select.value);
-
         }
-
-
         window.onload = getIngredientTruck;
-
     </script>
-
 <?php include "footer.php"; ?>
