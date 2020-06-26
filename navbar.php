@@ -1,4 +1,4 @@
-<header>
+<navbar class="mb-5">
     <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container d-flex justify-content-between">
             <a href="#" class="navbar-brand d-flex align-items-center">
@@ -8,7 +8,7 @@
                     <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                     <circle cx="12" cy="13" r="4"/>
                 </svg>
-                <strong class="col-md-3" href="index_client.php">Driv'n Cook</strong>
+                <strong class="col-md-3" href="home.php">Driv'n Cook</strong>
 
                 <div class="dropdown col-md-3">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
@@ -42,8 +42,10 @@
                         <button class="dropdown-item" type="button">Dégustations</button>
                     </div>
                 </div>
-
+                <div class="dropdown col-md-3">
+                    <button></button>
+                </div>
             </a>
         </div>
     </div>
-</header>
+</navbar>
