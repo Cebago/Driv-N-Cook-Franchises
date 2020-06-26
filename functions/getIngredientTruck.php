@@ -13,8 +13,8 @@ $pdo = connectDB();
                                                   AND TRUCKWAREHOUSE.truck = idTruck 
                                                   AND TRUCK.user = idUser
                                                   AND warehouseType = 'Camion'
-                                                  AND user = :user");
-    $queryPrepared->execute([":user" => 2]);
+                                                  AND emailAddress = :email");
+    $queryPrepared->execute([":email" => $_SESSION["email"]]);
     $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
     $string = "";

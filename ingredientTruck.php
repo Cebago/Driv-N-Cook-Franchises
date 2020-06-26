@@ -2,14 +2,17 @@
 session_start();
 require 'conf.inc.php';
 require 'functions.php';
+
+if (isConnected() && isActivated() && (isAdmin() || isFranchise())) {
+
 include 'header.php';
+include 'navbar.php';
 
-$pdo = connectDB();
-$queryPrepared = $pdo->prepare("SELECT ingredientCategory, ingredientName FROM INGREDIENTS GROUP BY ingredientCategory");
-$queryPrepared->execute();
-$result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-
-?>
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT ingredientCategory, ingredientName FROM INGREDIENTS GROUP BY ingredientCategory");
+    $queryPrepared->execute();
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    ?>
 
     <div class="jumbotron">
         <h1 class="display-4">Mes ingrédients</h1>
@@ -235,4 +238,9 @@ unset($_SESSION["errors"]);
         }
         window.onload = getIngredientTruck;
     </script>
-<?php include "footer.php"; ?>
+<?php include "footer.php";
+} else {
+    header("Location: login.php");
+}
+?>
+

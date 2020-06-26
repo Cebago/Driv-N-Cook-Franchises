@@ -3,7 +3,6 @@ session_start();
 require '../conf.inc.php';
 require '../functions.php';
 
-
 if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"])) {
     //ajout dans ingredients et dans cart + img
 
@@ -17,7 +16,7 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
         $listOfErrors[] = "Le nom d'ingrédient n'est pas valide";
     }
 
-    if (strlen($ingredient) <= 3 && strlen($ingredient) > 15 ) {
+    if (strlen($ingredient) <= 3 && strlen($ingredient) > 15) {
         $error = true;
         $listOfErrors[] = "Le nom de d'ingrédient doit être compris entre 3 et 15 caractères";
     }
@@ -84,7 +83,7 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
         } elseif ($error) {
             $_SESSION["errors"] = $listOfErrors;
             header("Location: ../ingredientTruck.php");
-        }else {
+        } else {
             if (move_uploaded_file($_FILES["ingredientImg"]["tmp_name"], "../" . $uploadDir)) {
                 $pdo = connectDB();
                 $queryPrepared = $pdo->prepare("INSERT INTO INGREDIENTS (ingredientName, ingredientCategory, ingredientImage) VALUES (:name, :category, :image)");
@@ -94,15 +93,15 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
                     ":image" => $uploadDir
                 ]);
                 $id = $pdo->lastInsertId();
-                $queryPrepared = $pdo->prepare("SELECT idCart FROM CART, USER WHERE user = idUser AND emailAddress = :email ORDER BY idCart DESC LIMIT 1");
+                $queryPrepared = $pdo->prepare("SELECT warehouse FROM TRUCKWAREHOUSE, TRUCK, USER, WAREHOUSES WHERE user = idUser AND truck = idTruck AND emailAddress = :email AND warehouseType = 'Camion' AND warehouse = idWarehouse");
                 $queryPrepared->execute([
                     ":email" => $_SESSION["email"]
                 ]);
-                $idCart = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-                $idCart = $idCart["idCart"];
-                $queryPrepared = $pdo->prepare("INSERT INTO CARTINGREDIENT (cart, ingredient, quantity) VALUES (:cart, :ingredient, 1)");
+                $idWarehouse = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+                $idWarehouse = $idWarehouse["warehouse"];
+                $queryPrepared = $pdo->prepare("INSERT INTO STORE (warehouse, ingredient, available) VALUES (:warehouse, :ingredient, 1)");
                 $queryPrepared->execute([
-                    ":cart" => $idCart,
+                    ":warehouse" => $idWarehouse,
                     ":ingredient" => $id
                 ]);
             } else {
@@ -114,7 +113,7 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
     }
 
 
-} else if(isset($_POST, $_POST["category"], $_POST["ingredient"])) {
+} else if (isset($_POST, $_POST["category"], $_POST["ingredient"])) {
     //ajout au cart
     $ingredient = htmlspecialchars(ucwords(trim($_POST["ingredient"])));
     $category = htmlspecialchars(ucwords(trim($_POST["category"])));
@@ -146,28 +145,22 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
         $_SESSION["errors"] = $listOfErrors;
         header("Location: ../ingredientTruck.php");
     } else {
-        $queryPrepared = $pdo->prepare("SELECT idCart FROM CART, USER WHERE user = idUser AND emailAddress = :email ORDER BY idCart DESC LIMIT 1");
+        $ingredient = $result["idIngredient"];
+        $queryPrepared = $pdo->prepare("SELECT warehouse FROM TRUCKWAREHOUSE, TRUCK, USER, WAREHOUSES WHERE user = idUser AND truck = idTruck AND emailAddress = :email AND warehouseType = 'Camion' AND warehouse = idWarehouse");
         $queryPrepared->execute([
             ":email" => $_SESSION["email"]
         ]);
-        $idCart = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-        $idCart = $idCart["idCart"];
-        $queryPrepared = $pdo->prepare("SELECT idIngredient FROM INGREDIENTS WHERE ingredientName = :ingredient");
+        $idWarehouse = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+        $idWarehouse = $idWarehouse["warehouse"];
+        $queryPrepared = $pdo->prepare("INSERT INTO STORE (warehouse, ingredient, available) VALUES (:warehouse, :ingredient, 1)");
         $queryPrepared->execute([
+            ":warehouse" => $idWarehouse,
             ":ingredient" => $ingredient
-        ]);
-        $idIngredient = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-        $idIngredient = $idIngredient["idIngredient"];
-        $queryPrepared = $pdo->prepare("INSERT INTO CARTINGREDIENT(cart, ingredient, quantity) VALUES (:cart, :ingredient, 1)");
-        $queryPrepared->execute([
-            ":cart" => $idCart,
-            ":ingredient" => $idIngredient
         ]);
         header("Location: orderInvoice.php");
     }
-} else {
-    if (isset($_POST["lastOne"]) && $_POST["lastOne"] == true) {
-        header("Location: ../orderInvoice.php");
-    }
-    header("Location: ../ingredientTruck.php");
 }
+if (isset($_POST["lastOne"]) && $_POST["lastOne"] == "on") {
+    header("Location: ../orderInvoice.php");
+}
+header("Location: ../ingredientTruck.php");

@@ -2,6 +2,10 @@
 session_start();
 require 'conf.inc.php';
 require 'functions.php';
+
+if (isConnected() && isActivated() && (isFranchise() || isAdmin())) {
+
+
 include "header.php";
 
 
@@ -84,3 +88,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
 <?php include "footer.php"; ?>
 
+<?php
+} else {
+    header("Location: login.php");
+}?>
