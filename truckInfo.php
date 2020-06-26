@@ -5,6 +5,14 @@ require "functions.php";
 
 if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
 
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idUser FROM USER WHERE emailAddress = :email");
+    $queryPrepared->execute([
+        ":email" => $_SESSION["email"]
+    ]);
+    $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    $_SESSION["idUser"] = $result["idUser"];
+
     include "header.php";
     include "navbar.php";
     ?>
@@ -255,7 +263,7 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
         }
 
         window.onload = function () {
-            getTruckInfo(2);
+            getTruckInfo(<?php echo $_SESSION["idUser"] ?>);
         }
     </script>
     <?php

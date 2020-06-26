@@ -11,8 +11,10 @@ $queryPrepared->execute([
     ":user" => $user
 ]);
 $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-$queryPrepared = $pdo->prepare("SELECT openDay FROM pa2a2drivncook.OPENDAYS WHERE truck = :truck GROUP BY openDay ORDER BY DAYOFWEEK(openDay)");
+
+
 $truck = $result["idTruck"];
+$queryPrepared = $pdo->prepare("SELECT openDay FROM pa2a2drivncook.OPENDAYS WHERE truck = :truck GROUP BY openDay ORDER BY DAYOFWEEK(openDay)");
 $queryPrepared->execute([
     ":truck" => $truck
 ]);
