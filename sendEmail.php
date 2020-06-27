@@ -6,7 +6,7 @@ require 'functions.php';
 if (count($_POST) == 3
     && isset($_POST['server'])
     && isset($_POST['user'])
-    && isset($_POST['email']) ) {
+    && isset($_POST['email'])) {
 
     $server = htmlspecialchars(strtoupper(trim($_POST['server'])));
     $user = $_POST['user'];
@@ -31,13 +31,13 @@ if (count($_POST) == 3
             $destination = $email;
             $subject = "Activation de votre compte Driv'N Cook";
             $header = "FROM: franchises@drivncook.fr";
-            $link = "https://franchises.drivncook.fr/isActivated?cle=" . urlencode($cle) . "&id=" . urlencode($idUser) ;
+            $link = "https://franchises.drivncook.fr/isActivated?cle=" . urlencode($cle) . "&id=" . urlencode($idUser);
             $message = '
 		Bonjour ' . $lastName . ' ' . $firstName . '
 		Bienvenue sur Driv\'N Cook,
  
 		Pour activer votre compte, veuillez cliquer sur le lien ci-dessous ou le copier/coller dans votre navigateur internet.
- 		'.$link.'
+ 		' . $link . '
  		---------------
  		
  		Ceci est un mail automatique,
