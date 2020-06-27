@@ -2,14 +2,18 @@
 session_start();
 require 'conf.inc.php';
 require 'functions.php';
-include 'header.php';
 
-if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
-    $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient FROM INGREDIENTS");
-    $queryPrepared->execute();
-    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-    ?>
+if (isConnected() && isActivated() && (isAdmin() || isFranchise())) {
+
+include 'header.php';
+include 'navbar.php';
+$pdo = connectDB();
+$queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient FROM INGREDIENTS, STORE, WAREHOUSES WHERE idIngredient = ingredient AND warehouse = idWarehouse AND warehouse = :warehouse");
+$queryPrepared->execute([
+        ":warehouse" => $_GET["warehouse"]
+]);
+$result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+?>
     <script type="text/javascript">
         function addQuantity(name) {
             let input = document.getElementsByName(name);
@@ -25,11 +29,11 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
     </script>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1 class="display-4">Entrepot</h1>
-            <p class="lead">Achat entrepot</p>
+            <h1 class="display-4">Entrepôt</h1>
+            <p class="lead">Achat entrepôt</p>
         </div>
     </div>
-    <form method="POST" action="test.php">
+    <form method="POST" action="addQuantity.php">
         <div class="album py-5 bg-light">
             <div class="container">
                 <div class="row">
@@ -65,8 +69,6 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
                             </div>
                         </div>
                     <?php } ?>
-
-
                 </div>
             </div>
         </div>
@@ -75,7 +77,7 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
         </div>
     </form>
 <?php
-    include "footer.php";
+include "footer.php";
 } else {
     header("Location: login.php");
 }

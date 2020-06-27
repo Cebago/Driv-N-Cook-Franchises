@@ -17,7 +17,7 @@
                                         <i class="fas fa-credit-card mr-2"></i> Carte de crédit </a></li>
                                 <li class="nav-item"><a data-toggle="pill" href="#paypal" class="nav-link "> <i
                                                 class="fas fa-wallet mr-2"></i> Espèce </a></li>
-                                <!--                            <li class="nav-item"> <a data-toggle="pill" href="#net-banking" class="nav-link "> <i class="fas fa-mobile-alt mr-2"></i> Net Banking </a> </li>-->
+                                <!--<li class="nav-item"> <a data-toggle="pill" href="#net-banking" class="nav-link "> <i class="fas fa-mobile-alt mr-2"></i> Net Banking </a> </li>-->
                             </ul>
                         </div> <!-- End -->
                         <!-- Credit card form content -->

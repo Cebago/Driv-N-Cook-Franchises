@@ -1,5 +1,5 @@
 <?php include "header.php";
-require "function.php"; ?>
+		require "functions.php"; ?>
 
 
 echo $_POST["truckModel"];

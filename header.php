@@ -48,4 +48,3 @@
     <link href="album.css" rel="stylesheet">
 </head>
 <body>
-<header>
