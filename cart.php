@@ -2,16 +2,24 @@
 session_start();
 require 'conf.inc.php';
 require 'functions.php';
+
+if (isConnected() && isActivated() && (isFranchisee() || isAdmin())) {
+
 include 'header.php';
+include 'navbar.php';
 
 $pdo = connectDB();
 $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, quantity, idIngredient
 FROM INGREDIENTS, CARTINGREDIENT, CART, USER 
-WHERE CARTINGREDIENT.ingredient = idIngredient AND CARTINGREDIENT.cart = idCart AND CART.user = idUser AND  user = 1");
-$queryPrepared->execute();
+WHERE CARTINGREDIENT.ingredient = idIngredient AND CARTINGREDIENT.cart = idCart AND CART.user = idUser AND  user = :user");
+$queryPrepared->execute([
+        ":user" => $_SESSION["idUser"]
+]);
 $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-$queryPrepared = $pdo->prepare("SELECT idCart FROM CART WHERE user = 1 ORDER BY idCart DESC;");
-$queryPrepared->execute();
+$queryPrepared = $pdo->prepare("SELECT idCart FROM CART WHERE user = :user ORDER BY idCart DESC;");
+$queryPrepared->execute([
+    ":user" => $_SESSION["idUser"]
+]);
 $idCart = $queryPrepared->fetch(PDO::FETCH_ASSOC);
 $idCart = $idCart["idCart"];
 ?>
@@ -112,4 +120,7 @@ $idCart = $idCart["idCart"];
     </script>
 <?php
 include "footer.php";
+} else {
+    header("Location: login.php");
+}
 ?>
