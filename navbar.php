@@ -1,51 +1,54 @@
-<navbar class="mb-5">
-    <div class="navbar navbar-dark bg-dark shadow-sm">
-        <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
-                     stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2"
-                     viewBox="0 0 24 24" focusable="false">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                    <circle cx="12" cy="13" r="4"/>
-                </svg>
-                <strong class="col-md-3" href="home.php">Driv'n Cook</strong>
-
-                <div class="dropdown col-md-3">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Mon camion
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <button class="dropdown-item" type="button" onclick=window.location.href='#'>Information</button>
-                        <button class="dropdown-item" type="button" onclick=window.location.href='#'>Carnet d'entretien</button>
-                    </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="collapse navbar-collapse col-md-5 mx-auto" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <?php if ($_SERVER["REQUEST_URI"] != './home.php') { ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="home.php">Accueil</a>
+                </li>
+            <?php } ?>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="global" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Mon camion
+                </a>
+                <div class="dropdown-menu" aria-labelledby="global">
+                    <a class="dropdown-item" href="#">Information</a>
+                    <a class="dropdown-item" href="#">Carnet d'entretien</a>
                 </div>
-                <div class="dropdown col-md-3">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Mon stock &nbsp
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <button class="dropdown-item" type="button">Historique</button>
-                        <button class="dropdown-item" onclick=window.location.href='chooseWarehouse.php' type="button">
-                            Commandes
-                        </button>
-                    </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="warehouses" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Mon stock
+                </a>
+                <div class="dropdown-menu" aria-labelledby="warehouses">
+                    <a class="dropdown-item" href="#">Historique</a>
+                    <a class="dropdown-item" href="chooseWarehouse.php">Commandes</a>
                 </div>
-                <div class="dropdown col-md-3">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Mes événements
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <button class="dropdown-item" type="button">Réservations</button>
-                        <button class="dropdown-item" type="button">Dégustations</button>
-                    </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="benefits" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Mes événements
+                </a>
+                <div class="dropdown-menu" aria-labelledby="benefits">
+                    <a class="dropdown-item" href="#">Réservations</a>
+                    <a class="dropdown-item" href="#">Dégustations</a>
                 </div>
-                <div class="dropdown col-md-3">
-                    <button></button>
-                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="float-right">
+        <div class="form-inline my-2 my-lg-0 dropdown">
+            <a class="btn btn-dark my-2 my-sm-0" href="#" id="warehouses" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <i class="far fa-user-circle"></i>&nbsp;Gérer mon compte
             </a>
+            <div class="dropdown-menu dropdown-menu-lg-left" aria-labelledby="warehouses">
+                <a class="dropdown-item" href="myProfile.php">Mon profil</a>
+                <a class="dropdown-item" href="myPassword.php">Mot de passe</a>
+                <a class="dropdown-item" href="functions/logout.php"><i class="fas fa-sign-out-alt"></i>&nbsp;Déconnexion</a>
+            </div>
         </div>
     </div>
-</navbar>
+</nav>
