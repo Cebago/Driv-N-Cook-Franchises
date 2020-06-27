@@ -12,8 +12,8 @@
                     Mon camion
                 </a>
                 <div class="dropdown-menu" aria-labelledby="global">
-                    <a class="dropdown-item" href="#">Information</a>
-                    <a class="dropdown-item" href="#">Carnet d'entretien</a>
+                    <a class="dropdown-item" href="truckInfo.php">Information</a>
+                    <a class="dropdown-item" href="truckMaintenance.php">Carnet d'entretien</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
