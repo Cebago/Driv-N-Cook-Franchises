@@ -73,7 +73,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
         <div class="fixed-bottom text-right">
-            <button type="submit" class="btn btn-lg btn-secondary mr-5  mb-2"> Ajouter</button>
+            <button type="submit" class="btn btn-lg btn-secondary mr-5 mb-5"> Ajouter</button>
         </div>
     </form>
 <?php

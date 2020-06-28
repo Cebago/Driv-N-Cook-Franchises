@@ -11,14 +11,14 @@ include 'navbar.php';
 $pdo = connectDB();
 $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, quantity, idIngredient
 FROM INGREDIENTS, CARTINGREDIENT, CART, USER 
-WHERE CARTINGREDIENT.ingredient = idIngredient AND CARTINGREDIENT.cart = idCart AND CART.user = idUser AND  user = :user");
+WHERE CARTINGREDIENT.ingredient = idIngredient AND CARTINGREDIENT.cart = idCart AND CART.user = idUser AND emailAddress = :user");
 $queryPrepared->execute([
-        ":user" => $_SESSION["idUser"]
+        ":user" => $_SESSION["email"]
 ]);
 $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-$queryPrepared = $pdo->prepare("SELECT idCart FROM CART WHERE user = :user ORDER BY idCart DESC;");
+$queryPrepared = $pdo->prepare("SELECT idCart FROM CART, USER WHERE emailAddress = :user AND user = idUser ORDER BY idCart DESC;");
 $queryPrepared->execute([
-    ":user" => $_SESSION["idUser"]
+    ":user" => $_SESSION["email"]
 ]);
 $idCart = $queryPrepared->fetch(PDO::FETCH_ASSOC);
 $idCart = $idCart["idCart"];

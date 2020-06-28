@@ -3,9 +3,13 @@ session_start();
 require 'conf.inc.php';
 require 'functions.php';
 
-echo "<pre>";
-print_r($_POST);
-echo "</pre>";
+$pdo = connectDB();
+$queryPrepared = $pdo->prepare("SELECT idCart FROM CART, USER WHERE idUser = user AND emailAddress = :user ORDER BY idCart DESC LIMIT 1");
+$queryPrepared->execute([
+    ":user" => $_SESSION["email"]
+]);
+$cart = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+$cart = $cart["idCart"];
 
 foreach ($_POST as $key => $value) {
     echo "id = " . $key;
@@ -15,7 +19,7 @@ foreach ($_POST as $key => $value) {
         $pdo = connectDB();
         $queryPrepared = $pdo->prepare("SELECT * FROM CARTINGREDIENT WHERE cart = :cart AND ingredient = :ingredient");
         $queryPrepared->execute([
-            ":cart" => 1,
+            ":cart" => $cart,
             ":ingredient" => $key
         ]);
         $result = $queryPrepared->fetch();
@@ -26,7 +30,7 @@ foreach ($_POST as $key => $value) {
             $pdo = connectDB();
             $queryPrepared = $pdo->prepare("INSERT INTO CARTINGREDIENT (cart, ingredient, quantity) VALUES (:cart, :ingredient, :quantity)");
             $queryPrepared->execute([
-                ":cart" => 1,
+                ":cart" => $cart,
                 ":ingredient" => $key,
                 ":quantity" => $value
             ]);
@@ -35,7 +39,7 @@ foreach ($_POST as $key => $value) {
             $pdo = connectDB();
             $queryPrepared = $pdo->prepare("UPDATE CARTINGREDIENT SET quantity = quantity + :quantity WHERE cart = :cart AND ingredient = :ingredient");
             $queryPrepared->execute([
-                ":cart" => 1,
+                ":cart" => $cart,
                 ":ingredient" => $key,
                 ":quantity" => $value
             ]);

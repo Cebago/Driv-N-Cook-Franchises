@@ -43,9 +43,9 @@
                         <i class="fas fa-shopping-cart"></i>
                         <?php
                         $pdo = connectDB();
-                        $queryPrepared = $pdo->prepare("SELECT COUNT(*) AS count FROM CARTINGREDIENT, CART, USER WHERE idUser = user AND cart = idCart AND idUser = :user");
+                        $queryPrepared = $pdo->prepare("SELECT COUNT(*) AS count FROM CARTINGREDIENT, CART, USER WHERE idUser = user AND cart = idCart AND emailAddress = :user");
                         $queryPrepared->execute([
-                                ":user" => $_SESSION["idUser"]
+                                ":user" => $_SESSION["email"]
                         ]);
                         $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
                         $count = $result["count"];

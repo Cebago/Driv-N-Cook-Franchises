@@ -26,6 +26,11 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
         <button class="btn btn-primary mt-5 mb-5"><i class="fas fa-cart-arrow-down"></i>&nbsp;Commander</button>
     </form>
 
+    <button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
+sagittis lacus vel augue laoreet rutrum faucibus.">
+        Popover on bottom
+    </button>
+
 
 <script src="scripts/choose.js"></script>
     <?php
@@ -33,3 +38,4 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
 } else {
     header("Location: login.php");
 }
+?>
