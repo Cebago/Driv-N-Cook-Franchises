@@ -94,6 +94,9 @@ $idCart = $idCart["idCart"];
                 </table>
             </div>
         </div>
+        <div class="col-md-1 mx-auto mt-5">
+            <a href="payment.php" class="btn btn-dark"><i class="fas fa-credit-card"></i>&nbsp;Payer le panier</a>
+        </div>
     </div>
     <script>
         function deleteQuantity(cart,ingredient) {
