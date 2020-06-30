@@ -39,17 +39,17 @@
             <li class="nav-item">
                 <a class="nav-link" href="cart.php" id="benefits" role="button"
                    aria-haspopup="true" aria-expanded="false">
-                    <span class="badge badge-pill badge-dark">
+                    <span class="badge badge-pill badge-dark" id="cartQty">
                         <i class="fas fa-shopping-cart"></i>
                         <?php
                         $pdo = connectDB();
-                        $queryPrepared = $pdo->prepare("SELECT COUNT(*) AS count FROM CARTINGREDIENT, CART, USER WHERE idUser = user AND cart = idCart AND emailAddress = :user");
+                        $queryPrepared = $pdo->prepare("SELECT SUM(quantity) AS count FROM CARTINGREDIENT, CART, USER WHERE idUser = user AND cart = idCart AND emailAddress = :user");
                         $queryPrepared->execute([
                                 ":user" => $_SESSION["email"]
                         ]);
                         $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
                         $count = $result["count"];
-                        echo "&nbsp;" . $count;
+                        echo " " . $count;
                         ?>
                     </span>
                 </a>

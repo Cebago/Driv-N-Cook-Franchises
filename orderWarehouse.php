@@ -4,15 +4,22 @@ require 'conf.inc.php';
 require 'functions.php';
 
 if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
+    if (isset($_GET["warehouse"])) {
+        include 'header.php';
+        include 'navbar.php';
+        $pdo = connectDB();
 
-include 'header.php';
-include 'navbar.php';
-$pdo = connectDB();
-$queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient FROM INGREDIENTS, STORE, WAREHOUSES WHERE idIngredient = ingredient AND warehouse = idWarehouse AND warehouse = :warehouse");
-$queryPrepared->execute([
-        ":warehouse" => $_GET["warehouse"]
-]);
-$result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+        $queryPrepared = $pdo->prepare("SELECT warehouseName FROM WAREHOUSES WHERE idWarehouse = :warehouse");
+        $queryPrepared->execute([
+                ":warehouse" => $_GET["warehouse"]
+        ]);
+        $truck = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+
+        $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient FROM INGREDIENTS, STORE, WAREHOUSES WHERE idIngredient = ingredient AND warehouse = idWarehouse AND warehouse = :warehouse");
+        $queryPrepared->execute([
+                ":warehouse" => $_GET["warehouse"]
+        ]);
+        $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 ?>
     <script type="text/javascript">
         function addQuantity(name) {
@@ -31,6 +38,9 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
         <div class="container">
             <h1 class="display-4">Entrepôt</h1>
             <p class="lead">Achat entrepôt</p>
+            <?php
+            echo "<p class='lead'>" . $truck["warehouseName"] . " </p>"
+            ?>
         </div>
     </div>
     <form method="POST" action="addQuantity.php">
@@ -73,11 +83,14 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
         <div class="fixed-bottom text-right">
-            <button type="submit" class="btn btn-lg btn-secondary mr-5 mb-5"> Ajouter</button>
+            <button type="submit" class="btn btn-lg btn-secondary mr-5 mb-5"><i class="fas fa-cart-plus"></i>&nbsp;Ajouter</button>
         </div>
     </form>
 <?php
-include "footer.php";
+        include "footer.php";
+    } else {
+        header("Location: orderWarehouse.php?warehouse=1");
+    }
 } else {
     header("Location: login.php");
 }
