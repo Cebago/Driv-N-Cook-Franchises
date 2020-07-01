@@ -56,7 +56,6 @@ function login($email)
 /**
  * @return bool
  */
-
 function isActivated()
 {
     if (!empty($_SESSION["email"]) && !empty($_SESSION["token"])) {
@@ -111,7 +110,6 @@ function isConnected()
 /**
  * @return bool
  */
-
 function isAdmin()
 {
     if (!empty($_SESSION["email"]) && !empty($_SESSION["token"])) {
@@ -139,7 +137,6 @@ function isAdmin()
 /**
  * @return bool
  */
-
 function isFranchisee()
 {
     if (!empty($_SESSION["email"]) && !empty($_SESSION["token"])) {
@@ -167,7 +164,6 @@ function isFranchisee()
 /**
  * @param $email
  */
-
 function logout($email)
 {
     $pdo = connectDB();
@@ -175,4 +171,30 @@ function logout($email)
                                                     AND idUser = user 
                                                     AND tokenType = 'Site'");
     $queryPrepared->execute([":email" => $email]);
+}
+
+/**
+ * @param $email
+ * @return mixed
+ */
+function lastCart($email)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idCart FROM USER, CART WHERE user = idUser AND emailAddress = :email ORDER BY idCart DESC LIMIT 1");
+    $queryPrepared->execute([":email" => $email]);
+    $idCart = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    return $idCart["idCart"];
+}
+
+/**
+ * @param $idTruck
+ * @return mixed
+ */
+function truckWarehouse($idTruck)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idWarehouse FROM TRUCKWAREHOUSE, TRUCK, WAREHOUSES WHERE idTruck = truck AND warehouse = idWarehouse AND warehouseType = 'Camion' AND idTruck = :truck");
+    $queryPrepared->execute([":truck" => $idTruck]);
+    $warehouse = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    return $warehouse["idWarehouse"];
 }

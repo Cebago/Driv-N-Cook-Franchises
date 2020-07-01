@@ -36,6 +36,30 @@
                     <a class="dropdown-item" href="#">Dégustations</a>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="cart.php" id="benefits" role="button"
+                   aria-haspopup="true" aria-expanded="false">
+                    <span class="badge badge-pill badge-dark" id="cartQty">
+                        <i class="fas fa-shopping-cart"></i>
+                        <?php
+                        $cart = lastCart($_SESSION["email"]);
+                        $pdo = connectDB();
+                        $queryPrepared = $pdo->prepare("SELECT SUM(quantity) AS count FROM CARTINGREDIENT, CART, USER WHERE idUser = user AND cart = idCart AND emailAddress = :user AND idCart = :cart");
+                        $queryPrepared->execute([
+                                ":user" => $_SESSION["email"],
+                                ":cart" => $cart
+                        ]);
+                        $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+                        $count = $result["count"];
+                        if (!empty($count)) {
+                            echo " " . $count;
+                        } else {
+                            echo " 0";
+                        }
+                        ?>
+                    </span>
+                </a>
+            </li>
         </ul>
     </div>
     <div class="float-right">

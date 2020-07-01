@@ -4,15 +4,22 @@ require 'conf.inc.php';
 require 'functions.php';
 
 if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
+    if (isset($_GET["warehouse"])) {
+        include 'header.php';
+        include 'navbar.php';
+        $pdo = connectDB();
 
-include 'header.php';
-include 'navbar.php';
-$pdo = connectDB();
-$queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient FROM INGREDIENTS, STORE, WAREHOUSES WHERE idIngredient = ingredient AND warehouse = idWarehouse AND warehouse = :warehouse");
-$queryPrepared->execute([
-        ":warehouse" => $_GET["warehouse"]
-]);
-$result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+        $queryPrepared = $pdo->prepare("SELECT warehouseName FROM WAREHOUSES WHERE idWarehouse = :warehouse");
+        $queryPrepared->execute([
+                ":warehouse" => $_GET["warehouse"]
+        ]);
+        $truck = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+
+        $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient, price FROM INGREDIENTS, STORE, WAREHOUSES WHERE idIngredient = ingredient AND warehouse = idWarehouse AND warehouse = :warehouse");
+        $queryPrepared->execute([
+                ":warehouse" => $_GET["warehouse"]
+        ]);
+        $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 ?>
     <script type="text/javascript">
         function addQuantity(name) {
@@ -31,6 +38,9 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
         <div class="container">
             <h1 class="display-4">Entrepôt</h1>
             <p class="lead">Achat entrepôt</p>
+            <?php
+            echo "<p class='lead'>" . $truck["warehouseName"] . "</p>"
+            ?>
         </div>
     </div>
     <form method="POST" action="addQuantity.php">
@@ -45,13 +55,13 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
                                 <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
                                      xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
                                      focusable="false" role="img" aria-label="Placeholder: Thumbnail">
-                                    <title><?php echo $value["ingredientName"] ?></title>
+                                    <title><?php echo $value["ingredientName"]; ?></title>
                                     <rect width="100%" height="100%" fill="#55595c"/>
                                     <text x="50%" y="50%" fill="#eceeef"
                                           dy=".3em"><?php echo $value["ingredientImage"]; ?></text>
                                 </svg>
                                 <div class="card-body">
-                                    <p class="card-text"><?php echo $value["ingredientName"]; ?></p>
+                                    <p class="card-text"><?php echo $value["ingredientName"] . " - " . number_format($value["price"], 2) . "€"; ?></p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <button type="button" class="btn btn-sm btn-danger ml-1"
                                                 onclick="deleteQuantity(<?php echo $value["idIngredient"]; ?>)">
@@ -73,11 +83,14 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
         <div class="fixed-bottom text-right">
-            <button type="submit" class="btn btn-lg btn-secondary mr-5  mb-2"> Ajouter</button>
+            <button type="submit" class="btn btn-lg btn-secondary mr-5 mb-5"><i class="fas fa-cart-plus"></i>&nbsp;Ajouter</button>
         </div>
     </form>
 <?php
-include "footer.php";
+        include "footer.php";
+    } else {
+        header("Location: orderWarehouse.php?warehouse=1");
+    }
 } else {
     header("Location: login.php");
 }

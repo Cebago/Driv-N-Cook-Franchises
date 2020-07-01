@@ -1,3 +1,12 @@
+<?php
+session_start();
+require "conf.inc.php";
+require "functions.php";
+
+if (isActivated() && (isAdmin() || isFranchisee())) {
+?>
+
+
 <?php include "header.php"; ?>
 <?php include "navbar.php"; ?>
 
@@ -233,4 +242,8 @@
             </div>
         </div>
     </main>
-<?php include "footer.php"; ?>
+<?php include "footer.php";
+} else {
+    header("Location: login.php");
+}
+?>

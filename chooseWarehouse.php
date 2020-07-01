@@ -26,10 +26,10 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
         <button class="btn btn-primary mt-5 mb-5"><i class="fas fa-cart-arrow-down"></i>&nbsp;Commander</button>
     </form>
 
-
 <script src="scripts/choose.js"></script>
     <?php
     include "footer.php";
 } else {
     header("Location: login.php");
 }
+?>
