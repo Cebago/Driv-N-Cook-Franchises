@@ -27,15 +27,15 @@ function createToken($email)
 }
 
 /**
- *
+ * @param $idCart
+ * @return array
  */
-function getIngredient()
+function getIngredients($idCart)
 {
-
     $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory FROM INGREDIENTS");
-    $queryPrepared->execute();
-    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    $queryPrepared = $pdo->prepare("SELECT idIngredient, ingredientName, ingredientImage, ingredientCategory, quantity FROM INGREDIENTS, CARTINGREDIENT, CART WHERE cart = idCart AND ingredient = idIngredient AND idCart = :cart ");
+    $queryPrepared->execute([":cart" => $idCart]);
+    return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
 }
 
