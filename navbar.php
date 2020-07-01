@@ -42,14 +42,20 @@
                     <span class="badge badge-pill badge-dark" id="cartQty">
                         <i class="fas fa-shopping-cart"></i>
                         <?php
+                        $cart = lastCart($_SESSION["email"]);
                         $pdo = connectDB();
-                        $queryPrepared = $pdo->prepare("SELECT SUM(quantity) AS count FROM CARTINGREDIENT, CART, USER WHERE idUser = user AND cart = idCart AND emailAddress = :user");
+                        $queryPrepared = $pdo->prepare("SELECT SUM(quantity) AS count FROM CARTINGREDIENT, CART, USER WHERE idUser = user AND cart = idCart AND emailAddress = :user AND idCart = :cart");
                         $queryPrepared->execute([
-                                ":user" => $_SESSION["email"]
+                                ":user" => $_SESSION["email"],
+                                ":cart" => $cart
                         ]);
                         $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
                         $count = $result["count"];
-                        echo " " . $count;
+                        if (!empty($count)) {
+                            echo " " . $count;
+                        } else {
+                            echo " 0";
+                        }
                         ?>
                     </span>
                 </a>

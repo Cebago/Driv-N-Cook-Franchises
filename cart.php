@@ -7,21 +7,21 @@ if (isConnected() && isActivated() && (isFranchisee() || isAdmin())) {
 
 include 'header.php';
 include 'navbar.php';
+    $idCart = lastCart($_SESSION["email"]);
 
 $pdo = connectDB();
 $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, quantity, idIngredient
-FROM INGREDIENTS, CARTINGREDIENT, CART, USER 
-WHERE CARTINGREDIENT.ingredient = idIngredient AND CARTINGREDIENT.cart = idCart AND CART.user = idUser AND emailAddress = :user");
+                                            FROM INGREDIENTS, CARTINGREDIENT, CART, USER 
+                                            WHERE CARTINGREDIENT.ingredient = idIngredient 
+                                              AND CARTINGREDIENT.cart = idCart 
+                                              AND CART.user = idUser 
+                                              AND emailAddress = :user
+                                              AND idCart = :id");
 $queryPrepared->execute([
-        ":user" => $_SESSION["email"]
+    ":user" => $_SESSION["email"],
+    ":id" => $idCart
 ]);
-$result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-$queryPrepared = $pdo->prepare("SELECT idCart FROM CART, USER WHERE emailAddress = :user AND user = idUser ORDER BY idCart DESC;");
-$queryPrepared->execute([
-    ":user" => $_SESSION["email"]
-]);
-$idCart = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-$idCart = $idCart["idCart"];
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 ?>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
@@ -35,12 +35,15 @@ $idCart = $idCart["idCart"];
             $user = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             $firstname = $user[0]["firstname"];
             $lastname = $user[0]["lastname"];
-            echo '<p class="lead">Ceci est votre panier ' . $firstname . ' ' . $lastname . '</p>';
+            echo '<p class="lead">Ceci est votre panier ' . $firstname . '&nbsp;' . $lastname . '</p>';
             ?>
         </div>
     </div>
-    <div class="album py-5 bg-pink">
+    <div class="album py-5">
         <div class="row col-md-12 mx-auto">
+            <?php
+            if (!empty($result)) {
+            ?>
             <div class="card mx-auto">
                 <table class="table">
                     <thead class="thead-dark">
@@ -55,16 +58,15 @@ $idCart = $idCart["idCart"];
                     </thead>
                     <tbody>
                     <?php
-                    foreach ($result
-                    as $value) {
-                    $queryPrepared = $pdo->prepare("SELECT price FROM INGREDIENTS, STORE WHERE ingredient = idIngredient AND idIngredient = :ingredient");
-                    $ingredient = $value["idIngredient"];
-                    $queryPrepared->execute([
-                        ":ingredient" => $ingredient
-                    ]);
-                    $price = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-                    $price = $price["price"];
-                    $finalPrice = $price * $value["quantity"];
+                        foreach ($result as $value) {
+                        $queryPrepared = $pdo->prepare("SELECT price FROM INGREDIENTS, STORE WHERE ingredient = idIngredient AND idIngredient = :ingredient");
+                        $ingredient = $value["idIngredient"];
+                        $queryPrepared->execute([
+                            ":ingredient" => $ingredient
+                        ]);
+                        $price = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+                        $price = $price["price"];
+                        $finalPrice = $price * $value["quantity"];
                     ?>
                         <tr>
                             <td><?php echo $value["ingredientCategory"] ?></td>
@@ -72,16 +74,16 @@ $idCart = $idCart["idCart"];
                             <td id="<?php echo $value['idIngredient']; ?>"><?php echo $value["quantity"] ?></td>
                             <td id="<?php echo 'priceUnitary' . $value['idIngredient']; ?>"><?php echo number_format($price, 2) . "€" ?></td>
                             <td id="<?php echo 'priceId' . $value['idIngredient']; ?>" class="final"><?php echo number_format($finalPrice, 2) . "€" ?></td>
-                            <td>
+                            <td class="text-center">
+                                <button type="button"
+                                        onclick="deleteQuantity(<?php echo $idCart . ", " . $value["idIngredient"]; ?>, this)"
+                                        class="btn btn-sm btn-danger ml-2"><i class="fas fa-minus"></i></button>
                                 <button type="button"
                                         onclick="addQuantity(<?php echo $idCart . ", " . $value["idIngredient"]; ?>)"
-                                        class="btn btn-sm btn-success ml-1"><i class="fas fa-plus"></i></button>
-                                <button type="button"
-                                        onclick="deleteQuantity(<?php echo $idCart . ", " . $value["idIngredient"]; ?>)"
-                                        class="btn btn-sm btn-danger ml-1"><i class="fas fa-minus"></i></button>
+                                        class="btn btn-sm btn-success ml-2"><i class="fas fa-plus"></i></button>
                             </td>
                         </tr>
-                    <?php } ?>
+
                     <tr>
                         <td colspan="1">
                             <strong>TOTAL :</strong>
@@ -93,20 +95,33 @@ $idCart = $idCart["idCart"];
                     </tbody>
                 </table>
             </div>
+
+            <?php
+                }
+            } else {
+                    echo "<div class='col-md-6 mx-auto'><p>Vous n'avez rien dans votre panier</p></div>";
+                }
+            ?>
         </div>
+        <?php
+        if (!empty($result)) {
+        ?>
         <div class="col-md-1 mx-auto mt-5">
             <a href="payment.php" class="btn btn-dark"><i class="fas fa-credit-card"></i>&nbsp;Payer le panier</a>
         </div>
+        <?php
+        }
+        ?>
     </div>
     <script>
-        function deleteQuantity(cart,ingredient) {
+        function deleteQuantity(cart, ingredient, thisParameter) {
             let input = document.getElementById(ingredient);
             let inputPrice = document.getElementById('priceId'+ingredient);
             let inputPriceUnitary = document.getElementById('priceUnitary'+ingredient);
-            if (Number(input.innerText) > 0){
-                input.innerText = Number(input.innerText) - 1;
+            if (Number(input.innerText) >= 1){
+                input.innerText = String(Number(input.innerText) - 1);
                 inputPrice.innerText = (parseFloat(inputPrice.innerText) - parseFloat(inputPriceUnitary.innerText)).toFixed(2)+'€';
-                document.getElementById(ingredient).removeAttribute("disabled");
+                thisParameter.removeAttribute("disabled");
                 let cartQty = document.getElementById("cartQty");
                 cartQty.innerHTML = "<i class='fas fa-shopping-cart'></i>&nbsp;" + Number(Number(cartQty.innerText) - 1);
                 const request = new XMLHttpRequest();
@@ -121,8 +136,8 @@ $idCart = $idCart["idCart"];
                 };
                 request.open('GET', 'functions/deleteIngredient.php?cart=' + cart + '&ingredient=' + ingredient);
                 request.send();
-            }else {
-                document.getElementById(ingredient).setAttribute("disabled","true");
+            } else {
+                thisParameter.setAttribute("disabled","true");
             }
             displayFinal();
         }

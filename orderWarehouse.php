@@ -15,7 +15,7 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
         ]);
         $truck = $queryPrepared->fetch(PDO::FETCH_ASSOC);
 
-        $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient FROM INGREDIENTS, STORE, WAREHOUSES WHERE idIngredient = ingredient AND warehouse = idWarehouse AND warehouse = :warehouse");
+        $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientImage, ingredientCategory, idIngredient, price FROM INGREDIENTS, STORE, WAREHOUSES WHERE idIngredient = ingredient AND warehouse = idWarehouse AND warehouse = :warehouse");
         $queryPrepared->execute([
                 ":warehouse" => $_GET["warehouse"]
         ]);
@@ -39,7 +39,7 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
             <h1 class="display-4">Entrepôt</h1>
             <p class="lead">Achat entrepôt</p>
             <?php
-            echo "<p class='lead'>" . $truck["warehouseName"] . " </p>"
+            echo "<p class='lead'>" . $truck["warehouseName"] . "</p>"
             ?>
         </div>
     </div>
@@ -55,13 +55,13 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
                                 <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
                                      xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
                                      focusable="false" role="img" aria-label="Placeholder: Thumbnail">
-                                    <title><?php echo $value["ingredientName"] ?></title>
+                                    <title><?php echo $value["ingredientName"]; ?></title>
                                     <rect width="100%" height="100%" fill="#55595c"/>
                                     <text x="50%" y="50%" fill="#eceeef"
                                           dy=".3em"><?php echo $value["ingredientImage"]; ?></text>
                                 </svg>
                                 <div class="card-body">
-                                    <p class="card-text"><?php echo $value["ingredientName"]; ?></p>
+                                    <p class="card-text"><?php echo $value["ingredientName"] . " - " . number_format($value["price"], 2) . "€"; ?></p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <button type="button" class="btn btn-sm btn-danger ml-1"
                                                 onclick="deleteQuantity(<?php echo $value["idIngredient"]; ?>)">
