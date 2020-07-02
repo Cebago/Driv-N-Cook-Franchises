@@ -41,8 +41,8 @@ $users = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
                         <label for="inputFranchisee" class="col-sm-2 col-form-label">Franchisé</label>
                         <div class="col-sm-10">
                             <input type="text" name="franchisee" id="franchisee" class="form-control"
-                                   placeholder="<?php echo $value['lastname'] . " " . $value['firstname'] ?>"
-                                   value="<?php echo $value['lastname'] . " " . $value['firstname'] ?>" disabled>
+                                   placeholder="<?php echo $user['lastname'] . " " . $user['firstname'] ?>"
+                                   value="<?php echo $user['lastname'] . " " . $user['firstname'] ?>" disabled>
                         </div>
                     </div>
                     <div class="form-group row">
