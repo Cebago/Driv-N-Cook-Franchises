@@ -171,8 +171,3 @@ function truckWarehouse($idTruck)
     $warehouse = $queryPrepared->fetch(PDO::FETCH_ASSOC);
     return $warehouse["idWarehouse"];
 }
-
-function ddnjzdb()
-{
-
-}

@@ -23,7 +23,7 @@ if (count($_POST) == 3
 
         if ($result[0]["idUser"] == $user) {
             $cle = createToken($email);
-            $queryPrepared = $pdo->prepare("UPDATE USER SET token = :token WHERE idUser = :user");
+            $queryPrepared = $pdo->prepare("UPDATE USER, USERTOKEN SET token = :token WHERE idUser = :user AND user = idUser AND tokenType = 'Site' ");
             $queryPrepared->execute([
                 ":token" => $cle,
                 ":user" => $idUser
