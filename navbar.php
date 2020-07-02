@@ -47,8 +47,8 @@
                         $pdo = connectDB();
                         $queryPrepared = $pdo->prepare("SELECT SUM(quantity) AS count FROM CARTINGREDIENT, CART, USER WHERE idUser = user AND cart = idCart AND emailAddress = :user AND idCart = :cart");
                         $queryPrepared->execute([
-                                ":user" => $_SESSION["email"],
-                                ":cart" => $cart
+                            ":user" => $_SESSION["email"],
+                            ":cart" => $cart
                         ]);
                         $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
                         $count = $result["count"];

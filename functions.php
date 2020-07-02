@@ -4,9 +4,10 @@ require_once "conf.inc.php";
 /**
  * @return PDO
  */
-function connectDB(){
-    try{
-        $pdo = new PDO(DBDRIVER.":host=".DBHOST.";dbname=".DBNAME ,DBUSER,DBPWD);
+function connectDB()
+{
+    try {
+        $pdo = new PDO(DBDRIVER . ":host=" . DBHOST . ";dbname=" . DBNAME, DBUSER, DBPWD);
         //Permet d'afficher les erreurs SQL
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (Exception $e) {
@@ -171,6 +172,7 @@ function truckWarehouse($idTruck)
     return $warehouse["idWarehouse"];
 }
 
-function ddnjzdb() {
+function ddnjzdb()
+{
 
 }

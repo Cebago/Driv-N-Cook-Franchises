@@ -3,7 +3,7 @@ session_start();
 require "conf.inc.php";
 require "functions.php";
 
-if (isConnected() && isActivated() && isFranchisee() ) {
+if (isConnected() && isActivated() && isFranchisee()) {
     include "header.php";
     include "navbar.php";
 
@@ -19,44 +19,46 @@ if (isConnected() && isActivated() && isFranchisee() ) {
         <div class="accordion" id="accordionExample">
             <?php
             foreach ($orders as $order) {
-            ?>
-            <div class="card">
-                <div class="card-header" id="<?php echo 'heading' . $order['idOrder'] ?>">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                                data-target="<?php echo '#collapse' . $order['idOrder'] ?>" aria-expanded="true" aria-controls="<?php echo 'collapse' . $order['idOrder'] ?>">
-                            <?php
-                            echo "Commande du " . $order["orderDate"] . " à " . $order["orderHour"];
-                            ?>
-                        </button>
-                    </h2>
-                </div>
+                ?>
+                <div class="card">
+                    <div class="card-header" id="<?php echo 'heading' . $order['idOrder'] ?>">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                                    data-target="<?php echo '#collapse' . $order['idOrder'] ?>" aria-expanded="true"
+                                    aria-controls="<?php echo 'collapse' . $order['idOrder'] ?>">
+                                <?php
+                                echo "Commande du " . $order["orderDate"] . " à " . $order["orderHour"];
+                                ?>
+                            </button>
+                        </h2>
+                    </div>
 
-                <div id="<?php echo 'collapse' . $order['idOrder'] ?>" class="collapse" aria-labelledby="<?php echo 'heading' . $order['idOrder'] ?>" data-parent="#accordionExample">
-                    <div class="card-body">
-                        <p>
-                            <strong>Total:</strong>
-                            <?php
-                            echo number_format($order["orderPrice"], 2) . "€";
-                            ?>
-                        </p>
-                        <p>
-                            <strong>Camion:</strong>
-                            <?php
-                            echo $order["truckName"];
-                            ?>
-                        </p>
-                        <ul>
-                            <?php
-                            $ingredients = getIngredients($order['idCart']);
-                            foreach ($ingredients as $ingredient) {
-                                echo "<li>" . $ingredient['ingredientName'] . "&nbsp;x" . $ingredient["quantity"] . "</li>";
-                            }
-                            ?>
-                        </ul>
+                    <div id="<?php echo 'collapse' . $order['idOrder'] ?>" class="collapse"
+                         aria-labelledby="<?php echo 'heading' . $order['idOrder'] ?>" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p>
+                                <strong>Total:</strong>
+                                <?php
+                                echo number_format($order["orderPrice"], 2) . "€";
+                                ?>
+                            </p>
+                            <p>
+                                <strong>Camion:</strong>
+                                <?php
+                                echo $order["truckName"];
+                                ?>
+                            </p>
+                            <ul>
+                                <?php
+                                $ingredients = getIngredients($order['idCart']);
+                                foreach ($ingredients as $ingredient) {
+                                    echo "<li>" . $ingredient['ingredientName'] . "&nbsp;x" . $ingredient["quantity"] . "</li>";
+                                }
+                                ?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
             <?php } ?>
         </div>
     </div>

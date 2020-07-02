@@ -13,8 +13,8 @@ if (count($_POST) == 2
     $price = $_POST["price"];
     $date = $_POST["date"];
 
-        $error = false;
-        $listOfErrors = [];
+    $error = false;
+    $listOfErrors = [];
 
     //prix
     if ($price < 0 || $price > 1000) {
@@ -119,7 +119,7 @@ if (count($_POST) == 2
         }
     }
 } else {
-   die("Ne pas modifier le formulaire !!!");
+    die("Ne pas modifier le formulaire !!!");
 }
 
 

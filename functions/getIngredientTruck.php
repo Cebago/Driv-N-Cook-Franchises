@@ -14,8 +14,8 @@ $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientCategory, idIng
                                                   AND TRUCK.user = idUser
                                                   AND warehouseType = 'Camion'
                                                   AND emailAddress = :email");
-    $queryPrepared->execute([":email" => $_SESSION["email"]]);
-    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+$queryPrepared->execute([":email" => $_SESSION["email"]]);
+$result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
 $string = "";
 

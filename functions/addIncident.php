@@ -5,7 +5,7 @@ require '../functions.php';
 
 if (isset($_POST)
     && (count($_POST) == 4
-        || count($_POST) == 5 )
+        || count($_POST) == 5)
 ) {
     $name = ucfirst(trim(htmlspecialchars($_POST["incidentName"])));
     $date = $_POST["incidentDate"];

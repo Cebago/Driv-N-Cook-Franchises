@@ -31,7 +31,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
             $listOfErrors[] = "L'année saisie n'est pas bonne";
         }
 
-        if (!preg_match("#[0-9]{3}#", $ccv) || strlen($ccv) !=3) {
+        if (!preg_match("#[0-9]{3}#", $ccv) || strlen($ccv) != 3) {
             $error = true;
             $listOfErrors[] = "Le code n'est pas dans un format valide";
         }

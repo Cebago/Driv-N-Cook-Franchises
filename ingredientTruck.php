@@ -5,8 +5,8 @@ require 'functions.php';
 
 if (isConnected() && isActivated() && isFranchisee()) {
 
-include 'header.php';
-include 'navbar.php';
+    include 'header.php';
+    include 'navbar.php';
 
     $pdo = connectDB();
     $queryPrepared = $pdo->prepare("SELECT ingredientCategory, ingredientName FROM INGREDIENTS GROUP BY ingredientCategory");
@@ -24,16 +24,16 @@ include 'navbar.php';
             </button>
         </p>
     </div>
-<?php
-if (isset($_SESSION["errors"])) {
-    echo "<div class='alert alert-danger'>";
-    foreach ($_SESSION["errors"] as $error) {
-        echo "<li>" . $error;
+    <?php
+    if (isset($_SESSION["errors"])) {
+        echo "<div class='alert alert-danger'>";
+        foreach ($_SESSION["errors"] as $error) {
+            echo "<li>" . $error;
+        }
+        echo "</div>";
     }
-    echo "</div>";
-}
-unset($_SESSION["errors"]);
-?>
+    unset($_SESSION["errors"]);
+    ?>
 
     <div class="card w-75 mx-auto col-md-8 mx-auto">
         <table class="table">
@@ -186,6 +186,7 @@ unset($_SESSION["errors"]);
                 }
             }
         }
+
         function addInBdd() {
             const ingredient = document.getElementById('selectIngredientName');
             const category = document.getElementById('selectCategory');
@@ -203,6 +204,7 @@ unset($_SESSION["errors"]);
             request.send('ingredient=' + ingredient + '&category=' + category);
             getIngredientTruck();
         }
+
         function showCategory() {
             const select = document.getElementById("selectCategory");
             const name = document.getElementById("selectName");
@@ -236,9 +238,10 @@ unset($_SESSION["errors"]);
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             request.send('ingredient=' + select.value);
         }
+
         window.onload = getIngredientTruck;
     </script>
-<?php include "footer.php";
+    <?php include "footer.php";
 } else {
     header("Location: login.php");
 }
