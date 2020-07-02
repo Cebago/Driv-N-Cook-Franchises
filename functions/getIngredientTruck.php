@@ -24,7 +24,7 @@ foreach ($result as $value) {
     $string .= "<tr>";
     $string .= "<td>" . $value['ingredientName'] . "</td>";
     $string .= "<td>" . $value['ingredientCategory'] . "</td>";
-    $string .= "<td>";
+    $string .= "<td class='text-center'>";
     $string .= '<button type="button" class="btn btn-danger btn-sm" onclick="disableIngredient(' . $value["idIngredient"] . ')">Rendre indisponible</button>';
     $string .= "</td>";
 }

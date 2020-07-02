@@ -3,7 +3,7 @@ session_start();
 require 'conf.inc.php';
 require 'functions.php';
 
-if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
+if (isConnected() && isActivated() && isFranchisee()) {
 
 include 'header.php';
 include 'navbar.php';
@@ -35,13 +35,13 @@ if (isset($_SESSION["errors"])) {
 unset($_SESSION["errors"]);
 ?>
 
-    <div class="card w-75 mx-auto">
+    <div class="card w-75 mx-auto col-md-8 mx-auto">
         <table class="table">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Ingrédient</th>
                 <th scope="col">Famille</th>
-                <th scope="col">Actions</th>
+                <th scope="col" class="text-center">Actions</th>
             </tr>
             </thead>
             <tbody id="ingredients"></tbody>
@@ -65,7 +65,7 @@ unset($_SESSION["errors"]);
                                         id="selectCategory" name="category" required>
                                     <option selected>Choisir une catégorie..</option>
                                     <?php foreach ($result as $value) {
-                                        echo "<option value='" . $value["ingredientCategory"] . "'>" . $value["ingredientCategory"] . "</option>";
+                                        echo "<option user='" . $value["ingredientCategory"] . "'>" . $value["ingredientCategory"] . "</option>";
                                     } ?>
                                 </select>
                             </div>
