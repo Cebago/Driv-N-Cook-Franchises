@@ -10,14 +10,18 @@ include "header.php";
 
 
 $pdo = connectDB();
-$queryPrepared = $pdo->prepare("SELECT firstname, lastname FROM USER WHERE idUser = 1");
-$queryPrepared->execute();
-$result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+$queryPrepared = $pdo->prepare("SELECT firstname, lastname FROM USER WHERE emailAddress = :email");
+$queryPrepared->execute([
+        ":email" => $_SESSION["email"]
+]);
+$users = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
-<?php foreach ($result as $value) { ?>
-    <div class="card">
+<?php
+    include "navbar.php";
+    foreach ($users as $user) { ?>
+    <div class="card col-md-11 mx-auto mt-5">
         <div class="card-body">
 
             <?php
@@ -37,7 +41,7 @@ $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
                         <label for="inputFranchisee" class="col-sm-2 col-form-label">Franchisé</label>
                         <div class="col-sm-10">
                             <input type="text" name="franchisee" id="franchisee" class="form-control"
-                                   placeholder="<?php echo $value['lastname'] ?> <?php echo $value['firstname'] ?>"
+                                   placeholder="<?php echo $user['lastname'] ?> <?php echo $user['firstname'] ?>"
                                    value="<?php echo (isset($_SESSION["inputErrors"]))
                                        ? $_SESSION["inputErrors"]["franchisee"]
                                        : ""; ?>" disabled>

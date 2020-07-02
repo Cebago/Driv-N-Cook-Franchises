@@ -107,7 +107,6 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
             } else {
                 $listOfErrors[] = "Sorry, there was an error uploading your file.";
                 $_SESSION["errors"] = $listOfErrors;
-                header("Location: ../ingredientTruck.php");
             }
         }
     }
@@ -157,7 +156,6 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
             ":warehouse" => $idWarehouse,
             ":ingredient" => $ingredient
         ]);
-        header("Location: orderInvoice.php");
     }
 }
 if (isset($_POST["lastOne"]) && $_POST["lastOne"] == "on") {

@@ -22,6 +22,7 @@
                     Mon stock
                 </a>
                 <div class="dropdown-menu" aria-labelledby="warehouses">
+                    <a class="dropdown-item" href="ingredientTruck.php">Voir mon stock</a>
                     <a class="dropdown-item" href="#">Historique</a>
                     <a class="dropdown-item" href="chooseWarehouse.php">Commandes</a>
                 </div>
