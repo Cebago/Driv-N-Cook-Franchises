@@ -46,7 +46,7 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
                             <select class="form-control selectCategory" onchange="showCategory()" id="selectCategory">
                                 <option selected>Choisir une catégorie..</option>
                                 <?php foreach ($result as $value) {
-                                    echo "<option value='" . $value["ingredientCategory"] . "'>" . $value["ingredientCategory"] . "</option>";
+                                    echo "<option user='" . $value["ingredientCategory"] . "'>" . $value["ingredientCategory"] . "</option>";
                                 } ?>
                             </select>
                         </div>
