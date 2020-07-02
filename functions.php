@@ -74,10 +74,9 @@ function isActivated()
         $isActivated = $isActivated["isActivated"];
         if ($isActivated == 1) {
             return true;
-        } else {
-            return false;
         }
     }
+    return false;
 }
 
 /**
@@ -110,33 +109,6 @@ function isConnected()
 /**
  * @return bool
  */
-function isAdmin()
-{
-    if (!empty($_SESSION["email"]) && !empty($_SESSION["token"])) {
-        $email = $_SESSION["email"];
-        $token = $_SESSION["token"];
-        $pdo = connectDB();
-        $queryPrepared = $pdo->prepare("SELECT roleName FROM USER, SITEROLE, USERTOKEN WHERE emailAddress = :email 
-                                                 AND USERTOKEN.token = :token 
-                                                 AND user = idUser 
-                                                 AND userRole = idRole
-                                                 AND tokenType = 'Site'");
-        $queryPrepared->execute([
-            ":email" => $email,
-            ":token" => $token
-        ]);
-        $isAdmin = $queryPrepared->fetch();
-        $isAdmin = $isAdmin["roleName"];
-        if ($isAdmin == "Administrateur") {
-            return true;
-        }
-        return false;
-    }
-}
-
-/**
- * @return bool
- */
 function isFranchisee()
 {
     if (!empty($_SESSION["email"]) && !empty($_SESSION["token"])) {
@@ -157,8 +129,8 @@ function isFranchisee()
         if ($isAdmin == "Franchisé") {
             return true;
         }
-        return false;
     }
+    return false;
 }
 
 /**
