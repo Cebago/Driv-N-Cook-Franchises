@@ -3,7 +3,7 @@ session_start();
 require "conf.inc.php";
 require "functions.php";
 
-if (isActivated() && (isAdmin() || isFranchisee())) {
+if (isActivated() && isFranchisee()) {
 ?>
 
 
