@@ -5,7 +5,6 @@ require 'functions.php';
 
 if (isConnected() && isActivated() && (isFranchisee() || isAdmin())) {
 
-
 include "header.php";
 
 

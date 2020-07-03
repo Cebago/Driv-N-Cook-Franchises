@@ -3,6 +3,11 @@
 session_start();
 require 'conf.inc.php';
 require 'functions.php';
+
+if (!isConnected() || !isActivated() && (!isFranchisee() || !isAdmin())) {
+    header("Location: login.php");
+}
+
 include 'header.php';
 ?>
 </head>
