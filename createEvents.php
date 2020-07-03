@@ -10,8 +10,10 @@ if (isConnected() && isActivated() && isFranchisee()) {
             ":email" => $_SESSION["email"]
     ]);
     $info = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-    $user = $info[0]["idUser"];
-    $truck = $info[0]["truckName"];
+    if (!empty($info)) {
+        $user = $info[0]["idUser"];
+        $truck = $info[0]["truckName"];
+    }
     include "header.php";
     ?>
     <body>
@@ -20,8 +22,6 @@ if (isConnected() && isActivated() && isFranchisee()) {
     ?>
     <div class="col-md-11 mx-auto pb-2 pt-2 mt-5 alert-danger alert card">
         <ul>
-
-
         <?php
         foreach ($_SESSION["errors"] as $error) {
             echo "<li>" . $error . "</li>";
@@ -33,6 +33,8 @@ if (isConnected() && isActivated() && isFranchisee()) {
         unset($_SESSION["errors"]);
     }
     ?>
+
+    <?php if(!empty($info)){ ?>
     <form class="col-md-11 mx-auto mt-5 card pb-2 pt-2" method="POST" action="functions/newEvent.php">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -86,9 +88,16 @@ if (isConnected() && isActivated() && isFranchisee()) {
         </div>
         <button type="submit" class="btn btn-primary">Créer l'évènement</button>
     </form>
+<?php } else{?>
 
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">Oups, vous n'avez pas de camion</h1>
+                <p class="lead">Il vous faut un camion pour pouvoir créer un évennement !</p>
+            </div>
+        </div>
 
-    <?php
+    <?php }
     include "footer.php";
 } else {
     header("Location: login.php");
