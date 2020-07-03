@@ -15,7 +15,24 @@ if (isConnected() && isActivated() && isFranchisee()) {
     include "header.php";
     ?>
     <body>
-    <?php include "navbar.php"; ?>
+    <?php include "navbar.php";
+    if (isset($_SESSION["errors"])) {
+    ?>
+    <div class="col-md-11 mx-auto pb-2 pt-2 mt-5 alert-danger alert card">
+        <ul>
+
+
+        <?php
+        foreach ($_SESSION["errors"] as $error) {
+            echo "<li>" . $error . "</li>";
+        }
+        ?>
+        </ul>
+    </div>
+    <?php
+        unset($_SESSION["errors"]);
+    }
+    ?>
     <form class="col-md-11 mx-auto mt-5 card pb-2 pt-2" method="POST" action="functions/newEvent.php">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -32,6 +49,16 @@ if (isConnected() && isActivated() && isFranchisee()) {
                 <label for="endDate">Date de fin</label>
                 <input type="date" class="form-control" id="endDate" name="endDate" min="<?php echo date('Y-m-d'); ?>" required>
             </div>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Options</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01" name="type" required>
+                <option selected value="">Choisir un type d'évènement...</option>
+                <option value="0">Réservation</option>
+                <option value="1">Dégustation</option>
+            </select>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
