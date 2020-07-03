@@ -32,6 +32,7 @@
                     Mes événements
                 </a>
                 <div class="dropdown-menu" aria-labelledby="benefits">
+                    <a class="dropdown-item" href="#">Créer un nouvel évènement</a>
                     <a class="dropdown-item" href="#">Réservations</a>
                     <a class="dropdown-item" href="#">Dégustations</a>
                 </div>
