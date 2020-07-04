@@ -16,7 +16,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
     }
     include "header.php";
     ?>
-    <body>
+
     <?php include "navbar.php";
     if (isset($_SESSION["errors"])) {
     ?>
@@ -34,8 +34,36 @@ if (isConnected() && isActivated() && isFranchisee()) {
     }
     ?>
 
-    <?php if(!empty($info)){ ?>
+    <?php if(!empty($info)){
+        $dir    = 'img/eventsPics/';
+        $images = array_diff(scandir($dir), array('..', '.'));
+        ?>
+        <button onclick="getCurrentSlide('#carouselExampleInterval')"> GiveMe Slide</button>
+        <div class="col-md-4 display-1" style="margin-left: auto; margin-right: auto">
+            <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <?php foreach ($images as $key => $image){
+                        ?>
+                    <div class="carousel-item <?php echo $key==2?'active':''; ?>" data-interval="false">
+                        <img src="<?php echo $dir.$image ?>" class="d-block w-100" alt="...">
+                    </div>
+                   <?php } ?>
+
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleInterval" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+
+
     <form class="col-md-11 mx-auto mt-5 card pb-2 pt-2" method="POST" action="functions/newEvent.php">
+
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Nom du camion</span>
@@ -88,7 +116,10 @@ if (isConnected() && isActivated() && isFranchisee()) {
         </div>
         <button type="submit" class="btn btn-primary">Créer l'évènement</button>
     </form>
-<?php } else{?>
+
+
+
+    <?php } else{?>
 
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
@@ -97,8 +128,15 @@ if (isConnected() && isActivated() && isFranchisee()) {
             </div>
         </div>
 
-    <?php }
+    <?php } ?>
+
+    <?php
     include "footer.php";
 } else {
     header("Location: login.php");
 }
+
+
+?>
+
+
