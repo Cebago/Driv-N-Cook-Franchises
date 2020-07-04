@@ -198,3 +198,16 @@ function truckWarehouse($idTruck)
     $warehouse = $queryPrepared->fetch(PDO::FETCH_ASSOC);
     return $warehouse["idWarehouse"];
 }
+
+/**
+ * @param $email
+ * @return mixed
+ */
+function getMyTruck($email)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idTruck FROM TRUCK, USER WHERE idUser = user AND emailAddress = :email");
+    $queryPrepared->execute([":email" => $email]);
+    $truck = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    return $truck["idTruck"];
+}

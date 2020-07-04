@@ -4,10 +4,11 @@ require "conf.inc.php";
 require "functions.php";
 
 if (isConnected() && isActivated() && isFranchisee()) {
+    $idTruck = getMyTruck($_SESSION["email"]);
     $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("SELECT idEvent, eventType, eventName, eventAddress, eventCity, eventPostalCode, eventBeginDate, eventEndDate, eventStartHour, eventEndHour FROM EVENTS, USER, TRUCK WHERE idUser = user AND emailAddress = :email");
+    $queryPrepared = $pdo->prepare("SELECT idEvent, eventDesc, eventImg, eventType, eventName, eventAddress, eventCity, eventPostalCode, eventBeginDate, eventEndDate, eventStartHour, eventEndHour FROM EVENTS, HOST, TRUCK WHERE event = idEvent AND truck = idTruck AND truck = :idTruck");
     $queryPrepared->execute([
-        ":email" => $_SESSION["email"]
+        ":idTruck" => $idTruck
     ]);
     ;
     $info = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
@@ -20,7 +21,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
 
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
-                <h1 class="display-4">Aucun évennement de programmé!</h1>
+                <h1 class="display-4">Aucun événement de programmé!</h1>
                 <p class="lead">N'hésitez pas à privatiser votre camion</p>
                 <button class="btn btn-success" onclick="window.location.href='createEvents.php'">Créer un évennement !</button>
             </div>
@@ -57,13 +58,15 @@ if (isConnected() && isActivated() && isFranchisee()) {
             <?php
             foreach ($info as $key => $event) {
             ?>
+
             <div class="card cardDetails" id="details<?php echo $event["idEvent"]?>" style="width: 50%; display: <?php echo $key?"none":"block" //j'affiche le premier element uniquement?>">
-                <img src="..." class="card-img-top" alt="" >
+                <img src="img/events/<?php echo $event["eventImg"]?> "style="width: 100%" class="card-img-top" alt="" >
                 <div class="card-body">
                     <h5 class="card-title"><?php echo $event["eventName"] ?></h5>
                     <p class="card-text"><b><?php echo $event["eventType"]?></b></p>
                     <hr>
-                    <p></p>
+                    <p class="card-text"><b><?php echo $event["eventDesc"]?></b></p>
+                    <hr>
                 </div>
 
 

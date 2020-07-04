@@ -3,10 +3,11 @@ session_start();
 require "../conf.inc.php";
 require "../functions.php";
 
-if (count($_POST) == 9 && isset($_POST["truckName"], $_POST["beginDate"], $_POST["endDate"], $_POST["startHour"],
+if (count($_POST) == 9 && isset($_POST["truckName"], $_POST["eventName"], $_POST["beginDate"], $_POST["endDate"], $_POST["startHour"],
         $_POST["endHour"], $_POST["address"], $_POST["city"], $_POST["zip"], $_POST["type"]
     )) {
     $name = $_POST["truckName"];
+    $eventName = $_POST["eventName"];
     $beginDate = $_POST["beginDate"];
     $endDate = $_POST["endDate"];
     $startHour = $_POST["startHour"];
@@ -15,6 +16,7 @@ if (count($_POST) == 9 && isset($_POST["truckName"], $_POST["beginDate"], $_POST
     $city = htmlspecialchars(trim($_POST["city"]));
     $zip = $_POST["zip"];
     $type = $_POST["type"];
+    $idTruck = getMyTruck($_SESSION["email"]);
     $eventType = [
         0 => "Réservation",
         1 => "Dégustation"
@@ -67,7 +69,7 @@ if (count($_POST) == 9 && isset($_POST["truckName"], $_POST["beginDate"], $_POST
                                                     VALUES (:type, :name, :address, :city, :zip, :beginDate, :endDate, :startHour, :endHour)");
         $queryPrepared->execute([
             ":type" => $eventType[$type],
-            ":name" => $name,
+            ":name" => $eventName,
             ":address" => $address,
             ":city" => $city,
             ":zip" => $zip,
@@ -82,9 +84,10 @@ if (count($_POST) == 9 && isset($_POST["truckName"], $_POST["beginDate"], $_POST
             ":id" => $id
         ]);
 
-        $queryPrepared = $pdo->prepare("INSERT INTO EVENTSTATUS(event, status) VALUES (:id, 15)");
+        $queryPrepared = $pdo->prepare("INSERT INTO HOST(event, truck) VALUES (:id, :idTruck)");
         $queryPrepared->execute([
-            ":id" => $id
+            ":idEvent" => $id,
+            ":idTruck" => $idTruck
         ]);
 
         header("Location: ../" . $eventType[$type] . ".php");

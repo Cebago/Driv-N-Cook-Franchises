@@ -35,41 +35,23 @@ if (isConnected() && isActivated() && isFranchisee()) {
     ?>
 
     <?php if(!empty($info)){
-        $dir    = 'img/eventsPics/';
-        $images = array_diff(scandir($dir), array('..', '.'));
-        ?>
-        <button onclick="getCurrentSlide('#carouselExampleInterval')"> GiveMe Slide</button>
-        <div class="col-md-4 display-1" style="margin-left: auto; margin-right: auto">
-            <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <?php foreach ($images as $key => $image){
-                        ?>
-                    <div class="carousel-item <?php echo $key==2?'active':''; ?>" data-interval="false">
-                        <img src="<?php echo $dir.$image ?>" class="d-block w-100" alt="...">
-                    </div>
-                   <?php } ?>
-
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleInterval" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
-        </div>
-
-
+      ?>
     <form class="col-md-11 mx-auto mt-5 card pb-2 pt-2" method="POST" action="functions/newEvent.php">
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Nom du camion</span>
+        <div class="form-row">
+            <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Nom du camion</span>
+                </div>
+                <input type="text" class="form-control" name="truckName" aria-label="truckName" aria-describedby="basic-addon1" value="<?php echo $truck; ?>" readonly>
             </div>
-            <input type="text" class="form-control" name="truckName" aria-label="truckName" aria-describedby="basic-addon1" value="<?php echo $truck; ?>" readonly>
+            <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Nom de l'évennement</span>
+                </div>
+                <input type="text" class="form-control" name="eventName" aria-label="truckName" aria-describedby="basic-addon1" placeholder="ex: Soirée Disco chez Boris">
+            </div>
         </div>
+
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="beginDate">Date de début</label>
@@ -114,67 +96,41 @@ if (isConnected() && isActivated() && isFranchisee()) {
                 <input type="text" class="form-control" id="inputZip" name="zip" placeholder="64100" required>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Créer l'évènement</button>
-    </form>
-
-
-<div class="modal fade" id="uploadImage" tabindex="-1" role="dialog" aria-labelledby="uploadImageLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="uploadImageLabel">Ajouter une image</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+         <div class="form-group col-md-2" style="display: none">
+                <label></label>
+                <input type="text" class="form-control" id="inputImg" name="img" >
             </div>
-            <div class="modal-body">
-                <div class="mt-1">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#useOne" role="tab"
-                               aria-controls="home" aria-selected="true"><i class="fas fa-photo-video"></i>&nbsp;Bibliothèque
-                                d'images</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#uploadOne" role="tab"
-                               aria-controls="profile" aria-selected="false"><i class="fas fa-upload"></i>&nbsp;Uploader
-                                une nouvelle image</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content card mt-1" id="myTabContent">
-                        <div class="tab-pane fade show active" id="useOne" role="tabpanel"
-                             aria-labelledby="home-tab">
-                        </div>
-                        <div class="tab-pane fade" id="uploadOne" role="tabpanel" aria-labelledby="profile-tab">
-                            <form method="POST" enctype="multipart/form-data"
-                                  onsubmit="return uploadToNewsletter(event)">
-                                <div class="input-group mb-3 mt-5 ml-2 mr-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="title">Titre de l'image</span>
-                                    </div>
-                                    <input type="text" class="form-control mr-4" name="imageTitle" id="imageTitle"
-                                           placeholder="Titre de l'image" aria-label="Titre de l'image"
-                                           aria-describedby="title" required>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadImage" onclick="chooseImage()" >Continuer </button>
+
+        <div class="modal fade" id="uploadImage" tabindex="-1" role="dialog" aria-labelledby="uploadImageLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="uploadImageLabel">Ajouter une image</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mt-1">
+                            <div class="tab-content card mt-1" id="myTabContent">
+                                <div class="tab-pane fade show active" id="useOne" role="tabpanel"
+                                     aria-labelledby="home-tab">
                                 </div>
-                                <div class="custom-file mb-2 ml-2 mr-2">
-                                    <input type="file" class="custom-file-input" id="uploadImage" name="uploadImage"
-                                           required>
-                                    <label class="custom-file-label mr-4" for="uploadImage">Choisir une
-                                        image</label>
-                                </div>
-                                <button type="submit" class="btn btn-primary mb-3 ml-2 mr-2">Uploader l'image
-                                </button>
+                            </div>
                         </div>
-                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-secondary">Valider</button>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
         </div>
-    </div>
+
+    </form>
+
+
 
     <?php } else{?>
 
@@ -186,8 +142,8 @@ if (isConnected() && isActivated() && isFranchisee()) {
         </div>
 
     <?php } ?>
-
-    <?php
+    <script src="scripts/scripts.js"></script>
+<?php
     include "footer.php";
 } else {
     header("Location: login.php");
