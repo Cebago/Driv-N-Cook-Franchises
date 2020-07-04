@@ -30,6 +30,7 @@ function displayOrders() {
                         for (let j = 0; j < json[i]["products"].length; j++) {
                             const li1 = document.createElement("li");
                             li1.innerText = json[i]["products"][j]["productName"];
+                            li1.setAttribute("onclick", "strike(this)");
                             ul1.appendChild(li1);
                         }
                         div4.appendChild(ul1);
@@ -48,6 +49,7 @@ function displayOrders() {
                             for (let k = 0; k < json[i]["menus"][key[j]].length; k++) {
                                 const li3 = document.createElement("li");
                                 li3.innerText = json[i]["menus"][key[j]][k];
+                                li3.setAttribute("onclick", "strike(this)");
                                 ul3.appendChild(li3);
                             }
                             li2.appendChild(ul3);
@@ -89,4 +91,15 @@ function displayOrders() {
 
     request.open('GET', 'functions/getOrders.php');
     request.send();
+}
+
+function strike(thisParameter) {
+    if (thisParameter.firstChild.tagName === "STRIKE") {
+        let text = thisParameter.firstChild.innerText;
+        thisParameter.removeChild(thisParameter.firstChild)
+        thisParameter.innerText = text
+    } else {
+        let text = thisParameter.innerText;
+        thisParameter.innerHTML = "<strike>" + text +"</strike>"
+    }
 }
