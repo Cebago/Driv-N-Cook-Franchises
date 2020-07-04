@@ -171,3 +171,60 @@ function truckWarehouse($idTruck)
     $warehouse = $queryPrepared->fetch(PDO::FETCH_ASSOC);
     return $warehouse["idWarehouse"];
 }
+
+/**
+ * @param $email
+ * @return mixed
+ */
+function getMyTruck($email)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idTruck FROM TRUCK, USER WHERE idUser = user AND emailAddress = :email");
+    $queryPrepared->execute([":email" => $email]);
+    $truck = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    return $truck["idTruck"];
+}
+
+/**
+ * @param $cart
+ * @return mixed|null
+ */
+function allMenuFromCart($cart)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idMenu, quantity, menuName FROM CARTMENU, MENUS WHERE cart = :cart AND menu = idMenu");
+    $queryPrepared->execute([":cart" => $cart]);
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($result)) {
+        return null;
+    }
+    return $result;
+}
+
+/**
+ * @param $cart
+ * @return mixed|null
+ */
+function allProductFromCart($cart)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idProduct, quantity, productName FROM CARTPRODUCT, PRODUCTS WHERE cart = :cart AND product = idProduct");
+    $queryPrepared->execute([":cart" => $cart]);
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($result)) {
+        return null;
+    }
+    return $result;
+}
+
+function allProductFromMenu($menu)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idProduct, productName FROM SOLDIN, PRODUCTS WHERE menu = :menu AND product = idProduct");
+    $queryPrepared->execute([":menu" => $menu]);
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($result)) {
+        return null;
+    }
+    return $result;
+}
