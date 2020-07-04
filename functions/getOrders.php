@@ -6,7 +6,14 @@ require "../functions.php";
 
 $pdo = connectDB();
 $truck = getMyTruck($_SESSION["email"]);
-$queryPrepared = $pdo->prepare("SELECT idOrder, statusName, DATE_FORMAT(orderDate, '%H:%i:%s') as orderDate, cart FROM ORDERS, ORDERSTATUS, STATUS WHERE idOrder = orders AND idStatus = status AND orderType = 'Commande client' AND truck = :truck AND idStatus != 4");
+$queryPrepared = $pdo->prepare("SELECT idOrder, statusName, DATE_FORMAT(orderDate, '%H:%i:%s') as orderDate, cart 
+                                            FROM ORDERS, ORDERSTATUS, STATUS 
+                                            WHERE idOrder = orders 
+                                              AND idStatus = status 
+                                              AND orderType = 'Commande client' 
+                                              AND truck = :truck 
+                                              AND idStatus != 4
+                                              ORDER BY orderDate DESC");
 $queryPrepared->execute([
     ":truck" => $truck
 ]);

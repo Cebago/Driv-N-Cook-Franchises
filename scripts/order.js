@@ -8,7 +8,6 @@ function displayOrders() {
         if (request.readyState === 4 && request.status === 200) {
             if (request.responseText !== "") {
                 let json = JSON.parse(request.responseText);
-                console.log(json);
                 for (let i = 0; i < json.length; i++) {
                     const div1 = document.createElement("div");
                     div1.className = "col-md-5";
@@ -35,26 +34,27 @@ function displayOrders() {
                         }
                         div4.appendChild(ul1);
                     }
-                    const p2 = document.createElement("p");
-                    p2.className = "card-text";
-                    p2.innerText = "Menus:";
-                    div4.appendChild(p2);
-                    let key = Object.keys(json[i]["menus"]);
-                    const ul2 = document.createElement("ul");
-                    for (let j = 0; j < key.length; j++) {
-                        const li2 = document.createElement("li");
-                        li2.innerText = key[j] + ":";
-                        const ul3 = document.createElement("ul");
-                        for (let k = 0; k < json[i]["menus"][key[j]].length; k++) {
-                            const li3 = document.createElement("li");
-                            li3.innerText = json[i]["menus"][key[j]][k];
-                            ul3.appendChild(li3);
+                    if (json[i]["menus"].length !== 0) {
+                        const p2 = document.createElement("p");
+                        p2.className = "card-text";
+                        p2.innerText = "Menus:";
+                        div4.appendChild(p2);
+                        let key = Object.keys(json[i]["menus"]);
+                        const ul2 = document.createElement("ul");
+                        for (let j = 0; j < key.length; j++) {
+                            const li2 = document.createElement("li");
+                            li2.innerText = key[j] + ":";
+                            const ul3 = document.createElement("ul");
+                            for (let k = 0; k < json[i]["menus"][key[j]].length; k++) {
+                                const li3 = document.createElement("li");
+                                li3.innerText = json[i]["menus"][key[j]][k];
+                                ul3.appendChild(li3);
+                            }
+                            li2.appendChild(ul3);
+                            ul2.appendChild(li2);
                         }
-                        li2.appendChild(ul3);
-                        ul2.appendChild(li2);
-
+                        div4.appendChild(ul2);
                     }
-                    div4.appendChild(ul2);
                     const div5 = document.createElement("div");
                     div5.className = "d-flex justify-content-between align-items-center";
                     const div6 = document.createElement("div");
@@ -69,11 +69,6 @@ function displayOrders() {
                     btn2.className = "btn btn-sm btn-outline-success";
                     btn2.innerText = "Terminer";
                     div6.appendChild(btn2);
-                    const btn3 = document.createElement("button");
-                    btn3.type = "button";
-                    btn3.className = "btn btn-sm btn-outline-danger";
-                    btn3.innerText = "Annuler";
-                    div6.appendChild(btn3);
                     div5.appendChild(div6);
                     const small = document.createElement("small");
                     small.className = "text-muted";
