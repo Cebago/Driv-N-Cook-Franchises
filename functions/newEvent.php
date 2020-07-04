@@ -76,6 +76,17 @@ if (count($_POST) == 9 && isset($_POST["truckName"], $_POST["beginDate"], $_POST
             ":startHour" => $startHour,
             ":endHour" => $endHour,
         ]);
+        $id = $pdo->lastInsertId();
+        $queryPrepared = $pdo->prepare("INSERT INTO EVENTSTATUS(event, status) VALUES (:id, 15)");
+        $queryPrepared->execute([
+            ":id" => $id
+        ]);
+
+        $queryPrepared = $pdo->prepare("INSERT INTO EVENTSTATUS(event, status) VALUES (:id, 15)");
+        $queryPrepared->execute([
+            ":id" => $id
+        ]);
+
         header("Location: ../" . $eventType[$type] . ".php");
     }
 
