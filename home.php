@@ -2,13 +2,9 @@
 session_start();
 require "conf.inc.php";
 require "functions.php";
-
 if (isActivated() && isFranchisee()) {
-    ?>
-
-
-    <?php include "header.php"; ?>
-    <?php include "navbar.php"; ?>
+    include "header.php";
+    include "navbar.php"; ?>
 
 
     <main role="main">
@@ -36,7 +32,7 @@ if (isActivated() && isFranchisee()) {
         window.onload = function() {
             displayOrders();
         }
-        //setInterval(displayOrders, 15000)
+        setInterval(displayOrders, 15000)
     </script>
     <?php include "footer.php";
 } else {

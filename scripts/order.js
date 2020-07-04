@@ -1,16 +1,19 @@
 function displayOrders() {
     const containerRow = document.getElementById("ordersList");
-    while (containerRow.firstChild) {
-        containerRow.removeChild(containerRow.firstChild);
-    }
     const request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
             if (request.responseText !== "") {
                 let json = JSON.parse(request.responseText);
                 for (let i = 0; i < json.length; i++) {
+                    // vérifier si la div existe -> if(true) -> mettre à jour la date
+                    if (document.getElementById(json[i]["idOrder"]) !== null) {
+                        document.getElementById("hour" + json[i]["idOrder"]).innerText = json[i]["time"];
+                        continue;
+                    }
                     const div1 = document.createElement("div");
                     div1.className = "col-md-5";
+                    div1.id = json[i]["idOrder"];
                     const div2 = document.createElement("div");
                     div2.className = "card mb-5 shadow-sm";
                     const div3 = document.createElement("div");
@@ -74,21 +77,20 @@ function displayOrders() {
                     div5.appendChild(div6);
                     const small = document.createElement("small");
                     small.className = "text-muted";
+                    small.id = "hour" + json[i]["idOrder"];
                     small.innerText = json[i]["time"];
                     div5.appendChild(small);
                     div4.appendChild(div5);
-                    div3.appendChild(div4)
-                    div2.appendChild(div3)
-                    div1.appendChild(div2)
-                    containerRow.appendChild(div1)
-
+                    div3.appendChild(div4);
+                    div2.appendChild(div3);
+                    div1.appendChild(div2);
+                    containerRow.appendChild(div1);
                 }
             } else {
                 containerRow.innerText = "Vous n'avez aucune commande en cours";
             }
         }
     };
-
     request.open('GET', 'functions/getOrders.php');
     request.send();
 }
@@ -96,10 +98,10 @@ function displayOrders() {
 function strike(thisParameter) {
     if (thisParameter.firstChild.tagName === "STRIKE") {
         let text = thisParameter.firstChild.innerText;
-        thisParameter.removeChild(thisParameter.firstChild)
-        thisParameter.innerText = text
+        thisParameter.removeChild(thisParameter.firstChild);
+        thisParameter.innerText = text;
     } else {
         let text = thisParameter.innerText;
-        thisParameter.innerHTML = "<strike>" + text +"</strike>"
+        thisParameter.innerHTML = "<strike>" + text +"</strike>";
     }
 }
