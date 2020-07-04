@@ -118,6 +118,63 @@ if (isConnected() && isActivated() && isFranchisee()) {
     </form>
 
 
+<div class="modal fade" id="uploadImage" tabindex="-1" role="dialog" aria-labelledby="uploadImageLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadImageLabel">Ajouter une image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mt-1">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#useOne" role="tab"
+                               aria-controls="home" aria-selected="true"><i class="fas fa-photo-video"></i>&nbsp;Bibliothèque
+                                d'images</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#uploadOne" role="tab"
+                               aria-controls="profile" aria-selected="false"><i class="fas fa-upload"></i>&nbsp;Uploader
+                                une nouvelle image</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content card mt-1" id="myTabContent">
+                        <div class="tab-pane fade show active" id="useOne" role="tabpanel"
+                             aria-labelledby="home-tab">
+                        </div>
+                        <div class="tab-pane fade" id="uploadOne" role="tabpanel" aria-labelledby="profile-tab">
+                            <form method="POST" enctype="multipart/form-data"
+                                  onsubmit="return uploadToNewsletter(event)">
+                                <div class="input-group mb-3 mt-5 ml-2 mr-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="title">Titre de l'image</span>
+                                    </div>
+                                    <input type="text" class="form-control mr-4" name="imageTitle" id="imageTitle"
+                                           placeholder="Titre de l'image" aria-label="Titre de l'image"
+                                           aria-describedby="title" required>
+                                </div>
+                                <div class="custom-file mb-2 ml-2 mr-2">
+                                    <input type="file" class="custom-file-input" id="uploadImage" name="uploadImage"
+                                           required>
+                                    <label class="custom-file-label mr-4" for="uploadImage">Choisir une
+                                        image</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-3 ml-2 mr-2">Uploader l'image
+                                </button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 
     <?php } else{?>
 
