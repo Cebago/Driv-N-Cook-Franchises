@@ -173,7 +173,7 @@ function strike(thisParameter) {
 function changeStatus(order, status) {
     const request = new XMLHttpRequest();
     request.onreadystatechange = function () {
-        if (request.readyState === 4 && request.status === 400) {
+        if (request.readyState === 4 && request.status === 200) {
             if (request.responseText !== "") {
                 alert(request.responseText);
             }
@@ -183,4 +183,49 @@ function changeStatus(order, status) {
     request.send();
 
     displayOrders();
+}
+
+function isOnHolidays(truck) {
+    const btndiv = document.getElementById("holidayButton");
+    while (btndiv.firstChild) {
+        btndiv.removeChild(btndiv.firstChild);
+    }
+
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            if (request.responseText !== "") {
+                let json = JSON.parse(request.responseText);
+                console.log(json);
+                for (let i = 0; i < json.length; i++) {
+                    const btn = document.createElement("btn");
+                    btn.className = "btn btn-primary";
+                    if (json[i]["status"] === "14") {
+                        btn.innerText = "Fermer le camion pour les vacances";
+                        btn.setAttribute("onclick", "changeTruckStatus(" + truck +", 12, 14)");
+                    } else if (json[i]["status"] === "12") {
+                        btn.innerText = "Ouvert de nouveau"
+                        btn.setAttribute("onclick", "changeTruckStatus(" + truck +", 14, 12)");
+                    }
+                    btndiv.appendChild(btn);
+                }
+            }
+        }
+    }
+    request.open("GET", "functions/isHolidays.php?truck=" + truck);
+    request.send();
+}
+
+function changeTruckStatus(truck, status, old) {
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            if (request.responseText !== "") {
+                alert(request.responseText)
+            }
+        }
+    }
+    request.open("GET", "functions/changeTruckStatus.php?truck=" + truck + "&status=" + status + "&oldStatus=" + old);
+    request.send();
+    isOnHolidays(truck);
 }

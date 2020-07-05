@@ -12,7 +12,6 @@ if (isActivated() && isFranchisee()) {
             <div class="container">
                 <h1>Accueil franchisés</h1>
                 <p id="holidayButton">
-                    <button class="btn btn-primary my-2">Fermer le camion pour cause de congés</button>
                 </p>
             </div>
         </section>
@@ -27,7 +26,7 @@ if (isActivated() && isFranchisee()) {
     <script>
         window.onload = function() {
             displayOrders();
-            isOnHolidays();
+            isOnHolidays(<?php echo getMyTruck($_SESSION["email"]); ?>);
         }
         setInterval(displayOrders, 15000)
     </script>
