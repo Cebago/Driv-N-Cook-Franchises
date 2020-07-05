@@ -16,7 +16,7 @@ if (isset($_GET["order"], $_GET["status"])) {
         ]);
     } else {
         $pdo = connectDB();
-        $queryPrepared = $pdo->prepare("UPDATE ORDERSTATUS SET status = :status WHERE orders = :order AND status = 27");
+        $queryPrepared = $pdo->prepare("UPDATE ORDERSTATUS SET status = :status WHERE orders = :order AND status in (26, 27)");
         $queryPrepared->execute([
             ":status" => $status,
             ":order" => $order
