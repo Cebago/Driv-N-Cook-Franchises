@@ -102,6 +102,21 @@ function strike(thisParameter) {
         thisParameter.innerText = text;
     } else {
         let text = thisParameter.innerText;
-        thisParameter.innerHTML = "<strike>" + text +"</strike>";
+        thisParameter.innerHTML = "<strike>" + text + "</strike>";
     }
+}
+
+function changeStatus(order, status) {
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 400) {
+            if (request.responseText !== "") {
+                alert(request.responseText);
+            } else {
+                displayOrders();
+            }
+        }
+    }
+    request.open("GET", "../functions/getOrders.php?order=" + order + "&status=" + status);
+    request.send();
 }
