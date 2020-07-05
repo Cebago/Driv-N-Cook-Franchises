@@ -82,12 +82,12 @@ if (isConnected() && isActivated() && isFranchisee()) {
                 <input type="time" class="form-control" id="endHour" name="endHour" required>
             </div>
         </div>
-        <div class="form-group">
-            <label for="inputAddress">Adresse de l'évènement</label>
-            <input type="text" class="form-control" id="inputAddress" name="address" placeholder="ex: 242 av. du Faubourg Saint-Antoine" required>
-        </div>
         <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-8">
+                <label for="inputAddress">Adresse de l'évènement</label>
+                <input type="text" class="form-control" id="inputAddress" name="address" placeholder="ex: 242 av. du Faubourg Saint-Antoine" required>
+            </div>
+            <div class="form-group col-md-2">
                 <label for="inputCity">Ville</label>
                 <input type="text" class="form-control" id="inputCity" name="city" placeholder="Bayonne" required>
             </div>
@@ -95,6 +95,10 @@ if (isConnected() && isActivated() && isFranchisee()) {
                 <label for="inputZip">Code postal</label>
                 <input type="text" class="form-control" id="inputZip" name="zip" placeholder="64100" required>
             </div>
+        </div>
+        <div class="form-group">
+                <label for="eventDesc">Description de l'évènement</label>
+                 <textarea class="form-control" id="eventDesc" name="eventDesc" rows="3"></textarea>
         </div>
          <div class="form-group col-md-2" style="display: none">
                 <label></label>

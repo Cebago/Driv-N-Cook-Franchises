@@ -60,7 +60,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
             ?>
 
             <div class="card cardDetails" id="details<?php echo $event["idEvent"]?>" style="width: 50%; display: <?php echo $key?"none":"block" //j'affiche le premier element uniquement?>">
-                <img src="img/events/<?php echo $event["eventImg"]?> "style="width: 100%" class="card-img-top" alt="" >
+                <img src="<?php echo $event["eventImg"]?> "style="width: 100%" class="card-img-top" alt="" >
                 <div class="card-body">
                     <h5 class="card-title"><?php echo $event["eventName"] ?></h5>
                     <p class="card-text"><b><?php echo $event["eventType"]?></b></p>

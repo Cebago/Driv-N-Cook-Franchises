@@ -52,7 +52,5 @@ function selectImg(thisParameter, imgUrl) {
     })
     thisParameter.firstChild.style.border = "5px solid #96CC87";
     const image = document.getElementById("inputImg");
-    console.log(imgUrl)
-    console.log(image);
     image.value = imgUrl
 }
