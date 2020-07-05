@@ -65,7 +65,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
                                         id="selectCategory" name="category" required>
                                     <option selected value="">Choisir une catégorie..</option>
                                     <?php foreach ($result as $value) {
-                                        echo "<option user='" . $value["ingredientCategory"] . "'>" . $value["ingredientCategory"] . "</option>";
+                                        echo "<option value='" . $value["ingredientCategory"] . "'>" . $value["ingredientCategory"] . "</option>";
                                     } ?>
                                 </select>
                             </div>

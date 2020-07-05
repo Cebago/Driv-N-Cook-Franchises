@@ -19,7 +19,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
             $queryPrepared->execute();
             $warehouses = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
             foreach ($warehouses as $warehouse) {
-                echo '<option user="' . $warehouse['idWarehouse'] . '">' . $warehouse['warehouseName'] . '</option>';
+                echo '<option value="' . $warehouse['idWarehouse'] . '">' . $warehouse['warehouseName'] . '</option>';
             }
             ?>
         </select>
