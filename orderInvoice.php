@@ -5,8 +5,7 @@ require 'functions.php';
 
 if (isConnected() && isActivated() && isFranchisee()) {
 
-
-    include "header.php";
+include "header.php";
 
 
     $pdo = connectDB();
