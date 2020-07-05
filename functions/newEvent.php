@@ -84,7 +84,7 @@ if (count($_POST) == 9 && isset($_POST["truckName"], $_POST["eventName"], $_POST
             ":id" => $id
         ]);
 
-        $queryPrepared = $pdo->prepare("INSERT INTO HOST(event, truck) VALUES (:id, :idTruck)");
+        $queryPrepared = $pdo->prepare("INSERT INTO HOST(event, truck) VALUES (:idEvent, :idTruck)");
         $queryPrepared->execute([
             ":idEvent" => $id,
             ":idTruck" => $idTruck
