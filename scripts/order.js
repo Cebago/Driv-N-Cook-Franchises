@@ -9,8 +9,8 @@ function displayOrders() {
                     // vérifier si la div existe -> if(true) -> mettre à jour la date
                     if (document.getElementById(json[i]["idOrder"]) !== null) {
                         document.getElementById("hour" + json[i]["idOrder"]).innerText = json[i]["time"];
-                        let status1 = json[i]["status"][0];
-                        let status2 = json[i]["status"][1];
+                        let status1 = json[i]["status"][0][0]["statusName"];
+                        let status2 = json[i]["status"][0][1]["statusName"];
                         if (document.getElementById("status" + json[i]["idOrder"]).innerText !== status1 + " - " + status2) {
                             document.getElementById("status" + json[i]["idOrder"]).innerText = status1 + " - " + status2;
                         }
@@ -56,10 +56,20 @@ function displayOrders() {
                     div3.appendChild(title);
                     const smallTitle = document.createElement("h6");
                     smallTitle.id = "status" + json[i]["idOrder"];
-                    let status1 = json[i]["status"][0];
-                    let status2 = json[i]["status"][1];
+                    let status1 = json[i]["status"][0][0]["statusName"];
+                    let status2 = json[i]["status"][0][1]["statusName"];
                     if (status1 !== "Récupérée" && status2 !== "Récupérée") {
-                        smallTitle.innerText = status1 + " - " + status2;
+                        const pill1 = document.createElement("span");
+                        pill1.className = "badge badge-pill badge-info mr-2";
+                        pill1.title = json[i]["status"][0][0]["statusDescription"];
+                        pill1.innerText = status1;
+                        smallTitle.appendChild(pill1);
+                        const pill2 = document.createElement("span");
+                        pill2.className = "badge badge-pill badge-success";
+                        pill2.title = json[i]["status"][0][1]["statusDescription"];
+                        pill2.innerText = status2;
+                        smallTitle.appendChild(pill2);
+                        //smallTitle.innerText = status1 + " - " + status2;
                         div3.appendChild(smallTitle);
                         if (status1 === "En attente de paiement" || status2 === "En attente de paiement") {
                             const payBtn = document.createElement("button");

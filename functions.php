@@ -250,7 +250,7 @@ function allProductFromMenu($menu)
 function statusOfOrder($idOrder)
 {
     $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("SELECT statusName FROM STATUS, ORDERSTATUS WHERE status = idStatus AND statusType = 'Commande' AND orders = :order");
+    $queryPrepared = $pdo->prepare("SELECT statusName, statusDescription FROM STATUS, ORDERSTATUS WHERE status = idStatus AND statusType = 'Commande' AND orders = :order");
     $queryPrepared->execute([":order" => $idOrder]);
     $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     if (empty($result)) {
