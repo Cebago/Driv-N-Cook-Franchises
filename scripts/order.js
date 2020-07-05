@@ -9,6 +9,16 @@ function displayOrders() {
                     // vérifier si la div existe -> if(true) -> mettre à jour la date
                     if (document.getElementById(json[i]["idOrder"]) !== null) {
                         document.getElementById("hour" + json[i]["idOrder"]).innerText = json[i]["time"];
+                        let status1 = json[i]["status"][0];
+                        let status2 = json[i]["status"][1];
+                        if (document.getElementById("status" + json[i]["idOrder"]).innerText !== status1 + " - " + status2) {
+                            document.getElementById("status" + json[i]["idOrder"]).innerText = status1 + " - " + status2;
+                        }
+                        if (status1 === "Payée" || status2 === "Payée") {
+                            if (document.getElementById("payBtn" + json[i]["idOrder"]) !== null) {
+                                document.getElementById("payBtn" + json[i]["idOrder"]).remove();
+                            }
+                        }
                         continue;
                     }
                     const div1 = document.createElement("div");
@@ -17,10 +27,28 @@ function displayOrders() {
                     const div2 = document.createElement("div");
                     div2.className = "card mb-5 shadow-sm";
                     const div3 = document.createElement("div");
-                    div3.className = "card-title";
+                    div3.className = "card-title ml-3";
                     const title = document.createElement("h3");
                     title.innerText = "Commande n°" + json[i]["idOrder"];
                     div3.appendChild(title);
+                    const smallTitle = document.createElement("h6");
+                    smallTitle.id = "status" + json[i]["idOrder"];
+                    let status1 = json[i]["status"][0];
+                    let status2 = json[i]["status"][1];
+                    if (status1 !== "Récupérée" && status2 !== "Récupérée") {
+                        smallTitle.innerText = status1 + " - " + status2;
+                        div3.appendChild(smallTitle);
+                        if (status1 === "En attente de paiement" || status2 === "En attente de paiement") {
+                            const payBtn = document.createElement("button");
+                            payBtn.className = "btn btn-primary";
+                            payBtn.innerText = "Paiement effectué";
+                            payBtn.id = "payBtn" + json[i]["idOrder"];
+                            payBtn.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] +", 1)");
+                            div3.appendChild(payBtn);
+                        }
+                    } else {
+                        continue;
+                    }
                     div2.appendChild(div3);
                     const div4 = document.createElement("div");
                     div4.className = "card-body";
@@ -67,11 +95,13 @@ function displayOrders() {
                     const btn1 = document.createElement("button");
                     btn1.type = "button";
                     btn1.className = "btn btn-sm btn-outline-primary";
+                    btn1.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] +", 25)")
                     btn1.innerText = "Traitement";
                     div6.appendChild(btn1);
                     const btn2 = document.createElement("button");
                     btn2.type = "button";
                     btn2.className = "btn btn-sm btn-outline-success";
+                    btn2.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] +", 26)")
                     btn2.innerText = "Terminer";
                     div6.appendChild(btn2);
                     div5.appendChild(div6);
@@ -112,11 +142,11 @@ function changeStatus(order, status) {
         if (request.readyState === 4 && request.status === 400) {
             if (request.responseText !== "") {
                 alert(request.responseText);
-            } else {
-                displayOrders();
             }
         }
     }
-    request.open("GET", "../functions/getOrders.php?order=" + order + "&status=" + status);
+    request.open("GET", "functions/changeStatus.php?order=" + order + "&status=" + status);
     request.send();
+
+    displayOrders();
 }

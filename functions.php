@@ -217,11 +217,31 @@ function allProductFromCart($cart)
     return $result;
 }
 
+/**
+ * @param $menu
+ * @return array|null
+ */
 function allProductFromMenu($menu)
 {
     $pdo = connectDB();
     $queryPrepared = $pdo->prepare("SELECT idProduct, productName FROM SOLDIN, PRODUCTS WHERE menu = :menu AND product = idProduct");
     $queryPrepared->execute([":menu" => $menu]);
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($result)) {
+        return null;
+    }
+    return $result;
+}
+
+/**
+ * @param $idOrder
+ * @return array|null
+ */
+function statusOfOrder($idOrder)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT statusName FROM STATUS, ORDERSTATUS WHERE status = idStatus AND statusType = 'Commande' AND orders = :order");
+    $queryPrepared->execute([":order" => $idOrder]);
     $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     if (empty($result)) {
         return null;
