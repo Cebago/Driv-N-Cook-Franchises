@@ -23,7 +23,6 @@ for ($i = 0; $i < count($orders); $i++) {
         foreach ($status as $statu) {
             $orders[$i]["status"][] = $statu["statusName"];
         }
-        //$orders[$i]["status"][] = statusOfOrder($orders[$i]["idOrder"]);
     }
     if (allMenuFromCart($orders[$i]["cart"]) != null ) {
         $orders[$i]["menus"] = [];
