@@ -195,3 +195,66 @@ function getMessages($email){
     return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
 }
+/**
+ * @param $cart
+ * @return mixed|null
+ */
+function allMenuFromCart($cart)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idMenu, quantity, menuName FROM CARTMENU, MENUS WHERE cart = :cart AND menu = idMenu");
+    $queryPrepared->execute([":cart" => $cart]);
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($result)) {
+        return null;
+    }
+    return $result;
+}
+
+/**
+ * @param $cart
+ * @return mixed|null
+ */
+function allProductFromCart($cart)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idProduct, quantity, productName FROM CARTPRODUCT, PRODUCTS WHERE cart = :cart AND product = idProduct");
+    $queryPrepared->execute([":cart" => $cart]);
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($result)) {
+        return null;
+    }
+    return $result;
+}
+
+/**
+ * @param $menu
+ * @return array|null
+ */
+function allProductFromMenu($menu)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT idProduct, productName FROM SOLDIN, PRODUCTS WHERE menu = :menu AND product = idProduct");
+    $queryPrepared->execute([":menu" => $menu]);
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($result)) {
+        return null;
+    }
+    return $result;
+}
+
+/**
+ * @param $idOrder
+ * @return array|null
+ */
+function statusOfOrder($idOrder)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT statusName FROM STATUS, ORDERSTATUS WHERE status = idStatus AND statusType = 'Commande' AND orders = :order");
+    $queryPrepared->execute([":order" => $idOrder]);
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($result)) {
+        return null;
+    }
+    return $result;
+}
