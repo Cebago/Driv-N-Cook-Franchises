@@ -19,16 +19,39 @@ function displayOrders() {
                                 document.getElementById("payBtn" + json[i]["idOrder"]).remove();
                             }
                         }
+                        if ((status1 === "Préparée" || status2 === "Préparée") && (status1 === "Payée" || status2 === "Payée") ) {
+                            if (document.getElementById("btngroup" + json[i]["idOrder"]) !== null) {
+                                let btngroup = document.getElementById("btngroup" + json[i]["idOrder"]);
+                                if (btngroup.firstElementChild.id !== "giveToCustomerBtn") {
+                                    while (btngroup.firstChild) {
+                                        btngroup.removeChild(btngroup.firstChild);
+                                    }
+                                    let giveToCustomer = document.createElement("button");
+                                    giveToCustomer.id = "giveToCustomerBtn";
+                                    giveToCustomer.className = "btn btn-outline-success";
+                                    giveToCustomer.innerText = "Livrée au client";
+                                    giveToCustomer.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] +", 4)");
+                                    btngroup.appendChild(giveToCustomer);
+                                }
+                            }
+                        }
+                        if ((status1 === "Payée" || status2 === "Payée") && (status1 === "Récupérée" || status2 === "Récupérée")) {
+                            if (document.getElementById(json[i]["idOrder"]) !== null) {
+                                document.getElementById(json[i]["idOrder"]).remove();
+                            }
+                            continue;
+                        }
                         continue;
                     }
                     const div1 = document.createElement("div");
                     div1.className = "col-md-5";
                     div1.id = json[i]["idOrder"];
                     const div2 = document.createElement("div");
-                    div2.className = "card mb-5 shadow-sm";
+                    div2.className = "card mb-5 shadow-sm bg-light";
                     const div3 = document.createElement("div");
                     div3.className = "card-title ml-3";
                     const title = document.createElement("h3");
+                    title.className = "mt-3";
                     title.innerText = "Commande n°" + json[i]["idOrder"];
                     div3.appendChild(title);
                     const smallTitle = document.createElement("h6");
@@ -91,6 +114,7 @@ function displayOrders() {
                     const div5 = document.createElement("div");
                     div5.className = "d-flex justify-content-between align-items-center";
                     const div6 = document.createElement("div");
+                    div6.id = "btngroup" + json[i]["idOrder"]
                     div6.className = "btn-group";
                     const btn1 = document.createElement("button");
                     btn1.type = "button";
