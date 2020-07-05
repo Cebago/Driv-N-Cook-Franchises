@@ -3,7 +3,7 @@ session_start();
 require "../conf.inc.php";
 require "../functions.php";
 
-if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
+if (isConnected() && isActivated() && isFranchisee()) {
     if (count($_POST) == 5 && isset($_POST["cardNumber"], $_POST["username"],
             $_POST["month"], $_POST["year"], $_POST["ccv"])) {
 
@@ -31,7 +31,7 @@ if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
             $listOfErrors[] = "L'année saisie n'est pas bonne";
         }
 
-        if (!preg_match("#[0-9]{3}#", $ccv) || strlen($ccv) !=3) {
+        if (!preg_match("#[0-9]{3}#", $ccv) || strlen($ccv) != 3) {
             $error = true;
             $listOfErrors[] = "Le code n'est pas dans un format valide";
         }

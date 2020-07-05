@@ -3,12 +3,12 @@ session_start();
 require "conf.inc.php";
 require "functions.php";
 
-if (isActivated() && (isAdmin() || isFranchisee())) {
-?>
+if (isActivated() && isFranchisee()) {
+    ?>
 
 
-<?php include "header.php"; ?>
-<?php include "navbar.php"; ?>
+    <?php include "header.php"; ?>
+    <?php include "navbar.php"; ?>
 
 
     <main role="main">
@@ -242,7 +242,7 @@ if (isActivated() && (isAdmin() || isFranchisee())) {
             </div>
         </div>
     </main>
-<?php include "footer.php";
+    <?php include "footer.php";
 } else {
     header("Location: login.php");
 }

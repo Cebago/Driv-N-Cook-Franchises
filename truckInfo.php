@@ -3,7 +3,7 @@ session_start();
 require "conf.inc.php";
 require "functions.php";
 
-if (isConnected() && isActivated() && (isAdmin() || isFranchisee())) {
+if (isConnected() && isActivated() && isFranchisee()) {
 
     $pdo = connectDB();
     $queryPrepared = $pdo->prepare("SELECT idUser FROM USER WHERE emailAddress = :email");

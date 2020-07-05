@@ -23,7 +23,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="warehouses">
                     <a class="dropdown-item" href="ingredientTruck.php">Voir mon stock</a>
-                    <a class="dropdown-item" href="#">Historique</a>
+                    <a class="dropdown-item" href="history.php">Historique</a>
                     <a class="dropdown-item" href="chooseWarehouse.php">Commandes</a>
                 </div>
             </li>
@@ -33,8 +33,9 @@
                     Mes événements
                 </a>
                 <div class="dropdown-menu" aria-labelledby="benefits">
-                    <a class="dropdown-item" href="#">Réservations</a>
-                    <a class="dropdown-item" href="#">Dégustations</a>
+                    <a class="dropdown-item" href="createEvents.php">Créer un nouvel évènement</a>
+                    <a class="dropdown-item" href="viewEvents.php">Voir les évènements</a>
+
                 </div>
             </li>
             <li class="nav-item">
@@ -47,8 +48,8 @@
                         $pdo = connectDB();
                         $queryPrepared = $pdo->prepare("SELECT SUM(quantity) AS count FROM CARTINGREDIENT, CART, USER WHERE idUser = user AND cart = idCart AND emailAddress = :user AND idCart = :cart");
                         $queryPrepared->execute([
-                                ":user" => $_SESSION["email"],
-                                ":cart" => $cart
+                            ":user" => $_SESSION["email"],
+                            ":cart" => $cart
                         ]);
                         $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
                         $count = $result["count"];

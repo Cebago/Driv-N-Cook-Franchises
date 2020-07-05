@@ -3,7 +3,7 @@ session_start();
 require "conf.inc.php";
 require "functions.php";
 
-if (isConnected() && isActivated() && (isFranchisee() || isAdmin())) {
+if (isConnected() && isActivated() && isFranchisee() ) {
 
     include "header.php";
     include "navbar.php";
@@ -13,17 +13,17 @@ if (isConnected() && isActivated() && (isFranchisee() || isAdmin())) {
         <div class="row mb-4">
             <div class="col-lg-8 mx-auto text-center">
                 <h1 class="display-4">Paiement</h1>
-                    <?php
-                    if (isset($_SESSION["errors"])) {
-                        $errors = $_SESSION["errors"];
-                        echo "<div class='alert alert-danger col-md-7 mx-auto text-left' role='alert'>";
-                        foreach ($errors as $error) {
-                            echo "<li>" . $error . "</li>";
-                        }
-                        echo "</div>";
-                        unset($_SESSION["errors"]);
+                <?php
+                if (isset($_SESSION["errors"])) {
+                    $errors = $_SESSION["errors"];
+                    echo "<div class='alert alert-danger col-md-7 mx-auto text-left' role='alert'>";
+                    foreach ($errors as $error) {
+                        echo "<li>" . $error . "</li>";
                     }
-                    ?>
+                    echo "</div>";
+                    unset($_SESSION["errors"]);
+                }
+                ?>
             </div>
         </div>
         <div class="row mr-5">
@@ -48,9 +48,10 @@ if (isConnected() && isActivated() && (isFranchisee() || isAdmin())) {
                                             <h6>Propriétaire de la carte</h6>
                                         </label>
                                         <input type="text" name="username" placeholder="Propriétaire de la carte"
-                                               required class="form-control" value="<?php echo (isset($_SESSION["input"]))
-                                                       ? $_SESSION["input"]["username"]
-                                                       : ""; ?>">
+                                               required class="form-control"
+                                               value="<?php echo (isset($_SESSION["input"]))
+                                                   ? $_SESSION["input"]["username"]
+                                                   : ""; ?>">
                                     </div>
                                     <div class="form-group">
                                         <label for="cardNumber">
@@ -63,9 +64,9 @@ if (isConnected() && isActivated() && (isFranchisee() || isAdmin())) {
                                                    value="<?php echo (isset($_SESSION["input"]))
                                                        ? $_SESSION["input"]["cardNumber"]
                                                        : "";
-                                                        if (isset($_SESSION['input'])) {
-                                                            unset($_SESSION["input"]);
-                                                        }?>">
+                                                   if (isset($_SESSION['input'])) {
+                                                       unset($_SESSION["input"]);
+                                                   } ?>">
                                             <div class="input-group-append">
                                                 <span class="input-group-text text-muted">
                                                     <i class="fab fa-cc-visa mx-1"></i>
@@ -84,9 +85,11 @@ if (isConnected() && isActivated() && (isFranchisee() || isAdmin())) {
                                                     </span>
                                                 </label>
                                                 <div class="input-group">
-                                                    <input type="number" placeholder="MM" name="month" class="form-control"
+                                                    <input type="number" placeholder="MM" name="month"
+                                                           class="form-control"
                                                            required>
-                                                    <input type="number" placeholder="AA" name="year" class="form-control"
+                                                    <input type="number" placeholder="AA" name="year"
+                                                           class="form-control"
                                                            required>
                                                 </div>
                                             </div>
@@ -145,7 +148,7 @@ if (isConnected() && isActivated() && (isFranchisee() || isAdmin())) {
                     foreach ($ingredients as $ingredient) {
                         $queryPrepared = $pdo->prepare("SELECT price FROM INGREDIENTS, STORE WHERE ingredient = idIngredient AND idIngredient = :ingredient");
                         $queryPrepared->execute([
-                                ":ingredient" => $ingredient["idIngredient"]
+                            ":ingredient" => $ingredient["idIngredient"]
                         ]);
                         $price = $queryPrepared->fetch(PDO::FETCH_ASSOC);
                         $price = $price["price"];
@@ -170,7 +173,7 @@ if (isConnected() && isActivated() && (isFranchisee() || isAdmin())) {
                                 ?>
                             </span>
                         </li>
-                    <?php
+                        <?php
                     }
                     ?>
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
