@@ -9,10 +9,21 @@ function displayOrders() {
                     // vérifier si la div existe -> if(true) -> mettre à jour la date
                     if (document.getElementById(json[i]["idOrder"]) !== null) {
                         document.getElementById("hour" + json[i]["idOrder"]).innerText = json[i]["time"];
-                        let status1 = json[i]["status"][0];
-                        let status2 = json[i]["status"][1];
-                        if (document.getElementById("status" + json[i]["idOrder"]).innerText !== status1 + " - " + status2) {
-                            document.getElementById("status" + json[i]["idOrder"]).innerText = status1 + " - " + status2;
+                        let status1 = json[i]["status"][0][0]["statusName"];
+                        let status2 = json[i]["status"][0][1]["statusName"];
+                        if (document.getElementById("pill1").innerText !== status1 && document.getElementById("pill2").innerText !== status2) {
+                            const pill1 = document.createElement("span");
+                            pill1.className = "badge badge-pill badge-info mr-2";
+                            pill1.id = "pill1";
+                            pill1.title = json[i]["status"][0][0]["statusDescription"];
+                            pill1.innerText = status1;
+                            const pill2 = document.createElement("span");
+                            pill2.id = "pill1";
+                            pill2.className = "badge badge-pill badge-success";
+                            pill2.title = json[i]["status"][0][1]["statusDescription"];
+                            pill2.innerText = status2;
+                            document.getElementById("status" + json[i]["idOrder"]).appendChild(pill1);
+                            document.getElementById("status" + json[i]["idOrder"]).appendChild(pill2);
                         }
                         if (status1 === "Payée" || status2 === "Payée") {
                             if (document.getElementById("payBtn" + json[i]["idOrder"]) !== null) {
@@ -56,10 +67,22 @@ function displayOrders() {
                     div3.appendChild(title);
                     const smallTitle = document.createElement("h6");
                     smallTitle.id = "status" + json[i]["idOrder"];
-                    let status1 = json[i]["status"][0];
-                    let status2 = json[i]["status"][1];
+                    let status1 = json[i]["status"][0][0]["statusName"];
+                    let status2 = json[i]["status"][0][1]["statusName"];
                     if (status1 !== "Récupérée" && status2 !== "Récupérée") {
-                        smallTitle.innerText = status1 + " - " + status2;
+                        const pill1 = document.createElement("span");
+                        pill1.id = "pill1";
+                        pill1.className = "badge badge-pill badge-info mr-2";
+                        pill1.title = json[i]["status"][0][0]["statusDescription"];
+                        pill1.innerText = status1;
+                        smallTitle.appendChild(pill1);
+                        const pill2 = document.createElement("span");
+                        pill2.id = "pill1";
+                        pill2.className = "badge badge-pill badge-success";
+                        pill2.title = json[i]["status"][0][1]["statusDescription"];
+                        pill2.innerText = status2;
+                        smallTitle.appendChild(pill2);
+                        //smallTitle.innerText = status1 + " - " + status2;
                         div3.appendChild(smallTitle);
                         if (status1 === "En attente de paiement" || status2 === "En attente de paiement") {
                             const payBtn = document.createElement("button");
@@ -163,7 +186,7 @@ function strike(thisParameter) {
 function changeStatus(order, status) {
     const request = new XMLHttpRequest();
     request.onreadystatechange = function () {
-        if (request.readyState === 4 && request.status === 400) {
+        if (request.readyState === 4 && request.status === 200) {
             if (request.responseText !== "") {
                 alert(request.responseText);
             }
@@ -173,4 +196,49 @@ function changeStatus(order, status) {
     request.send();
 
     displayOrders();
+}
+
+function isOnHolidays(truck) {
+    const btndiv = document.getElementById("holidayButton");
+    while (btndiv.firstChild) {
+        btndiv.removeChild(btndiv.firstChild);
+    }
+
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            if (request.responseText !== "") {
+                let json = JSON.parse(request.responseText);
+                console.log(json);
+                for (let i = 0; i < json.length; i++) {
+                    const btn = document.createElement("btn");
+                    btn.className = "btn btn-primary";
+                    if (json[i]["status"] === "14") {
+                        btn.innerText = "Fermer le camion pour les vacances";
+                        btn.setAttribute("onclick", "changeTruckStatus(" + truck +", 12, 14)");
+                    } else if (json[i]["status"] === "12") {
+                        btn.innerText = "Ouvert de nouveau"
+                        btn.setAttribute("onclick", "changeTruckStatus(" + truck +", 14, 12)");
+                    }
+                    btndiv.appendChild(btn);
+                }
+            }
+        }
+    }
+    request.open("GET", "functions/isHolidays.php?truck=" + truck);
+    request.send();
+}
+
+function changeTruckStatus(truck, status, old) {
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            if (request.responseText !== "") {
+                alert(request.responseText)
+            }
+        }
+    }
+    request.open("GET", "functions/changeTruckStatus.php?truck=" + truck + "&status=" + status + "&oldStatus=" + old);
+    request.send();
+    isOnHolidays(truck);
 }

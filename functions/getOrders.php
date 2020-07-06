@@ -20,9 +20,11 @@ for ($i = 0; $i < count($orders); $i++) {
     if (statusOfOrder($orders[$i]["idOrder"]) != null) {
         $orders[$i]["status"] = [];
         $status = statusOfOrder($orders[$i]["idOrder"]);
-        foreach ($status as $statu) {
+        $orders[$i]["status"] = [];
+        $orders[$i]["status"][] = statusOfOrder($orders[$i]["idOrder"]);
+        /*foreach ($status as $statu) {
             $orders[$i]["status"][] = $statu["statusName"];
-        }
+        }*/
     }
     if (allMenuFromCart($orders[$i]["cart"]) != null ) {
         $orders[$i]["menus"] = [];
