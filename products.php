@@ -8,53 +8,64 @@ if (isConnected() && isActivated() && isFranchisee()) {
     include "navbar.php";
     ?>
 
-    <body>
+<body>
 <div class="col-md-11 mx-auto mt-5">
     <button class="btn btn-primary" data-toggle="modal" data-target="#productModal">Ajouter un produit</button>
 </div>
-<div class="col-md-11 mx-auto mt-5 card">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Prix</th>
-            <th>Catégorie</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        $pdo = connectDB();
-        $queryPrepared = $pdo->prepare("SELECT idProduct, productName, productPrice, category FROM PRODUCTS");
-        $queryPrepared->execute();
-        $products = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-
-        $queryPrepared = $pdo->prepare("SELECT idCategory, categoryName FROM PRODUCTCATEGORY");
-        $queryPrepared->execute();
-        $categories = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($products as $product) { ?>
-            <tr>
-                <th><?php echo $product["idProduct"] ?></th>
-                <td><?php echo $product["productName"] ?></td>
-                <td><?php echo number_format($product["productPrice"],2) . " €" ?></td>
-                <td><?php
-                    if (!empty($product["category"])) {
-                        $pdo = connectDB();
-                        $queryPrepared = $pdo->prepare("SELECT categoryName FROM PRODUCTCATEGORY WHERE idCategory = :category");
-                        $queryPrepared->execute([":category" => $product["category"]]);
-                    } else {
-                        echo "Aucune catégorie saise";
-                    }
-                    ?></td>
-                <td><a href="./functions/deleteProduct.php?id=<?php echo $product["idProduct"] ?>" class="btn btn-warning" >Supprimer ce produit</a></td>
-            </tr>
+<div class="col-md-11 mx-auto mt-5">
+    <?php
+    if (isset($_GET["error"])) {
+    ?>
+    <div class="alert alert-danger">
+        Des erreurs ont été détectées, le produit n'a donc pas été créé.
+    </div>
+    <?php
+    }
+    ?>
+    <div class="card">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Prix</th>
+                    <th>Catégorie</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
             <?php
-        }
-        ?>
-        </tbody>
-    </table>
+            $pdo = connectDB();
+            $queryPrepared = $pdo->prepare("SELECT idProduct, productName, productPrice, category FROM PRODUCTS");
+            $queryPrepared->execute();
+            $products = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+
+            $queryPrepared = $pdo->prepare("SELECT idCategory, categoryName FROM PRODUCTCATEGORY");
+            $queryPrepared->execute();
+            $categories = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($products as $product) { ?>
+                <tr>
+                    <th><?php echo $product["idProduct"] ?></th>
+                    <td><?php echo $product["productName"] ?></td>
+                    <td><?php echo number_format($product["productPrice"],2) . " €" ?></td>
+                    <td><?php
+                        if (!empty($product["category"])) {
+                            $pdo = connectDB();
+                            $queryPrepared = $pdo->prepare("SELECT categoryName FROM PRODUCTCATEGORY WHERE idCategory = :category");
+                            $queryPrepared->execute([":category" => $product["category"]]);
+                        } else {
+                            echo "Aucune catégorie saise";
+                        }
+                        ?></td>
+                    <td><a href="./functions/deleteProduct.php?id=<?php echo $product["idProduct"] ?>" class="btn btn-warning" >Supprimer ce produit</a></td>
+                </tr>
+                <?php
+            }
+            ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="advantageModalLabel" aria-hidden="true">
@@ -78,8 +89,33 @@ if (isConnected() && isActivated() && isFranchisee()) {
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="productPrice">Prix</span>
                         </div>
-                        <input type="number" min="0" class="form-control" placeholder="Prix" name="productPrice" aria-label="productPrice" aria-describedby="productPrice" required>
+                        <input type="number" min="0" step="any" class="form-control" placeholder="Prix" name="productPrice" aria-label="productPrice" aria-describedby="productPrice" required>
                     </div>
+                    <?php
+                    $pdo = connectDB();
+                    $queryPrepared = $pdo->prepare("SELECT ingredientName, ingredientCategory, idIngredient 
+                                                FROM INGREDIENTS, STORE, WAREHOUSES, TRUCKWAREHOUSE, TRUCK 
+                                                WHERE idIngredient = STORE.ingredient 
+                                                  AND STORE.warehouse = idWarehouse 
+                                                  AND STORE.available = TRUE 
+                                                  AND TRUCKWAREHOUSE.warehouse = idWarehouse 
+                                                  AND TRUCKWAREHOUSE.truck = idTruck 
+                                                  AND truck = :truck
+                                                  AND warehouseType = 'Camion';");
+                    $truck = getMyTruck($_SESSION["email"]);
+                    $queryPrepared->execute([
+                        ":truck" => $truck
+                    ]);
+                    $ingredients = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($ingredients as $ingredient) {
+                    ?>
+                    <div class="custom-control custom-checkbox mb-3">
+                        <input type="checkbox" class="custom-control-input" value="<?php echo $ingredient["idIngredient"] ?>" name="ingredients[]" id="<?php echo $ingredient["ingredientName"] ?>">
+                        <label class="custom-control-label" for="<?php echo $ingredient["ingredientName"] ?>"><?php echo $ingredient["ingredientName"] ?></label>
+                    </div>
+                    <?php
+                    }
+                    ?>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="productCategory">Options</label>

@@ -5,28 +5,35 @@ require "../functions.php";
 
 $truck = getMyTruck($_SESSION["email"]);
 
-if (isset($_POST["productName"], $_POST["productPrice"], $_POST["productCategory"])) {
+if (isset($_POST["productName"], $_POST["productPrice"], $_POST["productCategory"], $_POST["ingredients"])) {
+
+    if ($_POST["productCategory"] == "") {
+        $category = null;
+    } else {
+        $category = $_POST["productCategory"];
+    }
 
     $pdo = connectDB();
     $queryPrepared = $pdo->prepare("INSERT INTO PRODUCTS (productName, productPrice, category, truck) VALUES (:name, :price, :category, :truck)");
     $queryPrepared->execute([
         ":name" => $_POST["productName"],
         ":price" => $_POST["productPrice"],
-        ":category" => $_POST["productCategory"],
+        ":category" => $category,
         ":truck" => $truck
     ]);
-    header("Location: ../products.php");
-} elseif (isset($_POST["productName"], $_POST["productPrice"])) {
 
-    $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("INSERT INTO PRODUCTS (productName, productPrice, category, truck) VALUES (:name, :price, null, :truck)");
-    $queryPrepared->execute([
-        ":name" => $_POST["productName"],
-        ":price" => $_POST["productPrice"],
-        ":truck" => $truck
-    ]);
-    header("Location: ../products.php");
+    $product = $pdo->lastInsertId();
+    $ingredients = $_POST["ingredients"];
+    foreach ($ingredients as $ingredient) {
+        $pdo = connectDB();
+        $queryPrepared = $pdo->prepare("INSERT INTO COMPOSE (ingredient, product) VALUES (:ingredient, :product)");
+        $queryPrepared->execute([
+            ":ingredient" => $ingredient,
+            ":product" => $product
+        ]);
+    }
 
+    header("Location: ../products.php");
 } else {
-    header("Location: ../products.php");
+    header("Location: ../products.php?error=true");
 }
