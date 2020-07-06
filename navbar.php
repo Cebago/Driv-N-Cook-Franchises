@@ -14,6 +14,8 @@
                 <div class="dropdown-menu" aria-labelledby="global">
                     <a class="dropdown-item" href="truckInfo.php">Information</a>
                     <a class="dropdown-item" href="truckMaintenance.php">Carnet d'entretien</a>
+                    <a class="dropdown-item" href="products.php">Mes produits</a>
+                    <a class="dropdown-item" href="menus.php">Mes menus</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
