@@ -23,6 +23,11 @@ if (isset($_POST["productName"], $_POST["productPrice"], $_POST["productCategory
     ]);
 
     $product = $pdo->lastInsertId();
+
+    $queryPrepared = $pdo->prepare("INSERT INTO PRODUCTSTATUS (product, status) VALUES (:product, 19)");
+    $queryPrepared->execute([":product" => $product]);
+
+
     $ingredients = $_POST["ingredients"];
     foreach ($ingredients as $ingredient) {
         $pdo = connectDB();

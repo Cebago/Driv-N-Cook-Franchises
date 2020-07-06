@@ -258,3 +258,19 @@ function statusOfOrder($idOrder)
     }
     return $result;
 }
+
+/**
+ * @param $product
+ * @return array|null
+ */
+function allIngredientsFromProduct($product)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT ingredientName FROM INGREDIENTS, COMPOSE WHERE ingredient = idIngredient AND product = :product");
+    $queryPrepared->execute([":product" => $product]);
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($result)) {
+        return null;
+    }
+    return $result;
+}

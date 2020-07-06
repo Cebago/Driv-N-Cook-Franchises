@@ -26,11 +26,12 @@ if (isConnected() && isActivated() && isFranchisee()) {
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>ID</th>
-                    <th>Nom</th>
-                    <th>Prix</th>
-                    <th>Catégorie</th>
-                    <th>Action</th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Nom</th>
+                    <th class="text-center">Prix</th>
+                    <th class="text-center">Catégorie</th>
+                    <th class="text-center">Ingrédients</th>
+                    <th class="text-center">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,10 +47,10 @@ if (isConnected() && isActivated() && isFranchisee()) {
 
             foreach ($products as $product) { ?>
                 <tr>
-                    <th><?php echo $product["idProduct"] ?></th>
-                    <td><?php echo $product["productName"] ?></td>
-                    <td><?php echo number_format($product["productPrice"],2) . " €" ?></td>
-                    <td><?php
+                    <th class="text-center"><?php echo $product["idProduct"] ?></th>
+                    <td class="text-center"><?php echo $product["productName"] ?></td>
+                    <td class="text-center"><?php echo number_format($product["productPrice"],2) . " €" ?></td>
+                    <td class="text-center"><?php
                         if (!empty($product["category"])) {
                             $pdo = connectDB();
                             $queryPrepared = $pdo->prepare("SELECT categoryName FROM PRODUCTCATEGORY WHERE idCategory = :category");
@@ -58,7 +59,37 @@ if (isConnected() && isActivated() && isFranchisee()) {
                             echo "Aucune catégorie saise";
                         }
                         ?></td>
-                    <td><a href="./functions/deleteProduct.php?id=<?php echo $product["idProduct"] ?>" class="btn btn-warning" >Supprimer ce produit</a></td>
+                    <td>
+                        <ul>
+                            <?php
+                        $ingredients  = allIngredientsFromProduct($product["idProduct"]);
+                        foreach ($ingredients as $ingredient) {
+                            echo "<li>" . $ingredient["ingredientName"] . "</li>";
+                        }
+                        ?>
+                        </ul>
+                    </td>
+                    <td class="text-center">
+                        <?php
+                        $queryPrepared = $pdo->prepare("SELECT status FROM PRODUCTSTATUS WHERE product = :product");
+                        $queryPrepared->execute([":product" => $product["idProduct"]]);
+                        $status = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+                        if (!empty($status))
+                            $status = $status["status"];
+                        if ($status == 19 || empty($status)) {
+                        ?>
+                        <a href="./functions/deleteProduct.php?id=<?php echo $product["idProduct"] ?>&status=20" class="btn btn-warning" >
+                            Rendre ce produit indisponible
+                        </a>
+                        <?php
+                        } else { ?>
+                            <a href="./functions/deleteProduct.php?id=<?php echo $product["idProduct"] ?>&status=19" class="btn btn-success" >
+                                Rendre ce produit disponible
+                            </a>
+                        <?php
+                        }
+                        ?>
+                    </td>
                 </tr>
                 <?php
             }
