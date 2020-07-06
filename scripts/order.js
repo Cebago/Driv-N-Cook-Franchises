@@ -11,8 +11,19 @@ function displayOrders() {
                         document.getElementById("hour" + json[i]["idOrder"]).innerText = json[i]["time"];
                         let status1 = json[i]["status"][0][0]["statusName"];
                         let status2 = json[i]["status"][0][1]["statusName"];
-                        if (document.getElementById("status" + json[i]["idOrder"]).innerText !== status1 + " - " + status2) {
-                            document.getElementById("status" + json[i]["idOrder"]).innerText = status1 + " - " + status2;
+                        if (document.getElementById("pill1").innerText !== status1 && document.getElementById("pill2").innerText !== status2) {
+                            const pill1 = document.createElement("span");
+                            pill1.className = "badge badge-pill badge-info mr-2";
+                            pill1.id = "pill1";
+                            pill1.title = json[i]["status"][0][0]["statusDescription"];
+                            pill1.innerText = status1;
+                            const pill2 = document.createElement("span");
+                            pill2.id = "pill1";
+                            pill2.className = "badge badge-pill badge-success";
+                            pill2.title = json[i]["status"][0][1]["statusDescription"];
+                            pill2.innerText = status2;
+                            document.getElementById("status" + json[i]["idOrder"]).appendChild(pill1);
+                            document.getElementById("status" + json[i]["idOrder"]).appendChild(pill2);
                         }
                         if (status1 === "Payée" || status2 === "Payée") {
                             if (document.getElementById("payBtn" + json[i]["idOrder"]) !== null) {
@@ -60,11 +71,13 @@ function displayOrders() {
                     let status2 = json[i]["status"][0][1]["statusName"];
                     if (status1 !== "Récupérée" && status2 !== "Récupérée") {
                         const pill1 = document.createElement("span");
+                        pill1.id = "pill1";
                         pill1.className = "badge badge-pill badge-info mr-2";
                         pill1.title = json[i]["status"][0][0]["statusDescription"];
                         pill1.innerText = status1;
                         smallTitle.appendChild(pill1);
                         const pill2 = document.createElement("span");
+                        pill2.id = "pill1";
                         pill2.className = "badge badge-pill badge-success";
                         pill2.title = json[i]["status"][0][1]["statusDescription"];
                         pill2.innerText = status2;
