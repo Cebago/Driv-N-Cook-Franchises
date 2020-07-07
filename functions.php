@@ -274,3 +274,24 @@ function allIngredientsFromProduct($product)
     }
     return $result;
 }
+
+/**
+ * @param $idTruck
+ * @return bool
+ */
+function isOpen($idTruck){
+    $translateDay = [
+        1 => "Lundi",
+        2 => "Mardi",
+        3 => "Mercredi",
+        4 => "Jeudi",
+        5 => "Vendredi",
+        6 => "Samedi",
+        7 => "Dimanche",
+    ];
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT * FROM OPENDAYS WHERE openDay = :currentDay AND startHour < current_time() AND endHour > current_time() AND truck = :idTruck;");
+    $queryPrepared->execute([":currentDay" => $translateDay[date("N")], ":idTruck" => $idTruck]);
+    return !empty($queryPrepared->fetch());
+}
+

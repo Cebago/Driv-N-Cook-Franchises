@@ -242,3 +242,19 @@ function changeTruckStatus(truck, status, old) {
     request.send();
     isOnHolidays(truck);
 }
+
+
+function saveLocation(idTruck){
+
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            if (request.responseText !== "") {
+                alert(request.responseText)
+            }
+        }
+    }
+    request.open("GET", "functions/changeTruckStatus.php?truck=" + truck + "&status=" + status + "&oldStatus=" + old);
+    request.send();
+    isOnHolidays(truck);
+}
