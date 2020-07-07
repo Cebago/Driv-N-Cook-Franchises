@@ -2,15 +2,26 @@
 session_start();
 require "conf.inc.php";
 require "functions.php";
-if (!isActivated() || !isFranchisee())
-    header("Location: login.php");
 
+if (!isActivated() || !isFranchisee()) {
+    header("Location: login.php");
+}
 include "header.php";
     include "navbar.php";
 
 
     ?>
+    <div class="toast" id="toastOK" data-delay="2000" style="position: absolute; top: 0; right: 0;">
+        <div class="toast-header">
+            <strong class="mr-auto"><i class="fa fa-street-view"></i> Enregistrement de vos coordonées faites avec succès!</strong>
+        </div>
+    </div>
 
+    <div class="toast" id="toastKO" style="position: absolute; top: 0; right: 0;">
+        <div class="toast-header">
+            <strong class="mr-auto"><i class="fa fa-exclamation-circle"></i>Enregistrement de vos coordonées faites avec succès!</strong>
+        </div>
+    </div>
 
     <main role="main">
         <section class="jumbotron text-center">
@@ -28,6 +39,7 @@ include "header.php";
         </div>
     </main>
     <script src="scripts/order.js"></script>
+    <script src="scripts/locate.js"></script>
     <script>
         window.onload = function() {
             displayOrders();
@@ -37,10 +49,10 @@ include "header.php";
     </script>
 
     <?php include "footer.php";
+    $idTruck = getMyTruck($_SESSION["email"]);
     if(isOpen($idTruck)){
-        $idTruck = getMyTruck($_SESSION["email"]);
         echo '<script type="text/javascript">',
-        'saveLocation('.$idTruck.');',
+        'getLocation('.$idTruck.');',
         '</script>'
         ;
     }

@@ -6,6 +6,7 @@ function displayOrders() {
             if (request.responseText !== "") {
                 let json = JSON.parse(request.responseText);
                 for (let i = 0; i < json.length; i++) {
+                    if(!json[i]["cart"]) return;
                     // vérifier si la div existe -> if(true) -> mettre à jour la date
                     if (document.getElementById(json[i]["idOrder"]) !== null) {
                         document.getElementById("hour" + json[i]["idOrder"]).innerText = json[i]["time"];
@@ -209,7 +210,6 @@ function isOnHolidays(truck) {
         if (request.readyState === 4 && request.status === 200) {
             if (request.responseText !== "") {
                 let json = JSON.parse(request.responseText);
-                console.log(json);
                 for (let i = 0; i < json.length; i++) {
                     const btn = document.createElement("btn");
                     btn.className = "btn btn-primary";
@@ -230,22 +230,6 @@ function isOnHolidays(truck) {
 }
 
 function changeTruckStatus(truck, status, old) {
-    const request = new XMLHttpRequest();
-    request.onreadystatechange = function () {
-        if (request.readyState === 4 && request.status === 200) {
-            if (request.responseText !== "") {
-                alert(request.responseText)
-            }
-        }
-    }
-    request.open("GET", "functions/changeTruckStatus.php?truck=" + truck + "&status=" + status + "&oldStatus=" + old);
-    request.send();
-    isOnHolidays(truck);
-}
-
-
-function saveLocation(idTruck){
-
     const request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
