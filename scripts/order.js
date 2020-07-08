@@ -162,6 +162,9 @@ function displayOrders() {
                     div1.appendChild(div2);
                     containerRow.appendChild(div1);
                 }
+                if (containerRow.firstChild === null) {
+                    containerRow.innerText = "Vous n'avez aucune commande en cours";
+                }
             } else {
                 containerRow.innerText = "Vous n'avez aucune commande en cours";
             }
