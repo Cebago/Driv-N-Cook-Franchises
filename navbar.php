@@ -16,6 +16,7 @@
                     <a class="dropdown-item" href="truckMaintenance.php">Carnet d'entretien</a>
                     <a class="dropdown-item" href="products.php">Mes produits</a>
                     <a class="dropdown-item" href="menus.php">Mes menus</a>
+                    <a class="dropdown-item" href="categories.php">Les catégories</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -37,7 +38,6 @@
                 <div class="dropdown-menu" aria-labelledby="benefits">
                     <a class="dropdown-item" href="createEvents.php">Créer un nouvel évènement</a>
                     <a class="dropdown-item" href="viewEvents.php">Voir les évènements</a>
-
                 </div>
             </li>
             <li class="nav-item">
