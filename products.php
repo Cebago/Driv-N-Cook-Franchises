@@ -149,7 +149,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
                     ?>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <label class="input-group-text" for="productCategory">Options</label>
+                            <label class="input-group-text" for="productCategory">Catégorie</label>
                         </div>
                         <select class="custom-select" id="productCategory" name="productCategory">
                             <option selected value="">Choisir...</option>
