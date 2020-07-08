@@ -282,7 +282,8 @@ function allIngredientsFromProduct($product)
  * @param $idTruck
  * @return bool
  */
-function isOpen($idTruck){
+function isOpen($idTruck)
+{
     $translateDay = [
         1 => "Lundi",
         2 => "Mardi",
