@@ -45,7 +45,7 @@ if (isset($_POST["inputEmail"]) && isset($_POST["inputPassword"]) && !empty($_PO
                                     </label>
                                     <input type="email" id="inputEmail" class="form-control focus"
                                            placeholder="Adresse mail" required="required" autofocus="autofocus"
-                                           name="inputEmail"
+                                           name="inputEmail" autocomplete="username"
                                            value="<?php echo (isset($_POST['inputEmail'])) ? $_POST['inputEmail'] : '' ?>">
                                 </div>
                             </div>
@@ -55,7 +55,8 @@ if (isset($_POST["inputEmail"]) && isset($_POST["inputPassword"]) && !empty($_PO
                                         Mot de passe :
                                     </label>
                                     <input type="password" id="inputPassword" class="form-control focus"
-                                           placeholder="Mot de passe" required="required" name="inputPassword">
+                                           placeholder="Mot de passe" required="required" name="inputPassword"
+                                           autocomplete="current-password">
                                 </div>
                             </div>
                             <input class="btn btn-primary degrade btn-block pt-2 pb-2 " type="submit" value="Connexion">
