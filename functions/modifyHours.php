@@ -48,14 +48,7 @@ if ($error) {
     header("Location: ../truckInfo.php");
 } else {
     $pdo = connectDB();
-    $user = 2;
-    $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("SELECT idTruck FROM TRUCK WHERE user = :user ");
-    $queryPrepared->execute([
-        ":user" => $user
-    ]);
-    $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
-    $truck = $result["idTruck"];
+    $truck = getMyTruck($_SESSION["email"]);
     $queryPrepared = $pdo->prepare("DELETE FROM OPENDAYS WHERE truck=:truck");
     $queryPrepared->execute([
         ":truck" => $truck

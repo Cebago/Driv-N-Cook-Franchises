@@ -74,7 +74,8 @@ if (isConnected() && isActivated() && isFranchisee()) {
                 <div class="mx-auto col-md-6">
                     <button class="btn btn-dark" type="button" data-toggle="modal"
                             title="Modifier mes horaires d'ouvertures"
-                            data-target="#hourModal" onclick="displayOpenDays(<?php echo $_SESSION['idUser'] ?>); setTimeout(changeStatus, 500)">
+                            data-target="#hourModal"
+                            onclick="displayOpenDays(<?php echo $_SESSION['idUser'] ?>); setTimeout(changeStatus, 500)">
                         Modifier mes horaires
                     </button>
                 </div>
@@ -123,7 +124,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
                                                name="<?php echo $day[$i]; ?>" placeholder="Horaire d'ouverture"
                                                aria-describedby="addon-wrapping">
                                     </div>
-                                    <small>Respectez le format XX:XX-XX:XX et séparez par un "/" les différentes
+                                    <small>Respectez le format XX:XX - XX:XX et séparez par un "/" les différentes
                                         plages</small>
                                 </div>
                             </div>

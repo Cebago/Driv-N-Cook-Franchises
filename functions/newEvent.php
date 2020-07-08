@@ -44,18 +44,18 @@ if (count($_POST) == 12 && isset($_POST["truckName"], $_POST["eventName"], $_POS
     }
 
     $time = explode(":", $startHour);
-    if ( $time[0] < 0 || $time[0] > 23 || $time[1] < 0 || $time[1] > 59) {
+    if ($time[0] < 0 || $time[0] > 23 || $time[1] < 0 || $time[1] > 59) {
         $error = true;
         $listOfErrors[] = "L'heure de début saisie n'est pas correcte";
     }
 
     $time = explode(":", $endHour);
-    if ( $time[0] < 0 || $time[0] > 23 || $time[1] < 0 || $time[1] > 59) {
+    if ($time[0] < 0 || $time[0] > 23 || $time[1] < 0 || $time[1] > 59) {
         $error = true;
         $listOfErrors[] = "L'heure de fin saisie n'est pas correcte";
     }
 
-    if (strlen($city) < 3 && strlen($city) > 50 ) {
+    if (strlen($city) < 3 && strlen($city) > 50) {
         $error = true;
         $listOfErrors[] = "La ville saisie n'est pas correcte";
     }
