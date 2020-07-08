@@ -123,7 +123,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
                                                name="<?php echo $day[$i]; ?>" placeholder="Horaire d'ouverture"
                                                aria-describedby="addon-wrapping">
                                     </div>
-                                    <small>Respectez le format XX:XX-XX:XX et séparez par un "/" les différentes
+                                    <small>Respectez le format XX:XX - XX:XX et séparez par un "/" les différentes
                                         plages</small>
                                 </div>
                             </div>
