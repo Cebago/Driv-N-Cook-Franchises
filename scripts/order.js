@@ -24,7 +24,7 @@ function displayOrders() {
                                 document.getElementById("payBtn" + json[i]["idOrder"]).remove();
                             }
                         }
-                        if ((status1 === "Préparée" || status2 === "Préparée") && (status1 === "Payée" || status2 === "Payée") ) {
+                        if ((status1 === "Préparée" || status2 === "Préparée") && (status1 === "Payée" || status2 === "Payée")) {
                             if (document.getElementById("btngroup" + json[i]["idOrder"]) !== null) {
                                 let btngroup = document.getElementById("btngroup" + json[i]["idOrder"]);
                                 if (btngroup.firstElementChild.id !== "giveToCustomerBtn") {
@@ -35,7 +35,7 @@ function displayOrders() {
                                     giveToCustomer.id = "giveToCustomerBtn";
                                     giveToCustomer.className = "btn btn-outline-success";
                                     giveToCustomer.innerText = "Livrée au client";
-                                    giveToCustomer.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] +", 4)");
+                                    giveToCustomer.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] + ", 4)");
                                     btngroup.appendChild(giveToCustomer);
                                 }
                             }
@@ -87,7 +87,7 @@ function displayOrders() {
                             payBtn.className = "btn btn-primary";
                             payBtn.innerText = "Paiement effectué";
                             payBtn.id = "payBtn" + json[i]["idOrder"];
-                            payBtn.setAttribute("onclick", "payOrder(" + json[i]["idOrder"] + ", " + json[i]["user"] + ", " + json[i]["orderPrice"] +")");
+                            payBtn.setAttribute("onclick", "payOrder(" + json[i]["idOrder"] + ", " + json[i]["user"] + ", " + json[i]["orderPrice"] + ")");
                             div3.appendChild(payBtn);
                         }
                     } else {
@@ -141,13 +141,13 @@ function displayOrders() {
                     const btn1 = document.createElement("button");
                     btn1.type = "button";
                     btn1.className = "btn btn-sm btn-outline-primary";
-                    btn1.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] +", 25)")
+                    btn1.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] + ", 25)")
                     btn1.innerText = "Traitement";
                     div6.appendChild(btn1);
                     const btn2 = document.createElement("button");
                     btn2.type = "button";
                     btn2.className = "btn btn-sm btn-outline-success";
-                    btn2.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] +", 26)")
+                    btn2.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] + ", 26)")
                     btn2.innerText = "Terminer";
                     div6.appendChild(btn2);
                     div5.appendChild(div6);
@@ -218,10 +218,10 @@ function isOnHolidays(truck) {
                     btn.className = "btn btn-primary";
                     if (json[i]["status"] === "14") {
                         btn.innerText = "Fermer le camion pour les vacances";
-                        btn.setAttribute("onclick", "changeTruckStatus(" + truck +", 12, 14)");
+                        btn.setAttribute("onclick", "changeTruckStatus(" + truck + ", 12, 14)");
                     } else if (json[i]["status"] === "12") {
                         btn.innerText = "Ouvert de nouveau"
-                        btn.setAttribute("onclick", "changeTruckStatus(" + truck +", 14, 12)");
+                        btn.setAttribute("onclick", "changeTruckStatus(" + truck + ", 14, 12)");
                     }
                     btndiv.appendChild(btn);
                 }
@@ -248,7 +248,7 @@ function changeTruckStatus(truck, status, old) {
 
 function payOrder(idOrder, user, orderPrice) {
     const request = new XMLHttpRequest();
-    request.onreadystatechange  =function () {
+    request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
             changeStatus(idOrder, 1);
         }

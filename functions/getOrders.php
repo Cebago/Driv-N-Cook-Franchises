@@ -32,7 +32,7 @@ for ($i = 0; $i < count($orders); $i++) {
             $orders[$i]["status"][] = $statu["statusName"];
         }*/
     }
-    if (allMenuFromCart($orders[$i]["cart"]) != null ) {
+    if (allMenuFromCart($orders[$i]["cart"]) != null) {
         $orders[$i]["menus"] = [];
         $menus = allMenuFromCart($orders[$i]["cart"]);
         foreach ($menus as $menu) {
@@ -43,7 +43,7 @@ for ($i = 0; $i < count($orders); $i++) {
             }
         }
     }
-    if (allProductFromCart($orders[$i]["cart"]) != null ) {
+    if (allProductFromCart($orders[$i]["cart"]) != null) {
         $orders[$i]["products"] = [];
         $products = allProductFromCart($orders[$i]["cart"]);
         foreach ($products as $product) {
@@ -54,7 +54,7 @@ for ($i = 0; $i < count($orders); $i++) {
     $orderDate = DateTime::createFromFormat('H:i:s', $orders[$i]["orderDate"]);
     $newTime = DateTime::createFromFormat('H:i:s', date('H:i:s'));
     $time = $orderDate->diff($newTime);
-    $time = $time->h . "h " .$time->i . "mins " . $time->s . "sec";
+    $time = $time->h . "h " . $time->i . "mins " . $time->s . "sec";
     $orders[$i]["time"] = $time;
 }
 echo json_encode($orders);

@@ -1,4 +1,3 @@
-
 function getIngredientTruck() {
     const table = document.getElementById("ingredients");
     const request = new XMLHttpRequest();
@@ -156,14 +155,15 @@ function showCategory() {
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     request.send('ingredient=' + select.value);
 }
-function showDetails(idEvent){
+
+function showDetails(idEvent) {
     let items = document.getElementsByClassName("cardDetails");
     items = [].slice.call(items);
-    items.forEach(function(item){
+    items.forEach(function (item) {
 
-        if(item.id === idEvent){
+        if (item.id === idEvent) {
             item.style.display = "block";
-        }else {
+        } else {
             item.style.display = "none";
         }
     })
@@ -185,7 +185,7 @@ function chooseImage() {
                     const a = document.createElement("a");
                     jsonImages[i] = jsonImages[i].substr(3);
 
-                    a.setAttribute("onclick", "selectImg(this,'"+jsonImages[i]+"')");
+                    a.setAttribute("onclick", "selectImg(this,'" + jsonImages[i] + "')");
                     const img = document.createElement("img");
                     img.src = jsonImages[i];
                     img.className = "ml-2 mr-2 mt-2 mb-2 images";
@@ -205,7 +205,7 @@ function chooseImage() {
 function selectImg(thisParameter, imgUrl) {
     images = document.getElementsByClassName("images");
     images = [].slice.call(images);
-    images.forEach(function(item){
+    images.forEach(function (item) {
         item.style.border = "";
     })
     thisParameter.firstChild.style.border = "5px solid #96CC87";
@@ -213,8 +213,8 @@ function selectImg(thisParameter, imgUrl) {
     image.value = imgUrl
 }
 
-function readMessage(idContact){
-    let row = document.getElementById('row'+idContact);
+function readMessage(idContact) {
+    let row = document.getElementById('row' + idContact);
     const request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
@@ -223,7 +223,7 @@ function readMessage(idContact){
             }
         }
     };
-    request.open('GET', 'functions/readMessage.php?idContact='+ idContact);
+    request.open('GET', 'functions/readMessage.php?idContact=' + idContact);
     request.send();
 
 }

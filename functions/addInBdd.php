@@ -106,11 +106,11 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
                 ]);
                 //ajout des traductions dans le fichier json
 
-                $jsonFilePath ='../../Driv-N-Cook-Client/assets/traduction.json';
+                $jsonFilePath = '../../Driv-N-Cook-Client/assets/traduction.json';
                 $jsonFile = file_get_contents($jsonFilePath);
-                $jsonFile =  json_decode($jsonFile, true);
+                $jsonFile = json_decode($jsonFile, true);
 
-                $jsonFile["ingredients"] = array($_POST["newIngredient"]=>array("en_EN" => $_POST["newIngredientEN"], "es_ES" => $_POST["newIngredientES"]));
+                $jsonFile["ingredients"] = array($_POST["newIngredient"] => array("en_EN" => $_POST["newIngredientEN"], "es_ES" => $_POST["newIngredientES"]));
 
                 $newJsonString = json_encode($jsonFile);
                 file_put_contents($jsonFilePath, $newJsonString);

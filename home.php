@@ -24,7 +24,7 @@ if (isActivated() && isFranchisee()) {
     </main>
     <script src="scripts/order.js"></script>
     <script>
-        window.onload = function() {
+        window.onload = function () {
             displayOrders();
             isOnHolidays(<?php echo getMyTruck($_SESSION["email"]); ?>);
         }
