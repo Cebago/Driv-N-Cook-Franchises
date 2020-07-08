@@ -2,11 +2,11 @@
 session_start();
 require "../conf.inc.php";
 require "../functions.php";
-//header("Content-Type: application/json");
+header("Content-Type: application/json");
 
 $pdo = connectDB();
 $truck = getMyTruck($_SESSION["email"]);
-$queryPrepared = $pdo->prepare("SELECT idOrder, DATE_FORMAT(orderDate, '%H:%i:%s') as orderDate, cart 
+$queryPrepared = $pdo->prepare("SELECT idOrder, DATE_FORMAT(orderDate, '%H:%i:%s') as orderDate, orderPrice, cart, user
                                             FROM ORDERS 
                                             WHERE orderType = 'Commande client' 
                                               AND truck = :truck
@@ -16,6 +16,12 @@ $queryPrepared->execute([
 ]);
 $orders = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 for ($i = 0; $i < count($orders); $i++) {
+
+    $queryPrepared = $pdo->prepare("SELECT lastname, firstname FROM USER WHERE idUser = :user");
+    $queryPrepared->execute([":user" => $orders[$i]["user"]]);
+    $user = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    $user = strtoupper($user["lastname"]) . " " . $user["firstname"];
+    $orders[$i]["name"] = $user;
 
     if (statusOfOrder($orders[$i]["idOrder"]) != null) {
         $orders[$i]["status"] = [];
