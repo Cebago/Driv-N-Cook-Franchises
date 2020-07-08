@@ -6,6 +6,7 @@ function displayOrders() {
             if (request.responseText !== "") {
                 let json = JSON.parse(request.responseText);
                 for (let i = 0; i < json.length; i++) {
+                    if(!json[i]["cart"]) return;
                     // vérifier si la div existe -> if(true) -> mettre à jour la date
                     if (document.getElementById(json[i]["idOrder"]) !== null) {
                         document.getElementById("hour" + json[i]["idOrder"]).innerText = json[i]["time"];
