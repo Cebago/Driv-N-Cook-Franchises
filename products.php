@@ -55,6 +55,8 @@ if (isConnected() && isActivated() && isFranchisee()) {
                             $pdo = connectDB();
                             $queryPrepared = $pdo->prepare("SELECT categoryName FROM PRODUCTCATEGORY WHERE idCategory = :category");
                             $queryPrepared->execute([":category" => $product["category"]]);
+                            $category = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+                            echo $category["categoryName"];
                         } else {
                             echo "Aucune catégorie saise";
                         }
