@@ -100,8 +100,15 @@ if (count($_POST) == 2
                 ":user" => $user,
                 ":truck" => $truck
             ]);
-
             $id = $pdo->lastInsertId();
+
+            $queryPrepared = $pdo->prepare("INSERT INTO TRANSACTION (transactionType, price, user, orders) VALUES ('buyExtern', :price, :user, :order)");
+            $queryPrepared->execute([
+                ":price" => $price,
+                ":user" => $user,
+                ":order" => $id
+            ]);
+
             $queryPrepared = $pdo->prepare("INSERT INTO ORDERSTATUS (orders, status) VALUES (:order, :status)");
             $queryPrepared->execute([
                 ":order" => $id,
