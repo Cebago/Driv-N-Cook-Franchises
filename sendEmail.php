@@ -49,7 +49,7 @@ if (count($_POST) == 3
             $header .= "X-Mailer: PHP\n";
             $header .= "Return-Path: <noreply@drivncook.fr>\n";
             $header .= "Content-Type: text/html; charset=iso-8859-1\n";
-            $link = "https://franchises.drivncook.fr/isActivated?cle=" . urlencode($cle) . "&id=" . urlencode($idUser);
+            $link = "https://franchises.drivncook.fr/isActivated.php?cle=" . urlencode($cle) . "&id=" . urlencode($idUser);
 
             $html = file_get_contents('mail.html');
             $html = str_replace("{{firstname}}", $firstName . " !", $html);
