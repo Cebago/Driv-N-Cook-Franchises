@@ -6,7 +6,7 @@ require "../functions.php";
 var_dump($_FILES);
 
 $title = $_POST["idMenu"];
-$target_dir = "../../img/menuImg/";
+$target_dir = "img/menuImg/";
 $uploadOk = 1;
 $listOfErrors = [];
 $target_file = $target_dir . basename($_FILES["menuImage"]["name"]);
