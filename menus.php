@@ -89,7 +89,9 @@ if (isConnected() && isActivated() && isFranchisee()) {
                             <?php
                         }
                         ?>
-                        <button class="btn btn-info" data-toggle="modal" data-target="#imageUpload" onclick="update(<?php echo $menu['idMenu'] ?>)">Uploader une image</button>
+                        <button class="btn btn-info" data-toggle="modal" data-target="#imageUpload"
+                                onclick="update(<?php echo $menu['idMenu'] ?>)">Uploader une image
+                        </button>
                     </td>
                 </tr>
                 <?php
@@ -155,7 +157,8 @@ if (isConnected() && isActivated() && isFranchisee()) {
     </form>
 </div>
 
-<div class="modal fade" id="imageUpload" tabindex="-1" role="dialog" aria-labelledby="uploadImageLabel" aria-hidden="true">
+<div class="modal fade" id="imageUpload" tabindex="-1" role="dialog" aria-labelledby="uploadImageLabel"
+     aria-hidden="true">
     <form method="POST" action="./functions/uploadImageMenu.php" enctype="multipart/form-data">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -170,11 +173,13 @@ if (isConnected() && isActivated() && isFranchisee()) {
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="menuID">Numéro du menu</span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Numéro du menu" name="idMenu" id="idMenu" readonly required aria-label="Username" aria-describedby="menuID">
+                        <input type="text" class="form-control" placeholder="Numéro du menu" name="idMenu" id="idMenu"
+                               readonly required aria-label="Username" aria-describedby="menuID">
                     </div>
                     <div class="input-group mb-3">
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="menuImage" aria-describedby="inputGroupFileAddon01" required>
+                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="menuImage"
+                                   aria-describedby="inputGroupFileAddon01" required>
                             <label class="custom-file-label" for="inputGroupFile01">Choisir un fichier</label>
                         </div>
                     </div>

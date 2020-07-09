@@ -16,7 +16,7 @@ if (isset($_POST["submit"])) {
     if ($check !== false) {
         $uploadOk = 1;
     } else {
-       $listOfErrors[] = "Ce n'est pas une image.";
+        $listOfErrors[] = "Ce n'est pas une image.";
         $uploadOk = 0;
     }
 }
