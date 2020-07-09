@@ -21,6 +21,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
         </div>
         <?php
     }
+
     ?>
     <div class="card">
         <table class="table table-striped">
@@ -88,6 +89,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
                             <?php
                         }
                         ?>
+                        <button class="btn btn-info" data-toggle="modal" data-target="#imageUpload" onclick="update(<?php echo $menu['idMenu'] ?>)">Uploader une image</button>
                     </td>
                 </tr>
                 <?php
@@ -152,6 +154,41 @@ if (isConnected() && isActivated() && isFranchisee()) {
         </div>
     </form>
 </div>
+
+<div class="modal fade" id="imageUpload" tabindex="-1" role="dialog" aria-labelledby="uploadImageLabel" aria-hidden="true">
+    <form method="POST" action="./functions/uploadImageMenu.php" enctype="multipart/form-data">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadImageLabel">Ajouter un menu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="menuID">Numéro du menu</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Numéro du menu" name="idMenu" id="idMenu" readonly required aria-label="Username" aria-describedby="menuID">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="menuImage" aria-describedby="inputGroupFileAddon01" required>
+                            <label class="custom-file-label" for="inputGroupFile01">Choisir un fichier</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="scripts/menus.js"></script>
 
     <?php
     include "footer.php";
