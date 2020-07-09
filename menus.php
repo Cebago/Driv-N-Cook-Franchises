@@ -21,6 +21,18 @@ if (isConnected() && isActivated() && isFranchisee()) {
         </div>
         <?php
     }
+    if (isset($_SESSION["errors"])) {
+        ?>
+        <div class="alert alert-danger">
+            <?php
+            foreach ($_SESSION["errors"] as $error) {
+                echo "<li>" . $error . "</li>";
+            }
+            unset($_SESSION["errors"]);
+            ?>
+        </div>
+        <?php
+    }
 
     ?>
     <div class="card">
