@@ -28,6 +28,18 @@ if (count($_POST) == 3
                 ":token" => $cle,
                 ":user" => $idUser
             ]);
+
+            $queryPrepared = $pdo->prepare("INSERT INTO USERTOKEN (token, tokenType, user) VALUES (:token, 'Site', :id)");
+            $queryPrepared->execute([
+                ":token" => $cle,
+                ":id" => $idUser
+            ]);
+
+            $queryPrepared = $pdo->prepare("INSERT INTO USERTOKEN (tokenType, user) VALUES ('Appli', :id)");
+            $queryPrepared->execute([
+                ":id" => $idUser
+            ]);
+
             $destination = $email;
             $admin = ($_SERVER["SERVER_ADMIN"]);
             $domaineAddresse = substr($admin, strpos($admin, '@') + 1, strlen($admin));
