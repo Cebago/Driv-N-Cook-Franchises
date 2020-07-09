@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta lang="FR">
-        <meta charset="UTF-8">
-        <title>Mail Sender</title>
-        <link rel="icon" href="./img/banner.png">
-    </head>
-    <body style="
+<head>
+    <meta lang="FR">
+    <meta charset="UTF-8">
+    <title>Mail Sender</title>
+    <link href="./img/banner.png" rel="icon">
+</head>
+<body style="
         font-family: 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
         font-size: 1rem;
         font-weight: 400;
@@ -18,16 +18,21 @@
         margin: auto auto 0 auto;
 
         }">
-        <header>
-           <div style="text-align: center;"><img src="https://franchises.drivncook.fr/img/banner.png" alt="Bannière Driv'n Cook"></div>
-        </header>
+<header>
+    <div style="text-align: center;"><img alt="Bannière Driv'n Cook"
+                                          src="https://franchises.drivncook.fr/img/banner.png"></div>
+</header>
 
-        <div class="jumbotron" style="padding: 2rem 1rem; margin-bottom: 2rem; background-color: #e9ecef; border-radius: 0.3rem">
-            <h1 style="  margin-top: 0; margin-bottom: 0.5rem; font-weight: 300; line-height: 1.2; font-size: 3.5rem; ">Bonjour {{firstname}}</h1>
-            <p style="  font-size: 1.25rem; font-weight: 300;">Bienvenue sur Driv'n Cook !</p>
-            <hr style="margin-top: 1.5rem !important;">
-            <p style="  margin-top: 0; margin-bottom: 1rem;">Pour finaliser l'activation à votre compte, veuillez cliquer sur le bouton ci-dessous</p>
-            <a class="btn-primary btn-lg" href="{{link}}"style=" display: inline-block;
+<div class="jumbotron"
+     style="padding: 2rem 1rem; margin-bottom: 2rem; background-color: #e9ecef; border-radius: 0.3rem">
+    <h1 style="  margin-top: 0; margin-bottom: 0.5rem; font-weight: 300; line-height: 1.2; font-size: 3.5rem; ">Bonjour
+        {{firstname}}</h1>
+    <p style="  font-size: 1.25rem; font-weight: 300;">Bienvenue sur Driv'n Cook !</p>
+    <hr style="margin-top: 1.5rem !important;">
+    <p style="  margin-top: 0; margin-bottom: 1rem;">Pour finaliser l'activation à votre compte, veuillez cliquer sur le
+        bouton ci-dessous</p>
+    <a class="btn-primary btn-lg" href="{{link}}" role="button"
+       style=" display: inline-block;
                 font-weight: 400;
                 color: #fff;
                 background-color: #007bff;
@@ -44,18 +49,27 @@
                 line-height: 1.5;
                 border-radius: 0.3rem;
                 text-decoration: none;
-                transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;" role="button">
-            Activation</a>
+                transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;">
+        Activation</a>
 
-            <p>À bientôt sur notre site</p>
-        </div>
+    <p>À bientôt sur notre site</p>
+</div>
 
-        <p style="text-align: justify">Si vous ne parvenez pas à accéder à la page en cliquant sur le bouton ci-dessus, nous vous invitons à recopier le lien complet : </p>
-        <p><a href="{{link}}">{{link}}</a></p>
-        <br>
-        <br>
-        <p>Un geste simple pour l'environnement, n'imprimez ce message que si vous en avez l'utilité. <p>
-            <br>
-        <p style="text-align: justify;">Conformément à la loi n°78-17 du 6 janvier 1978 modifiée et au règlement (UE) n°2016/679 du 27 avril 2016 vous pouvez exercer votre droit d'accès, de rectification, d’opposition et d’effacement pour motifs légitimes. Vous disposez, également, d’un droit à la limitation du traitement et à la portabilité des données à caractère personnel vous concernant. Ces droits peuvent être exercés par courrier à l’adresse suivante : Tour Driv'n cook – 6ème étage – Direction Clients & Territoires - Service National Consommateurs – 242, Avenue du Faubourg Saint-Antoine, 75015 Paris. Votre courrier doit préciser votre nom et prénom, votre adresse actuelle et votre mail, accompagnée d’une pièce justificative d’identité. Vous avez le droit d’introduire une réclamation auprès de la CNIL. </p>
-    </body>
+<p style="text-align: justify">Si vous ne parvenez pas à accéder à la page en cliquant sur le bouton ci-dessus, nous
+    vous invitons à recopier le lien complet : </p>
+<p><a href="{{link}}">{{link}}</a></p>
+<br>
+<br>
+<p>Un geste simple pour l'environnement, n'imprimez ce message que si vous en avez l'utilité.
+<p>
+    <br>
+<p style="text-align: justify;">Conformément à la loi n°78-17 du 6 janvier 1978 modifiée et au règlement (UE) n°2016/679
+    du 27 avril 2016 vous pouvez exercer votre droit d'accès, de rectification, d’opposition et d’effacement pour motifs
+    légitimes. Vous disposez, également, d’un droit à la limitation du traitement et à la portabilité des données à
+    caractère personnel vous concernant. Ces droits peuvent être exercés par courrier à l’adresse suivante : Tour Driv'n
+    cook – 6ème étage – Direction Clients & Territoires - Service National Consommateurs – 242, Avenue du Faubourg
+    Saint-Antoine, 75015 Paris. Votre courrier doit préciser votre nom et prénom, votre adresse actuelle et votre mail,
+    accompagnée d’une pièce justificative d’identité. Vous avez le droit d’introduire une réclamation auprès de la
+    CNIL. </p>
+</body>
 </html>

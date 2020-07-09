@@ -2,11 +2,11 @@
 session_start();
 require "../conf.inc.php";
 require "../functions.php";
-//header("Content-Type: application/json");
+header("Content-Type: application/json");
 
 $pdo = connectDB();
 $truck = getMyTruck($_SESSION["email"]);
-$queryPrepared = $pdo->prepare("SELECT idOrder, DATE_FORMAT(orderDate, '%H:%i:%s') as orderDate, cart 
+$queryPrepared = $pdo->prepare("SELECT idOrder, DATE_FORMAT(orderDate, '%H:%i:%s') as orderDate, orderPrice, cart, user
                                             FROM ORDERS 
                                             WHERE orderType = 'Commande client' 
                                               AND truck = :truck
@@ -17,6 +17,12 @@ $queryPrepared->execute([
 $orders = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 for ($i = 0; $i < count($orders); $i++) {
 
+    $queryPrepared = $pdo->prepare("SELECT lastname, firstname FROM USER WHERE idUser = :user");
+    $queryPrepared->execute([":user" => $orders[$i]["user"]]);
+    $user = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    $user = strtoupper($user["lastname"]) . " " . $user["firstname"];
+    $orders[$i]["name"] = $user;
+
     if (statusOfOrder($orders[$i]["idOrder"]) != null) {
         $orders[$i]["status"] = [];
         $status = statusOfOrder($orders[$i]["idOrder"]);
@@ -26,7 +32,7 @@ for ($i = 0; $i < count($orders); $i++) {
             $orders[$i]["status"][] = $statu["statusName"];
         }*/
     }
-    if (allMenuFromCart($orders[$i]["cart"]) != null ) {
+    if (allMenuFromCart($orders[$i]["cart"]) != null) {
         $orders[$i]["menus"] = [];
         $menus = allMenuFromCart($orders[$i]["cart"]);
         foreach ($menus as $menu) {
@@ -37,7 +43,7 @@ for ($i = 0; $i < count($orders); $i++) {
             }
         }
     }
-    if (allProductFromCart($orders[$i]["cart"]) != null ) {
+    if (allProductFromCart($orders[$i]["cart"]) != null) {
         $orders[$i]["products"] = [];
         $products = allProductFromCart($orders[$i]["cart"]);
         foreach ($products as $product) {
@@ -48,7 +54,7 @@ for ($i = 0; $i < count($orders); $i++) {
     $orderDate = DateTime::createFromFormat('H:i:s', $orders[$i]["orderDate"]);
     $newTime = DateTime::createFromFormat('H:i:s', date('H:i:s'));
     $time = $orderDate->diff($newTime);
-    $time = $time->h . "h " .$time->i . "mins " . $time->s . "sec";
+    $time = $time->h . "h " . $time->i . "mins " . $time->s . "sec";
     $orders[$i]["time"] = $time;
 }
 echo json_encode($orders);

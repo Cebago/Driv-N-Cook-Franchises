@@ -84,7 +84,9 @@ if (isConnected() && isActivated() && isFranchisee()) {
                                     class="btn btn-sm btn-success ml-2"><i class="fas fa-plus"></i></button>
                         </td>
                     </tr>
-
+                <?php
+                }
+                ?>
                     <tr>
                         <td colspan="1">
                             <strong>TOTAL :</strong>
@@ -96,9 +98,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
                     </tbody>
                     </table>
                     </div>
-
                     <?php
-                }
             } else {
                 echo "<div class='col-md-6 mx-auto'><p>Vous n'avez rien dans votre panier</p></div>";
             }

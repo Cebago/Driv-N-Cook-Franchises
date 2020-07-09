@@ -10,23 +10,25 @@ if (isConnected() && isActivated() && isFranchisee()) {
     $queryPrepared->execute([
         ":idTruck" => $idTruck
     ]);
-    ;
     $info = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
     include "header.php";
     ?>
 
     <?php include "navbar.php";
-    if(empty($info)){?>
+    if (empty($info)) {
+        ?>
 
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1 class="display-4">Aucun événement de programmé!</h1>
                 <p class="lead">N'hésitez pas à privatiser votre camion</p>
-                <button class="btn btn-success" onclick="window.location.href='createEvents.php'">Créer un évennement !</button>
+                <button class="btn btn-success" onclick="window.location.href='createEvents.php'">Créer un évennement
+                    !
+                </button>
             </div>
         </div>
-    <?php }else {  ?>
+    <?php } else { ?>
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
@@ -41,8 +43,8 @@ if (isConnected() && isActivated() && isFranchisee()) {
                         <tbody>
 
                         <?php
-                            foreach ($info as $event){
-                        ?>
+                        foreach ($info as $event) {
+                            ?>
                             <tr onclick="showDetails('details<?php echo $event["idEvent"] ?>')">
                                 <td><?php echo $event["idEvent"] ?></td>
                                 <td><?php echo $event["eventType"] ?></td>
@@ -57,20 +59,21 @@ if (isConnected() && isActivated() && isFranchisee()) {
             </div>
             <?php
             foreach ($info as $key => $event) {
-            ?>
+                ?>
 
-            <div class="card cardDetails" id="details<?php echo $event["idEvent"]?>" style="width: 50%; display: <?php echo $key?"none":"block" //j'affiche le premier element uniquement?>">
-                <img src="<?php echo $event["eventImg"]?> "style="width: 100%" class="card-img-top" alt="" >
-                <div class="card-body">
-                    <h5 class="card-title"><?php echo $event["eventName"] ?></h5>
-                    <p class="card-text"><b><?php echo $event["eventType"]?></b></p>
-                    <hr>
-                    <p class="card-text"><b><?php echo $event["eventDesc"]?></b></p>
-                    <hr>
+                <div class="card cardDetails" id="details<?php echo $event["idEvent"] ?>"
+                     style="width: 50%; display: <?php echo $key ? "none" : "block" //j'affiche le premier element uniquement?>">
+                    <img src="<?php echo $event["eventImg"] ?> " style="width: 100%" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo $event["eventName"] ?></h5>
+                        <p class="card-text"><b><?php echo $event["eventType"] ?></b></p>
+                        <hr>
+                        <p class="card-text"><b><?php echo $event["eventDesc"] ?></b></p>
+                        <hr>
+                    </div>
+
+
                 </div>
-
-
-            </div>
             <?php } ?>
 
         </div>

@@ -174,7 +174,7 @@ function truckWarehouse($idTruck)
 
 /**
  * @param $email
- * @return mixed
+ * @return mixed|null
  */
 function getMyTruck($email)
 {
@@ -182,19 +182,25 @@ function getMyTruck($email)
     $queryPrepared = $pdo->prepare("SELECT idTruck FROM TRUCK, USER WHERE idUser = user AND emailAddress = :email");
     $queryPrepared->execute([":email" => $email]);
     $truck = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    if (empty($truck)) {
+        return null;
+    }
     return $truck["idTruck"];
 }
+
 /**
  * @param $email
  * @return array
  */
-function getMessages($email){
+function getMessages($email)
+{
     $pdo = connectDB();
     $queryPrepared = $pdo->prepare("SELECT firstname, lastname, emailAddress, contactSubject, DATE_FORMAT(CONTACT.createDate, '%d/%m/%Y') as createDate, isRead,idContact, contactDescription, receiver FROM USER, CONTACT WHERE CONTACT.user = idUser AND receiver = (SELECT idTruck FROM TRUCK, USER WHERE user = idUser AND emailAddress = :email)");
     $queryPrepared->execute([":email" => $email]);
     return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
 
 }
+
 /**
  * @param $cart
  * @return mixed|null
@@ -274,3 +280,25 @@ function allIngredientsFromProduct($product)
     }
     return $result;
 }
+
+/**
+ * @param $idTruck
+ * @return bool
+ */
+function isOpen($idTruck)
+{
+    $translateDay = [
+        1 => "Lundi",
+        2 => "Mardi",
+        3 => "Mercredi",
+        4 => "Jeudi",
+        5 => "Vendredi",
+        6 => "Samedi",
+        7 => "Dimanche",
+    ];
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT * FROM OPENDAYS WHERE openDay = :currentDay AND startHour < current_time() AND endHour > current_time() AND truck = :idTruck;");
+    $queryPrepared->execute([":currentDay" => $translateDay[date("N")], ":idTruck" => $idTruck]);
+    return !empty($queryPrepared->fetch());
+}
+

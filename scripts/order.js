@@ -6,31 +6,26 @@ function displayOrders() {
             if (request.responseText !== "") {
                 let json = JSON.parse(request.responseText);
                 for (let i = 0; i < json.length; i++) {
+                    if (!json[i]["cart"]) return;
                     // vérifier si la div existe -> if(true) -> mettre à jour la date
                     if (document.getElementById(json[i]["idOrder"]) !== null) {
                         document.getElementById("hour" + json[i]["idOrder"]).innerText = json[i]["time"];
                         let status1 = json[i]["status"][0][0]["statusName"];
                         let status2 = json[i]["status"][0][1]["statusName"];
-                        if (document.getElementById("pill1").innerText !== status1 && document.getElementById("pill2").innerText !== status2) {
-                            const pill1 = document.createElement("span");
-                            pill1.className = "badge badge-pill badge-info mr-2";
-                            pill1.id = "pill1";
-                            pill1.title = json[i]["status"][0][0]["statusDescription"];
+                        if (document.getElementById("pil" + json[i]["idOrder"]).innerText !== status1 || document.getElementById("pill" + json[i]["idOrder"]).innerText !== status2) {
+                            const pill1 = document.getElementById("pil" + json[i]["idOrder"])
                             pill1.innerText = status1;
-                            const pill2 = document.createElement("span");
-                            pill2.id = "pill1";
-                            pill2.className = "badge badge-pill badge-success";
-                            pill2.title = json[i]["status"][0][1]["statusDescription"];
+                            pill1.title = json[i]["status"][0][0]["statusDescription"]
+                            const pill2 = document.getElementById("pill" + json[i]["idOrder"])
                             pill2.innerText = status2;
-                            document.getElementById("status" + json[i]["idOrder"]).appendChild(pill1);
-                            document.getElementById("status" + json[i]["idOrder"]).appendChild(pill2);
+                            pill2.title = json[i]["status"][0][1]["statusDescription"]
                         }
                         if (status1 === "Payée" || status2 === "Payée") {
                             if (document.getElementById("payBtn" + json[i]["idOrder"]) !== null) {
                                 document.getElementById("payBtn" + json[i]["idOrder"]).remove();
                             }
                         }
-                        if ((status1 === "Préparée" || status2 === "Préparée") && (status1 === "Payée" || status2 === "Payée") ) {
+                        if ((status1 === "Préparée" || status2 === "Préparée") && (status1 === "Payée" || status2 === "Payée")) {
                             if (document.getElementById("btngroup" + json[i]["idOrder"]) !== null) {
                                 let btngroup = document.getElementById("btngroup" + json[i]["idOrder"]);
                                 if (btngroup.firstElementChild.id !== "giveToCustomerBtn") {
@@ -41,7 +36,7 @@ function displayOrders() {
                                     giveToCustomer.id = "giveToCustomerBtn";
                                     giveToCustomer.className = "btn btn-outline-success";
                                     giveToCustomer.innerText = "Livrée au client";
-                                    giveToCustomer.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] +", 4)");
+                                    giveToCustomer.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] + ", 4)");
                                     btngroup.appendChild(giveToCustomer);
                                 }
                             }
@@ -61,9 +56,13 @@ function displayOrders() {
                     div2.className = "card mb-5 shadow-sm bg-light";
                     const div3 = document.createElement("div");
                     div3.className = "card-title ml-3";
+                    const p = document.createElement("p");
+                    p.className = "text-muted mt-3";
+                    p.innerText = json[i]["name"];
                     const title = document.createElement("h3");
-                    title.className = "mt-3";
+                    title.className = "mt-2";
                     title.innerText = "Commande n°" + json[i]["idOrder"];
+                    div3.appendChild(p);
                     div3.appendChild(title);
                     const smallTitle = document.createElement("h6");
                     smallTitle.id = "status" + json[i]["idOrder"];
@@ -71,13 +70,13 @@ function displayOrders() {
                     let status2 = json[i]["status"][0][1]["statusName"];
                     if (status1 !== "Récupérée" && status2 !== "Récupérée") {
                         const pill1 = document.createElement("span");
-                        pill1.id = "pill1";
+                        pill1.id = "pil" + json[i]["idOrder"];
                         pill1.className = "badge badge-pill badge-info mr-2";
                         pill1.title = json[i]["status"][0][0]["statusDescription"];
                         pill1.innerText = status1;
                         smallTitle.appendChild(pill1);
                         const pill2 = document.createElement("span");
-                        pill2.id = "pill1";
+                        pill2.id = "pill" + json[i]["idOrder"];
                         pill2.className = "badge badge-pill badge-success";
                         pill2.title = json[i]["status"][0][1]["statusDescription"];
                         pill2.innerText = status2;
@@ -89,7 +88,7 @@ function displayOrders() {
                             payBtn.className = "btn btn-primary";
                             payBtn.innerText = "Paiement effectué";
                             payBtn.id = "payBtn" + json[i]["idOrder"];
-                            payBtn.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] +", 1)");
+                            payBtn.setAttribute("onclick", "payOrder(" + json[i]["idOrder"] + ", " + json[i]["user"] + ", " + json[i]["orderPrice"] + ")");
                             div3.appendChild(payBtn);
                         }
                     } else {
@@ -98,7 +97,8 @@ function displayOrders() {
                     div2.appendChild(div3);
                     const div4 = document.createElement("div");
                     div4.className = "card-body";
-                    if (json[i]["products"].length !== 0) {
+
+                    if (json[i]["products"] !== undefined && json[i]["products"].length !== 0) {
                         const p1 = document.createElement("p");
                         p1.className = "card-text";
                         p1.innerText = "Produits:";
@@ -142,13 +142,13 @@ function displayOrders() {
                     const btn1 = document.createElement("button");
                     btn1.type = "button";
                     btn1.className = "btn btn-sm btn-outline-primary";
-                    btn1.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] +", 25)")
+                    btn1.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] + ", 25)")
                     btn1.innerText = "Traitement";
                     div6.appendChild(btn1);
                     const btn2 = document.createElement("button");
                     btn2.type = "button";
                     btn2.className = "btn btn-sm btn-outline-success";
-                    btn2.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] +", 26)")
+                    btn2.setAttribute("onclick", "changeStatus(" + json[i]["idOrder"] + ", 26)")
                     btn2.innerText = "Terminer";
                     div6.appendChild(btn2);
                     div5.appendChild(div6);
@@ -162,6 +162,9 @@ function displayOrders() {
                     div2.appendChild(div3);
                     div1.appendChild(div2);
                     containerRow.appendChild(div1);
+                }
+                if (containerRow.firstChild === null) {
+                    containerRow.innerText = "Vous n'avez aucune commande en cours";
                 }
             } else {
                 containerRow.innerText = "Vous n'avez aucune commande en cours";
@@ -189,6 +192,8 @@ function changeStatus(order, status) {
         if (request.readyState === 4 && request.status === 200) {
             if (request.responseText !== "") {
                 alert(request.responseText);
+            } else {
+                displayOrders();
             }
         }
     }
@@ -209,16 +214,15 @@ function isOnHolidays(truck) {
         if (request.readyState === 4 && request.status === 200) {
             if (request.responseText !== "") {
                 let json = JSON.parse(request.responseText);
-                console.log(json);
                 for (let i = 0; i < json.length; i++) {
                     const btn = document.createElement("btn");
                     btn.className = "btn btn-primary";
                     if (json[i]["status"] === "14") {
                         btn.innerText = "Fermer le camion pour les vacances";
-                        btn.setAttribute("onclick", "changeTruckStatus(" + truck +", 12, 14)");
+                        btn.setAttribute("onclick", "changeTruckStatus(" + truck + ", 12, 14)");
                     } else if (json[i]["status"] === "12") {
                         btn.innerText = "Ouvert de nouveau"
-                        btn.setAttribute("onclick", "changeTruckStatus(" + truck +", 14, 12)");
+                        btn.setAttribute("onclick", "changeTruckStatus(" + truck + ", 14, 12)");
                     }
                     btndiv.appendChild(btn);
                 }
@@ -241,4 +245,19 @@ function changeTruckStatus(truck, status, old) {
     request.open("GET", "functions/changeTruckStatus.php?truck=" + truck + "&status=" + status + "&oldStatus=" + old);
     request.send();
     isOnHolidays(truck);
+}
+
+function payOrder(idOrder, user, orderPrice) {
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            changeStatus(idOrder, 1);
+        }
+    }
+    request.open("POST", "functions/payOrder.php");
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.send("id=" + idOrder +
+        "&user=" + user +
+        "&price=" + orderPrice);
+
 }

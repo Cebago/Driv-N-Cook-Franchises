@@ -124,7 +124,7 @@ include 'header.php';
 
 </script>
 <?php
-    include "footer.php";
+include "footer.php";
 } else {
     header("Location: login.php");
 }
