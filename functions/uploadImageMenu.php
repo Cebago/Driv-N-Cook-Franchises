@@ -40,7 +40,7 @@ if ($uploadOk == 0) {
     $listOfErrors[] = "Desolé votre fichier n'est pas envoyé";
     $_SESSION["errors"];
 } else {
-    if (move_uploaded_file($_FILES["menuImage"]["tmp_name"], $target_dir . $title . "." . $imageFileType)) {
+    if (move_uploaded_file($_FILES["menuImage"]["tmp_name"], "../" . $target_dir . $title . "." . $imageFileType)) {
         $img = $target_dir . $title . "." . $imageFileType;
         $pdo = connectDB();
         $queryPrepared = $pdo->prepare("UPDATE MENUS SET menuImage = :image WHERE idMenu = :id");
