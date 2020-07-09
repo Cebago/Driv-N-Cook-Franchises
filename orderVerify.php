@@ -63,8 +63,8 @@ if (count($_POST) == 2
             $uploadOk = 0;
         }
         // Allow certain file formats
-        if ($imageFileType != "pdf") {
-            $listOfErrors[] = "Seuls les extensions .gif, .png, . jpg et .jpeg sont acceptés";
+        if ($imageFileType != "pdf" || $imageFileType != "png" || $imageFileType != "jpg" || $imageFileType != "jpeg") {
+            $listOfErrors[] = "Seules les extensions .pdf, .png, . jpg et .jpeg sont acceptés";
             $uploadOk = 0;
         }
         if ($uploadOk == 0) {
