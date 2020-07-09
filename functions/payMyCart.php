@@ -104,12 +104,12 @@ if (isConnected() && isActivated() && isFranchisee()) {
             $queryPrepared = $pdo->prepare("INSERT INTO CARTSTATUS (cart, status) VALUES (:cart, 9)");
             $queryPrepared->execute([":cart" => $newCart]);
 
-            header("Location: home.php");
+            header("Location: ../home.php");
         }
 
     } else {
         die("Ne pas modifier le formulaire");
     }
 } else {
-    header("Location: login.php");
+    header("Location: ../login.php");
 }
