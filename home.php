@@ -11,14 +11,13 @@ include "navbar.php";
 
 
 ?>
-    <div class="toast" id="toastOK" data-delay="2000" style="position: absolute; top: 0; right: 0;">
+    <div class="toast" id="toastOK" data-delay="2000" style="position: absolute; top: 30; right: 0;">
         <div class="toast-header">
             <strong class="mr-auto"><i class="fa fa-street-view"></i> Enregistrement de vos coordonées faites avec
                 succès!</strong>
         </div>
     </div>
-
-    <div class="toast" id="toastKO" style="position: absolute; top: 0; right: 0;">
+    <div class="toast" id="toastKO" style="position: absolute; top: 30; right: 0;">
         <div class="toast-header">
             <strong class="mr-auto"><i class="fa fa-exclamation-circle"></i>Enregistrement de vos coordonées faites avec
                 succès!</strong>
