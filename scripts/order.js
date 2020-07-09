@@ -112,7 +112,7 @@ function displayOrders() {
                         }
                         div4.appendChild(ul1);
                     }
-                    if (json[i]["menus"] !== null && json[i]["menus"].length !== 0) {
+                    if (json[i]["menus"] !== undefined && json[i]["menus"].length !== 0) {
                         const p2 = document.createElement("p");
                         p2.className = "card-text";
                         p2.innerText = "Menus:";
