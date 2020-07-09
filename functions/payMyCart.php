@@ -58,11 +58,12 @@ if (isConnected() && isActivated() && isFranchisee()) {
             $price = $queryPrepared->fetch(PDO::FETCH_ASSOC);
             $price = $price["cartPrice"];
 
-            $queryPrepared = $pdo->prepare("INSERT INTO ORDERS (orderPrice, orderType, truck, user) VALUES (:orderPrice, 'Commande Franchisé', :truck, :user)");
+            $queryPrepared = $pdo->prepare("INSERT INTO ORDERS (orderPrice, orderType, truck, user, cart) VALUES (:orderPrice, 'Commande Franchisé', :truck, :user, :cart)");
             $queryPrepared->execute([
                 ":orderPrice" => $price,
                 ":truck" => $idTruck,
-                ":user" => $idUser
+                ":user" => $idUser,
+                ":cart" => $cart
             ]);
             $order = $pdo->lastInsertId();
             $queryPrepared = $pdo->prepare("INSERT INTO ORDERSTATUS (orders, status) VALUES (:order, 1)");
