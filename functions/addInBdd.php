@@ -172,7 +172,11 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
         ]);
     }
 }
-if (isset($_POST["lastOne"])) {
+
+$last = isset($_POST["lastOne"]);
+
+if ($last == 1) {
     header("Location: ../orderInvoice.php");
+} else {
+    header("Location: ../ingredientTruck.php");
 }
-header("Location: ../ingredientTruck.php");
