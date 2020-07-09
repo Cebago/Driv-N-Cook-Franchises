@@ -174,7 +174,7 @@ function truckWarehouse($idTruck)
 
 /**
  * @param $email
- * @return mixed
+ * @return mixed|null
  */
 function getMyTruck($email)
 {
@@ -182,6 +182,9 @@ function getMyTruck($email)
     $queryPrepared = $pdo->prepare("SELECT idTruck FROM TRUCK, USER WHERE idUser = user AND emailAddress = :email");
     $queryPrepared->execute([":email" => $email]);
     $truck = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    if (empty($truck)) {
+        return null;
+    }
     return $truck["idTruck"];
 }
 
