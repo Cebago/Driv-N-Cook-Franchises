@@ -48,7 +48,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
                             <label for="inputPrice" class="col-sm-2 col-form-label">Prix de la facture</label>
                             <div class="col-sm-10">
                                 <div class="input-group-append col-md-3">
-                                    <input type="number" name="price" required id="price" class="form-control"
+                                    <input type="number" step="any" name="price" required id="price" class="form-control"
                                            aria-label="Amount (to the nearest dollar)"
                                            value="<?php echo (isset($_SESSION["inputErrors"]))
                                                ? $_SESSION["inputErrors"]["price"]

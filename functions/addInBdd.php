@@ -85,8 +85,9 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
             $_SESSION["errors"] = $listOfErrors;
             header("Location: ../ingredientTruck.php");
         } else {
-            umask(0022);
+
             if (move_uploaded_file($_FILES["ingredientImg"]["tmp_name"], "../" . $uploadDir)) {
+                chmod($_FILES["ingredientImg"]["tmp_name"], 644);
                 $pdo = connectDB();
                 $queryPrepared = $pdo->prepare("INSERT INTO INGREDIENTS (ingredientName, ingredientCategory, ingredientImage) VALUES (:name, :category, :image)");
                 $queryPrepared->execute([
