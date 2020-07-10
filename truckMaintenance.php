@@ -25,7 +25,6 @@ include "header.php";
         ]);
         $maintenance = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
-    $truck = 1;
     $queryPrepared = $pdo->prepare("SELECT idMaintenance, maintenanceName, DATE_FORMAT(maintenanceDate, '%d/%m/%Y') as maintenanceDate, maintenancePrice, km FROM MAINTENANCE WHERE truck = :truck ORDER BY DATE(maintenanceDate) DESC");
     $queryPrepared->execute([
         ":truck" => $truck
@@ -38,7 +37,7 @@ include "header.php";
         <?php
         $queryPrepared = $pdo->prepare("SELECT status FROM pa2a2drivncook.TRUCKSTATUS WHERE truck = :truck AND status NOT IN (14)");
         $queryPrepared->execute([
-            ":truck" => 1
+            ":truck" => $truck
         ]);
         $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
         if (empty($result)) {

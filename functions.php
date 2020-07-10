@@ -302,3 +302,88 @@ function isOpen($idTruck)
     return !empty($queryPrepared->fetch());
 }
 
+/**
+ * @param $idTruck
+ * @return array
+ */
+function getMyMenus($idTruck)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT * FROM MENUS WHERE truck = :idTruck");
+    $queryPrepared->execute([
+        ":idTruck" => $idTruck
+    ]);
+    return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * @param $idTruck
+ * @return array
+ */
+function getMyProducts($idTruck)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT * FROM MENUS WHERE truck = :idTruck");
+    $queryPrepared->execute([
+        ":idTruck" => $idTruck
+    ]);
+    $result = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    if ($result == null) {
+        return null;
+    }
+    return $result;
+}
+
+/**
+ * @param $idCategory
+ * @return mixed|null
+ */
+function categoryOfProduct($idCategory)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT categoryName FROM PRODUCTCATEGORY WHERE idCategory = :category");
+    $queryPrepared->execute([
+        ":category" => $idCategory
+    ]);
+   $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+   if ($result == null) {
+       return null;
+   }
+   return $result;
+}
+
+/**
+ * @param $idProduct
+ * @return mixed|null
+ */
+function statusOfProduct($idProduct)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT status FROM PRODUCTSTATUS WHERE product = :product");
+    $queryPrepared->execute([
+        ":product" => $idProduct
+    ]);
+    $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    if ($result == null) {
+        return null;
+    }
+    return $result;
+}
+
+/**
+ * @param $idMenu
+ * @return mixed|null
+ */
+function statusOfMenus($idMenu)
+{
+    $pdo = connectDB();
+    $queryPrepared = $pdo->prepare("SELECT status FROM MENUSSTATUS WHERE menus = :menu");
+    $queryPrepared->execute([
+        ":menu" => $idMenu
+    ]);
+    $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+    if ($result == null) {
+        return null;
+    }
+    return $result;
+}
