@@ -49,9 +49,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
             <tbody>
             <?php
             $pdo = connectDB();
-            $queryPrepared = $pdo->prepare("SELECT idMenu, menuName, menuPrice FROM MENUS");
-            $queryPrepared->execute();
-            $menus = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+            $menus = getMyMenus(getMyTruck($_SESSION["email"]));
 
             $queryPrepared = $pdo->prepare("SELECT idCategory, categoryName FROM PRODUCTCATEGORY");
             $queryPrepared->execute();
@@ -81,9 +79,7 @@ if (isConnected() && isActivated() && isFranchisee()) {
                     </td>
                     <td class="text-center">
                         <?php
-                        $queryPrepared = $pdo->prepare("SELECT status FROM MENUSSTATUS WHERE menus = :menu");
-                        $queryPrepared->execute([":menu" => $menu["idMenu"]]);
-                        $status = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+                        $status = statusOfMenus($menu["idMenu"]);
                         if (!empty($status))
                             $status = $status["status"];
                         if ($status == 22 || empty($status)) {
