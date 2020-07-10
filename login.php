@@ -13,12 +13,14 @@ if (isset($_POST["inputEmail"]) && isset($_POST["inputPassword"]) && !empty($_PO
     if (password_verify($_POST["inputPassword"], $result["pwd"])) {
         $email = $_POST["inputEmail"];
         login($email);
+        $request = explode(".", $_SERVER["SERVER_NAME"]);
+        $request = $request[1] . "." . $request[2];
         if (isAdmin()) {
-            header("Location: https://back." . $_SERVER["SERVER_NAME"] . "/login.php");
+            header("Location: https://back." . $request . "/login.php");
             exit;
         }
         if (isClient()) {
-            header("Location: https://" . $_SERVER["SERVER_NAME"] . "/login.php");
+            header("Location: https://" . $request . "/login.php");
             exit;
         }
         header("Location: home.php");
