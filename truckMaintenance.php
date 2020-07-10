@@ -31,7 +31,7 @@ include "header.php";
         ":truck" => $truck
     ]);
     $maintenance = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
-    if (count($maintenance) > 0) {
+    if (count($maintenance) >= 0) {
     ?>
 
     <div class="col-md-4">
