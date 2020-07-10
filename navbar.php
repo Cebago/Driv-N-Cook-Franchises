@@ -31,7 +31,7 @@
                 </div>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="benefits" role="button" data-toggle="dropdown"
+                <a class="nav-link dropdown-toggle" href="#" id="events" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     Mes événements
                 </a>
@@ -39,6 +39,11 @@
                     <a class="dropdown-item" href="createEvents.php">Créer un nouvel évènement</a>
                     <a class="dropdown-item" href="viewEvents.php">Voir les évènements</a>
                 </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="viewMessages.php">
+                    Demandes de contact
+                </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="cart.php" id="benefits" role="button"
