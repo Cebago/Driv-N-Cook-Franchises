@@ -2,8 +2,9 @@
 session_start();
 require '../conf.inc.php';
 require '../functions.php';
+var_dump($_POST);
 
-if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"])) {
+if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"], $_POST["newIngredientEN"], $_POST["newIngredientES"])) {
     //ajout dans ingredients et dans cart + img
 
     $ingredient = htmlspecialchars(ucwords(trim($_POST["newIngredient"])));
@@ -84,6 +85,7 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
             $_SESSION["errors"] = $listOfErrors;
             header("Location: ../ingredientTruck.php");
         } else {
+
             if (move_uploaded_file($_FILES["ingredientImg"]["tmp_name"], "../" . $uploadDir)) {
                 $pdo = connectDB();
                 $queryPrepared = $pdo->prepare("INSERT INTO INGREDIENTS (ingredientName, ingredientCategory, ingredientImage) VALUES (:name, :category, :image)");
@@ -104,10 +106,21 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
                     ":warehouse" => $idWarehouse,
                     ":ingredient" => $id
                 ]);
+                //ajout des traductions dans le fichier json
+
+                $jsonFilePath = '../../Driv-N-Cook-Client/assets/traduction.json';
+                $jsonFile = file_get_contents($jsonFilePath);
+                $jsonFile = json_decode($jsonFile, true);
+
+                $jsonFile["ingredients"] = array($_POST["newIngredient"] => array("en_EN" => $_POST["newIngredientEN"], "es_ES" => $_POST["newIngredientES"]));
+
+                $newJsonString = json_encode($jsonFile);
+                file_put_contents($jsonFilePath, $newJsonString);
+
+
             } else {
                 $listOfErrors[] = "Sorry, there was an error uploading your file.";
                 $_SESSION["errors"] = $listOfErrors;
-                header("Location: ../ingredientTruck.php");
             }
         }
     }
@@ -157,10 +170,13 @@ if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"
             ":warehouse" => $idWarehouse,
             ":ingredient" => $ingredient
         ]);
-        header("Location: orderInvoice.php");
     }
 }
-if (isset($_POST["lastOne"]) && $_POST["lastOne"] == "on") {
+
+$last = isset($_POST["lastOne"]);
+
+if ($last == 1) {
     header("Location: ../orderInvoice.php");
+} else {
+    header("Location: ../ingredientTruck.php");
 }
-header("Location: ../ingredientTruck.php");

@@ -14,6 +14,9 @@
                 <div class="dropdown-menu" aria-labelledby="global">
                     <a class="dropdown-item" href="truckInfo.php">Information</a>
                     <a class="dropdown-item" href="truckMaintenance.php">Carnet d'entretien</a>
+                    <a class="dropdown-item" href="products.php">Mes produits</a>
+                    <a class="dropdown-item" href="menus.php">Mes menus</a>
+                    <a class="dropdown-item" href="categories.php">Les catégories</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -22,7 +25,8 @@
                     Mon stock
                 </a>
                 <div class="dropdown-menu" aria-labelledby="warehouses">
-                    <a class="dropdown-item" href="#">Historique</a>
+                    <a class="dropdown-item" href="ingredientTruck.php">Voir mon stock</a>
+                    <a class="dropdown-item" href="history.php">Historique</a>
                     <a class="dropdown-item" href="chooseWarehouse.php">Commandes</a>
                 </div>
             </li>
@@ -32,9 +36,33 @@
                     Mes événements
                 </a>
                 <div class="dropdown-menu" aria-labelledby="benefits">
-                    <a class="dropdown-item" href="#">Réservations</a>
-                    <a class="dropdown-item" href="#">Dégustations</a>
+                    <a class="dropdown-item" href="createEvents.php">Créer un nouvel évènement</a>
+                    <a class="dropdown-item" href="viewEvents.php">Voir les évènements</a>
                 </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="cart.php" id="benefits" role="button"
+                   aria-haspopup="true" aria-expanded="false">
+                    <span class="badge badge-pill badge-dark" id="cartQty">
+                        <i class="fas fa-shopping-cart"></i>
+                        <?php
+                        $cart = lastCart($_SESSION["email"]);
+                        $pdo = connectDB();
+                        $queryPrepared = $pdo->prepare("SELECT SUM(quantity) AS count FROM CARTINGREDIENT, CART, USER WHERE idUser = user AND cart = idCart AND emailAddress = :user AND idCart = :cart");
+                        $queryPrepared->execute([
+                            ":user" => $_SESSION["email"],
+                            ":cart" => $cart
+                        ]);
+                        $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
+                        $count = $result["count"];
+                        if (!empty($count)) {
+                            echo " " . $count;
+                        } else {
+                            echo " 0";
+                        }
+                        ?>
+                    </span>
+                </a>
             </li>
         </ul>
     </div>
