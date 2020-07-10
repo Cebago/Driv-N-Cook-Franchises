@@ -387,3 +387,57 @@ function statusOfMenus($idMenu)
     }
     return $result;
 }
+
+/**
+ * @return bool
+ */
+function isClient()
+{
+    if (!empty($_SESSION["email"]) && !empty($_SESSION["token"])) {
+        $email = $_SESSION["email"];
+        $token = $_SESSION["token"];
+        $pdo = connectDB();
+        $queryPrepared = $pdo->prepare("SELECT roleName FROM USER, SITEROLE, USERTOKEN WHERE emailAddress = :email 
+                                                 AND USERTOKEN.token = :token 
+                                                 AND user = idUser 
+                                                 AND userRole = idRole
+                                                 AND tokenType = 'Site'");
+        $queryPrepared->execute([
+            ":email" => $email,
+            ":token" => $token
+        ]);
+        $role = $queryPrepared->fetch();
+        $role = $role["roleName"];
+        if ($role == "Client") {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * @return bool
+ */
+function isAdmin()
+{
+    if (!empty($_SESSION["email"]) && !empty($_SESSION["token"])) {
+        $email = $_SESSION["email"];
+        $token = $_SESSION["token"];
+        $pdo = connectDB();
+        $queryPrepared = $pdo->prepare("SELECT roleName FROM USER, SITEROLE, USERTOKEN WHERE emailAddress = :email 
+                                                 AND USERTOKEN.token = :token 
+                                                 AND user = idUser 
+                                                 AND userRole = idRole
+                                                 AND tokenType = 'Site'");
+        $queryPrepared->execute([
+            ":email" => $email,
+            ":token" => $token
+        ]);
+        $isAdmin = $queryPrepared->fetch();
+        $isAdmin = $isAdmin["roleName"];
+        if ($isAdmin == "Administrateur") {
+            return true;
+        }
+    }
+    return false;
+}
