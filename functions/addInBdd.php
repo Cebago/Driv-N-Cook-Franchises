@@ -2,7 +2,6 @@
 session_start();
 require '../conf.inc.php';
 require '../functions.php';
-var_dump($_POST);
 
 if (isset($_POST, $_POST["category"], $_POST["checkbox"], $_POST["newIngredient"], $_POST["newIngredientEN"], $_POST["newIngredientES"])) {
     //ajout dans ingredients et dans cart + img
@@ -177,6 +176,8 @@ $last = isset($_POST["lastOne"]);
 
 if ($last == 1) {
     header("Location: ../orderInvoice.php");
+    exit;
 } else {
     header("Location: ../ingredientTruck.php");
+    exit;
 }

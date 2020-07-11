@@ -323,7 +323,7 @@ function getMyMenus($idTruck)
 function getMyProducts($idTruck)
 {
     $pdo = connectDB();
-    $queryPrepared = $pdo->prepare("SELECT * FROM MENUS WHERE truck = :idTruck");
+    $queryPrepared = $pdo->prepare("SELECT * FROM PRODUCTS WHERE truck = :idTruck");
     $queryPrepared->execute([
         ":idTruck" => $idTruck
     ]);
