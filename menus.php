@@ -137,12 +137,8 @@ if (isConnected() && isActivated() && isFranchisee()) {
                     </div>
                     <?php
                     $pdo = connectDB();
-                    $queryPrepared = $pdo->prepare("SELECT idProduct, productName FROM PRODUCTS");
                     $truck = getMyTruck($_SESSION["email"]);
-                    $queryPrepared->execute([
-                        ":truck" => $truck
-                    ]);
-                    $products = $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+                    $products = getMyProducts($truck);
                     foreach ($products as $product) {
                         ?>
                         <div class="custom-control custom-checkbox mb-3">
