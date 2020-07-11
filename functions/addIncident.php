@@ -50,7 +50,6 @@ if (isset($_POST)
         ]);
         $result = $queryPrepared->fetch(PDO::FETCH_ASSOC);
         $truck = $result["idTruck"];
-        $truck = 1;
         $queryPrepared = $pdo->prepare("INSERT INTO MAINTENANCE (maintenanceName, maintenancePrice, maintenanceDate, km, truck) VALUES (:name, :price, :date, :km, :truck)");
         $queryPrepared->execute([
             ":name" => $name,
